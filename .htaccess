@@ -1,0 +1,10 @@
+RewriteEngine On
+
+RewriteBase /
+
+RewriteRule ^assets/(.*)$ storage/public/$1 [NC,L,QSA]
+
+RewriteCond %{REQUEST_URI} !^/assets
+RewriteCond %{REQUEST_URI} !^/storage/public/
+RewriteCond %{REQUEST_URI} !^/webroot/
+RewriteRule (.*) /webroot/$1 [NC,L]

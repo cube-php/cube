@@ -1,0 +1,15 @@
+{
+    "name": "Cube Framework",
+    "description": "",
+    "autoload": {
+        "psr-4": {
+            "App\\Controller\\": "app/controller",
+            "App\\Model\\": "app/model",
+            "App\\Provider\\": "app/provider",
+            "App\\Core\\": "main/core"
+        }
+    },
+    "require": {
+        "dwoo/dwoo": "1.3.*"
+    }
+}
