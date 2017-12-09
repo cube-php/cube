@@ -23,7 +23,7 @@ define('CORE_APP_PATH', APP_PATH . DS . 'main');
 define('MAIN_APP_PATH', APP_PATH . DS . 'app');
 
 # Set app view directory
-define('VIEW_PATH', APP_PATH . DS . '/app/views');
+define('VIEW_PATH', MAIN_APP_PATH . DS . '/views');
 
 # Configuration directory
 define('CONFIG_PATH', APP_PATH . DS . 'config' . DS);

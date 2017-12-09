@@ -314,7 +314,7 @@ class App
      */
     private function initHelpers()
     {
-        $this->loadDirFiles(BOOT_PATH . DS . 'helpers');
+        $this->loadDirFiles(MAIN_APP_PATH . DS . 'helpers');
     }
 
     /**

@@ -105,6 +105,16 @@ class InputValidator
     }
 
     /**
+     * Starts/refreshes input validator
+     * 
+     * @return void
+     */
+    public static function init()
+    {
+        static::$_validation_errors = [];
+    }
+
+    /**
      * Check if validations are valid
      * 
      * @return bool
