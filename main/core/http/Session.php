@@ -29,7 +29,6 @@ class Session
      */
     private function __construct()
     {
-        Cookie::set(static::$_cookie_name, '');
         /**
          * Create session manager instance
          */
@@ -58,7 +57,6 @@ class Session
          * Start session
          */
         session_start();
-        session_regenerate_id();
     }
 
     /**

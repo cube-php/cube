@@ -45,7 +45,7 @@ return array(
      * 
      * @var string
      */
-    'dbname' => 'storify',
+    'dbname' => 'cubef',
 
     /**
      * Database charset

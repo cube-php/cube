@@ -8,10 +8,13 @@
 </head>
 <body>
     <h1 style="text-align:center; padding: 20px;">
-        PHP/Cube
+        PHP/Cube, {session_id()}
     </h1>
     <div style="text-align:center; padding: 10px;">
         Welcome to PHP Cube.
+    </div>
+    <div style="text-align:center; padding: 10px;">
+        v0.1
     </div>
 </body>
 </html>
