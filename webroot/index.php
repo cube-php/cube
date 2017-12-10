@@ -23,7 +23,7 @@ require_once '..' . DS . 'main' . DS . 'boot' . DS . 'vars.php';
  * Use app bootstraper
  * -----------------------------------------------------
  */
-//require_once '..' . DS . 'bootstrap.php';
+require_once MAIN_APP_PATH . DS . 'core' . DS . 'bootstrap.php';
 
 /**
  * -----------------------------------------------------
@@ -32,7 +32,7 @@ require_once '..' . DS . 'main' . DS . 'boot' . DS . 'vars.php';
  * Include specified routes to listen to
  * App registers routes and controllers respectively
  */
-require_once MAIN_APP_PATH  . DS . 'routes.php';
+require_once MAIN_APP_PATH . DS . 'core' . DS . 'routes.php';
 
 /**
  * -----------------------------------------------------
