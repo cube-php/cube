@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cube</title>
+    {css('styles')}
 </head>
 <body>
-    <h1 style="text-align:center; padding: 20px;">
+    <h1 class="title">
         PHP/Cube
     </h1>
-    <div style="text-align:center; padding: 10px;">
+    <div class="cube-welcome">
         Welcome to PHP Cube.
     </div>
-    <div style="text-align:center; padding: 10px;">
+    <div class="cube-version">
         v0.1
     </div>
 </body>
