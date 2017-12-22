@@ -95,6 +95,17 @@ class InputValidator
     }
 
     /**
+     * Return error at specified index
+     *
+     * @param int $index
+     * @return string
+     */
+    public static function getErrorByIndex($index)
+    {
+        return static::getErrors()[$index];
+    }
+
+    /**
      * Return validator errors
      * 
      * @return array
@@ -102,6 +113,16 @@ class InputValidator
     public static function getErrors()
     {
         return static::$_validation_errors;
+    }
+
+    /**
+     * Return the first error
+     *
+     * @return void
+     */
+    public static function getFirstError()
+    {
+        return static::getErrorByIndex(0);
     }
 
     /**
