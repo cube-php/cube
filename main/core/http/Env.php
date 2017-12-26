@@ -14,10 +14,18 @@ class Env
      */
     private static $_vars = array();
 
+    /**
+     * Get Enviroment Variable
+     *
+     * @param [type] $name
+     * @return void
+     */
     public static function get($name)
     {
-        $variables = static::load();
-        return $variables[$name] ?? null;
+        static::load();
+
+        $vars = static::$_vars;
+        return $vars[$name] ?? null;
     }
 
     /**
@@ -35,7 +43,10 @@ class Env
                 $file->write('HELLO_WORLD="hello world"');
             }
 
-            static::$_vars = parse_ini_file($env_file);
+            if(!static::$_vars) {
+                static::$_vars = parse_ini_file($env_file);
+            }
+
             return static::$_vars;
         }
     }

@@ -28,14 +28,21 @@ class InputValidator
      * 
      * @param
      */
-    public static $_custom_validators = [];
+    public static $_validation_error = [];
 
     /**
      * Validation errors
      * 
      * @var array
      */
-    private static $_validation_errors;
+    private static $_validation_errors = [];
+
+    /**
+     * Validation error messages
+     *
+     * @var array
+     */
+    public static $_validation_errors_msgs = [];
 
     /**
      * Validator messages
@@ -132,7 +139,7 @@ class InputValidator
      */
     public static function init()
     {
-        static::$_validation_errors = [];
+        static::$_validation_errors_msgs = static::$_validation_errors = [];
     }
 
     /**
@@ -292,6 +299,7 @@ class InputValidator
             $error = str_replace($replacer, $value, $error);
         }
 
+        static::$_validation_errors_msgs[] = $error;
         static::$_validation_errors[$this->_id][] = $error;
     }
 }
