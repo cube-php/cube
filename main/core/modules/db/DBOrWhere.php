@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Modules\DB;
+namespace App\Core\Modules\Db;
 
-use App\Core\Modules\DB\DBQueryBuilder;
+use App\Core\Modules\Db\DBQueryBuilder;
 
 class DBOrWhere
 {

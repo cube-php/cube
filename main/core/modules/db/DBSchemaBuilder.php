@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Core\Modules\DB;
+namespace App\Core\Modules\Db;
 
 use InvalidArgumentException;
 
 use App\Core\Modules\DB;
 
-use App\Core\Modules\DB\DBTable;
+use App\Core\Modules\Db\DBTable;
 
 class DBSchemaBuilder
 {

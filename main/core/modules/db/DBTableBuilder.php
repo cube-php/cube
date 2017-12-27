@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Modules\DB;
+namespace App\Core\Modules\Db;
 
-use App\Core\Modules\DB\DBTable;
+use App\Core\Modules\Db\DBTable;
 
-use App\Core\Modules\DB\DBSchemaBuilder;
+use App\Core\Modules\Db\DBSchemaBuilder;
 
 class DBTableBuilder
 {

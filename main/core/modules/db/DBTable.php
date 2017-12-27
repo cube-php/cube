@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Core\Modules\DB;
+namespace App\Core\Modules\Db;
 
 use InvalidArgumentException;
 
 use App\Core\Modules\DB;
 
-use App\Core\Modules\DB\DBDelete;
+use App\Core\Modules\Db\DBDelete;
 
-use App\Core\Modules\DB\DBInsert;
+use App\Core\Modules\Db\DBInsert;
 
-use App\Core\Modules\DB\DBReplace;
+use App\Core\Modules\Db\DBReplace;
 
-use App\Core\Modules\DB\DBSelect;
+use App\Core\Modules\Db\DBSelect;
 
-use App\Core\Modules\DB\DBUpdate;
+use App\Core\Modules\Db\DBUpdate;
 
-use App\Core\Modules\DB\DBSchemaBuilder;
+use App\Core\Modules\Db\DBSchemaBuilder;
 
-use App\Core\Modules\DB\DBTableBuilder;
+use App\Core\Modules\Db\DBTableBuilder;
 
-use App\Core\Modules\DB\DBWordConstruct;
+use App\Core\Modules\Db\DBWordConstruct;
 
 class DBTable
 {

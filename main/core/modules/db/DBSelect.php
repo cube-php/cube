@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Core\Modules\DB;
+namespace App\Core\Modules\Db;
 
 use InvalidArgumentException;
 
 use App\Core\Modules\DB;
 
-use App\Core\Modules\DB\DBQueryBuilder;
+use App\Core\Modules\Db\DBQueryBuilder;
 
 class DBSelect extends DBQueryBuilder
 {       
