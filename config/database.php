@@ -24,28 +24,28 @@ return array(
      * 
      * @var string
      */
-    'hostname' => 'localhost',
+    'hostname' => '',
 
     /**
      * Database username
      * 
      * @var string
      */
-    'username' => 'root',
+    'username' => '',
 
     /**
      * Database password
      * 
      * @var string
      */
-    'password' => 'nex123',
+    'password' => '',
 
     /**
      * Database table name
      * 
      * @var string
      */
-    'dbname' => 'btcminer',
+    'dbname' => '',
 
     /**
      * Database charset
