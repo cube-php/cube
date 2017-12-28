@@ -6,9 +6,12 @@ use App\Core\Http\Model;
 
 class DemoModel extends Model
 {
-    protected static $schema = '-schema-name';
+    protected static $schema = 'schema_name';
 
-    protected static $fields = array();
+    protected static $fields = array(
+        'field1',
+        'field2'
+    );
 
-    protected static $primary_key = '';
+    protected static $primary_key = 'primary_key_field';
 }

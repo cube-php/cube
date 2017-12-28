@@ -2,13 +2,13 @@
 
 return array(
 
-    'schema' => 'users',
+    'schema' => 'account',
 
-    'primary_key' => 'uid',
+    'primary_key' => 'id',
 
     'hash_method' => 'password_verify',
 
-    'instance' => 'App\\Providers\\UserProvider',
+    'instance' => 'App\\Providers\\DemoProvider',
     
     'combination' => array(
         array(

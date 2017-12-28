@@ -49,8 +49,8 @@ class DBSelect extends DBQueryBuilder
     {
         #if limit is not passed,
         #the offset argument should be passed as limit
-        $offset_id = $limit ? $offset : 0;
-        $limit_id = $limit ? $limit : $offset;
+        $offset_id = (int) ($limit ? (int) $offset : 0);
+        $limit_id = (int) ($limit ? $limit : $offset);
 
         $this->joinSql(
             null,

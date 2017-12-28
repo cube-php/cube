@@ -31,21 +31,21 @@ return array(
      * 
      * @var string
      */
-    'username' => '',
+    'username' => 'root',
 
     /**
      * Database password
      * 
      * @var string
      */
-    'password' => '',
+    'password' => 'nex123',
 
     /**
      * Database table name
      * 
      * @var string
      */
-    'dbname' => '',
+    'dbname' => 'btcminer',
 
     /**
      * Database charset

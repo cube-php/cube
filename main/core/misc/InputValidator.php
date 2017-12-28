@@ -28,7 +28,7 @@ class InputValidator
      * 
      * @param
      */
-    public static $_validation_error = [];
+    private static $_custom_validators = [];
 
     /**
      * Validation errors
@@ -42,7 +42,7 @@ class InputValidator
      *
      * @var array
      */
-    public static $_validation_errors_msgs = [];
+    private static $_validation_errors_msgs = [];
 
     /**
      * Validator messages
@@ -55,7 +55,8 @@ class InputValidator
         'email' => '{input} is required to be a valid email address',
         'url' => '{input} is required to be a valid url',
         'number' => '{input} is required to be a number',
-        'required' => '{input} is required'
+        'required' => '{input} is required',
+        'equals' => '{input} must be equal to {value}'
     );
 
     /**
@@ -83,7 +84,9 @@ class InputValidator
         }
 
         $method_name = $validators[$name];
-        return $method_name($this, $args);
+        $args = array_merge($validator = [$this], $args);
+
+        return call_user_func_array($method_name, $args);
     }
 
     /**
@@ -109,7 +112,7 @@ class InputValidator
      */
     public static function getErrorByIndex($index)
     {
-        return static::getErrors()[$index];
+        return static::$_validation_errors_msgs[$index] ?? null;
     }
 
     /**
@@ -154,6 +157,37 @@ class InputValidator
     }
 
     /**
+     * Get error message
+     *
+     * @param string $field Field name
+     * @param string $msg Custom message
+     * @return string
+     */
+    private static function getMessage($field, $msg)
+    {
+        return $msg ? $msg : static::$_messages[$field];
+    }
+    
+    /**
+     * Check if input's value is equal to value
+     *
+     * @param string|int $value
+     * @param string|null $msg Custom error message
+     * 
+     * @return self
+     */
+    public function equals($value, $msg = null)
+    {
+        $msg = static::getMessage('equals', $msg);
+
+        if($value != $this->getValue()) {
+            $this->attachError($msg, ['value' => $value]);
+        }
+
+        return $this;
+    }
+
+    /**
      * Email validator
      * 
      * @param string $msg Custom error message
@@ -162,7 +196,7 @@ class InputValidator
      */
     public function email($msg = null)
     {
-        $msg = $msg ?? static::$_messages['email'];
+        $msg = static::getMessage('email', $msg);
 
         if(!filter_var($this->getValue(), FILTER_VALIDATE_EMAIL)) {
             $this->attachError($msg);
@@ -202,7 +236,7 @@ class InputValidator
     public function maxLength($length, $msg = null)
     {
 
-        $msg = $msg ?? static::$_messages['max_length'];
+        $msg = static::getMessage('max_length', $msg);
 
         if(strlen($this->getValue()) > $length) {
             $this->attachError($msg, ['length' => $length]);
@@ -221,7 +255,7 @@ class InputValidator
      */
     public function minLength($length, $msg = null)
     {
-        $msg = $msg ?? static::$_messages['min_length'];
+        $msg = static::getMessage('min_length', $msg);
 
         if(strlen($this->getValue()) < $length) {
             $this->attachError($msg, ['length' => $length]);
@@ -257,7 +291,7 @@ class InputValidator
      */
     public function required($msg = null)
     {
-        $msg = $msg ?? static::$_messages['required'];
+        $msg = static::getMessage('required', $msg);
 
         if(!$this->getValue()) {
             $this->attachError($msg);
@@ -275,7 +309,7 @@ class InputValidator
      */
     public function url($msg = null)
     {
-        $msg = $msg ?? static::$_messages['url'];
+        $msg = static::getMessage('url', $msg);
 
         if(!filter_var($this->getValue(), FILTER_VALIDATE_URL)) {
             $this->attachError($msg);

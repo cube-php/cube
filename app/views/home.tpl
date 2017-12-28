@@ -9,7 +9,7 @@
 </head>
 <body>
     <h1 class="title">
-        PHP/Cube
+        php/cube
     </h1>
     <div class="cube-welcome">
         Welcome to PHP Cube.

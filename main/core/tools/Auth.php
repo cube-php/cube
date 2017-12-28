@@ -123,17 +123,13 @@ class Auth implements MiddlewareInterface
     }
 
     /**
-     * Handle middleware
-     * 
-     * @param \App\Core\Http\Request $request
-     * @param \App\Core\Http\Response $response
-     * 
-     * @return \App\Core\Http\Response
+     * End current authenticated user's session
+     *
+     * @return void
      */
-    public function handle(Request $request, Response $response)
+    public static function logout()
     {
-        Session::get(static::$_auth_name);
-        $request->addMiddleWare('auth', null);
+        Session::remove(static::$_auth_name);
     }
 
     /**
@@ -151,6 +147,19 @@ class Auth implements MiddlewareInterface
 
         $instance = static::getConfig()['instance'];
         return new $instance($auth_id);
+    }
+
+    /**
+     * Handle middleware
+     * 
+     * @param \App\Core\Http\Request $request
+     * @param \App\Core\Http\Response $response
+     * 
+     * @return \App\Core\Http\Response
+     */
+    public function handle(Request $request, Response $response)
+    {
+        return Auth::user();
     }
 
     /**

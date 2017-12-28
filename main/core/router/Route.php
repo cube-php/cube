@@ -5,11 +5,9 @@ namespace App\Core\Router;
 use InvalidArgumentException;
 
 use App\Core\Router\RouteCollection;
-
 use App\Core\Router\RouteParser;
 
 use App\Core\Http\Request;
-
 use App\Core\Http\Response;
 
 class Route
@@ -51,6 +49,13 @@ class Route
     private $attributes = array();
 
     /**
+     * Middlewares
+     * 
+     * @var string[]
+     */
+    private $_middlewares = [];
+
+    /**
      * Class constructor
      * 
      * @param string|string[] $method
@@ -62,6 +67,21 @@ class Route
         $this->setMethod(strtolower($method));
         $this->setPath($path);
         $this->setController($controller);
+    }
+
+    /**
+     * Add middlewares to request
+     *
+     * @return void
+     */
+    public function engageMiddleware(Request $request)
+    {
+        foreach($this->getMiddlewares() as $middleware)
+        {
+            $request->useMiddleware($middleware);
+        }
+
+        return $request;
     }
 
     /**
@@ -94,10 +114,6 @@ class Route
 
         $controller_class_name = static::$controllerNamespace . $controller_vars[0];
         $controller_method_name = $controller_vars[1];
-
-        if(!is_callable($controller_class_name . '::' . $controller_method_name)) {
-            throw new InvalidArgumentException('"' . $controller . '" on route is not callable');
-        }
 
         $this->_controller = array(
             'class_name' => $controller_class_name,
@@ -172,6 +188,16 @@ class Route
     }
 
     /**
+     * Return Assigned Middlewares
+     *
+     * @return string[]
+     */
+    public function getMiddlewares()
+    {
+        return $this->_middlewares;
+    }
+
+    /**
      * Call the controller
      * 
      * @return void
@@ -182,7 +208,14 @@ class Route
         $method = $this->_controller['method_name'];
 
         $controller = new $class;
-        return $controller->{$method}($request, $response);
+        $call = @call_user_func_array([$controller, $method], [$request, $response]);
+        
+        if(!$call) {
+            throw new InvalidArgumentException
+                ("{$class}::{$method}() on route \"{$this->getPath()}\" is not a valid callable method");
+        }
+
+        return $call;
     }
 
     /**
@@ -205,4 +238,22 @@ class Route
         return new RouteParser($this);
     }
 
+    /**
+     * Set Route middlewares
+     *
+     * @param string|array $wares Middlewares
+     * @return self
+     */
+    public function use($wares)
+    {
+        if(is_array($wares)) {
+            foreach($wares as $ware) {
+                $this->_middlewares[] = $ware;
+            }
+            return $this;
+        }
+
+        $this->_middlewares[] = $wares;
+        return $this;
+    }
 }

@@ -32,11 +32,13 @@ class Model
      * 
      * @return array|null
      */
-    public static function all()
+    public static function all(array $opts = [])
     {
-        return DB::table(static::$schema)
-                ->select(static::$fields)
-                ->fetchAll();
+        $query = DB::table(static::$schema)
+                    ->select(static::$fields);
+
+        return $opts ? 
+            call_user_func_array([$query, 'fetch'], $opts) : $query->fetchAll();
     }
 
     /**
@@ -52,7 +54,25 @@ class Model
     }
 
     /**
-     * Fetch data using passed primary key value
+     * Fetch all data using passed field value
+     *
+     * @param string $field Field name
+     * @param mixed $value Field value
+     * @param array $params Parameters
+     * 
+     * @return array|null
+     */
+    public static function findAllBy($field, $value, $params)
+    {
+        $query = DB::table(static::$schema)
+                 ->select(static::$fields)
+                 ->where($field, $value);
+
+        return call_user_func_array([$query, 'fetch'], $params);
+    }
+
+    /**
+     * Fetch data using passed $field value
      * 
      * @param string|int $primary_key
      * 

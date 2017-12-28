@@ -2,6 +2,7 @@
 
 namespace App\Core\Tools;
 
+use App\Core\Http\Response;
 use App\Core\Http\Request;
 use App\Core\Http\Session;
 
@@ -49,10 +50,20 @@ class Csrf
      * 
      * @return string
      */
-    public static function isValid()
+    public static function isValid($token)
     {
-        $request = new Request;
-        $token = (string) $request->input('csrf_token');
         return ($token === static::get());
+    }
+
+    /**
+     * Middleware handler
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    public function handle(Request $request, Response $response)
+    {
+        return static::isValid($request->input('csrf_token'));
     }
 }

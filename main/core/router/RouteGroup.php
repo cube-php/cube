@@ -73,11 +73,10 @@ class RouteGroup
         
         #name path
         if($name === static::$multi_method_name) {
-            $this->router->map($args[0], $new_path, $args[2]);
-            return;
+            return $this->router->map($args[0], $new_path, $args[2]);
         }
 
         #register path
-        $this->router->{$name}($new_path, $args[1]);
+        return $this->router->{$name}($new_path, $args[1]);
     }
 }

@@ -2,18 +2,16 @@
 
 namespace App\Core\Http;
 
+use InvalidArgumentException;
 use App\Core\Interfaces\RequestInterface;
 
 use App\Core\Http\Server;
-
 use App\Core\Http\Session;
-
 use App\Core\Http\Uri;
 
 use App\Core\Misc\FilesParser;
-
 use App\Core\Misc\Inputs;
-use function GuzzleHttp\json_decode;
+use App\Core\App;
 
 class Request implements RequestInterface
 {
@@ -36,7 +34,7 @@ class Request implements RequestInterface
      * 
      * @var string]
      */
-    public static $_wares = array();
+    public $_wares = array();
 
     /**
      * Class constructor
@@ -57,7 +55,14 @@ class Request implements RequestInterface
      */
     public function __call($method, $args)
     {
-        return static::$_wares[$method];
+        $ware = array_key_exists($method, $this->_wares);
+
+        if(!$ware) {
+            throw new InvalidArgumentException
+                ('Middleware "'. $method .'" not found');
+        }
+        
+        return $this->_wares[$method];
     }
 
     /**
@@ -68,17 +73,6 @@ class Request implements RequestInterface
     public function __get($name)
     {
         return $this->getAttribute($name);
-    }
-
-    /**
-     * Add middlewarw
-     * 
-     * @param string $name
-     * @param        $data
-     */
-    public function addMiddleWare($name, $data)
-    {
-        static::$_wares[$name] = $data;
     }
 
     /**
@@ -194,5 +188,27 @@ class Request implements RequestInterface
         $uri = $this->server->get('request_uri');
 
         return new Uri($scheme . '://' . $host . $uri);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     * 
+     * @throws \InvalidArgumentException
+     */
+    public function useMiddleware($middleware)
+    {
+        $wares = App::getConfigByFile('middleware');
+        $class = $wares[$middleware] ?? null;
+
+        if(!$class) {
+            throw new \InvalidArgumentException
+                ('Middleware "'.$middleware.'" is not assigned');
+        }
+
+        $cls = new $class;
+        $this->_wares[$middleware] = call_user_func_array([$cls, 'handle'], [$this, new Response]);
+        return $this;
     }
 }

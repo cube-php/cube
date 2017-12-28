@@ -13,7 +13,7 @@ function csrf_token()
     return Csrf::get();
 }
 
-function csrf()
+function csrf($token)
 {
-    return Csrf::isValid();
+    return Csrf::isValid($token);
 }

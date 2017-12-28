@@ -2,10 +2,9 @@
 
 /**
  * ------------------------------------------------
- * GLOBALLY ACCESSIBLE VALUES
+ * APP DIRECTORIES
  * ------------------------------------------------
- * All value developer want's to be accessed
- * globally by the app
+ * All required app directories specified
  * 
  */
 

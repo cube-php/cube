@@ -30,7 +30,7 @@ class Router
      */
     public function any($path, $controller)
     {
-        $this->on(null, $path, $controller);
+        return $this->on(null, $path, $controller);
     }
 
     /**
@@ -43,7 +43,7 @@ class Router
      */
     public function get($path, $controller)
     {
-        $this->on('get', $path, $controller);
+        return $this->on('get', $path, $controller);
     }
     
     /**
@@ -56,7 +56,7 @@ class Router
      */
     public function delete($path, $controller)
     {
-        $this->on('delete', $path, $controller);
+        return $this->on('delete', $path, $controller);
     }
 
     /**
@@ -70,7 +70,7 @@ class Router
      */
     public function group($parent, $fn, $middlewares = [])
     {
-        $fn(new RouteGroup($parent, $this));
+        return $fn(new RouteGroup($parent, $this, $middlewares));
     }
     
     /**
@@ -83,7 +83,7 @@ class Router
      */
     public function post($path, $controller)
     {
-        $this->on('post', $path, $controller);
+        return $this->on('post', $path, $controller);
     }
 
     /**
@@ -96,7 +96,7 @@ class Router
      */
     public function patch($path, $controller)
     {
-        $this->on('patch', $path, $controller);
+        return $this->on('patch', $path, $controller);
     }
 
     /**
@@ -132,6 +132,6 @@ class Router
     public function on($method, $path, $controller)
     {
         $route = new Route($method, $path, $controller);
-        RouteCollection::attachRoute($route);
+        return RouteCollection::attachRoute($route);
     }
 }

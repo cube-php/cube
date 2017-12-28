@@ -51,7 +51,6 @@ class RouteCollection
      */
     public static function attachRoute(Route $route)
     {
-        
         #Attach route to all routes
         static::$routes[] = $route;
 
@@ -108,9 +107,12 @@ class RouteCollection
                     App::EVENT_ROUTE_MATCH_FOUND
                 );
 
-                #Instantiate route controller
-                $route->initController($this->request, new Response);
+                #Set Middlewares
+                $request = $route->engageMiddleware($this->request);
 
+                #Instantiate route controller
+                $route->initController($request, new Response);
+                
                 return true;
             }
         }
