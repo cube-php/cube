@@ -57,7 +57,9 @@ class RouteCollection
         $request = new Request;
 
         #attach on request method
-        if($route->getMethod() && $request->getMethod() !== $route->getMethod()) return;
+        if($route->getMethod() && $request->getMethod() !== $route->getMethod()) {
+            return $route;
+        }
         static::$attached_routes[] = $route;
         return $route;
     }
