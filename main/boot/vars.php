@@ -29,3 +29,12 @@ define('CONFIG_PATH', APP_PATH . DS . 'config' . DS);
 
 # Storage path
 define('APP_STORAGE', APP_PATH . DS . 'storage' .  DS);
+
+#Controllers Path
+define('APP_CONTROLLERS_PATH', MAIN_APP_PATH . DS . 'controllers');
+
+#Models Path
+define('APP_MODELS_PATH', MAIN_APP_PATH . DS . 'models');
+
+#Providers Path
+define('APP_PROVIDERS_PATH', MAIN_APP_PATH . DS . 'providers');

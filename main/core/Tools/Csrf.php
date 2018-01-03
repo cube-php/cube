@@ -52,7 +52,7 @@ class Csrf
      */
     public static function isValid($token)
     {
-        return ($token === static::get());
+        return ((string) $token === static::get());
     }
 
     /**

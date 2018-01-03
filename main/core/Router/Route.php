@@ -208,14 +208,13 @@ class Route
         $method = $this->_controller['method_name'];
 
         $controller = new $class;
-        $call = @call_user_func_array([$controller, $method], [$request, $response]);
-        
-        if(!$call) {
+
+        if(!is_callable("{$class}::{$method}")) {
             throw new InvalidArgumentException
                 ("{$class}::{$method}() on route \"{$this->getPath()}\" is not a valid callable method");
         }
 
-        return $call;
+        return call_user_func_array([$controller, $method], [$request, $response]);
     }
 
     /**
