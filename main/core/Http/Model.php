@@ -29,13 +29,21 @@ class Model
 
     /**
      * Return all results from schema
+     *
+     * @param array $order Order methods
+     * @see \App\Core\Db\DBSelect::orderBY() method
      * 
+     * @param array $opts
      * @return array|null
      */
-    public static function all(array $opts = [])
+    public static function all(array $order = [], array $opts = [])
     {
         $query = DB::table(static::$schema)
                     ->select(static::$fields);
+                
+        if($order) {
+            $query->orderBy([$order]);
+        }
 
         return $opts ? 
             call_user_func_array([$query, 'fetch'], $opts) : $query->fetchAll();
