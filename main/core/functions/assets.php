@@ -4,12 +4,36 @@ use App\Core\Http\Request;
 use App\Core\App;
 
 /**
- * Url
+ * Return full url based on specified path and query parameters
+ *
+ * @param string|array $path Path to concantenate with URL
+ * @param array $query Query string
+ * @return string
  */
-function url($path = '')
+function url($path = '', array $query = [])
 {
     $request = new Request();
-    return $request->url()->getScheme() . '://' . $request->url()->getHost() . '/' . $path;
+
+    if(is_array($path)) {
+        $path = sprintf('/%s', implode('/', $path));
+    }
+
+    $repath = $request->url()->getScheme() . '://' . $request->url()->getHost() . $path;
+
+    return $query ?
+        $repath . '?' . http_build_query($query) : $repath;
+}
+
+/**
+ * Return assets based url
+ *
+ * @param string $asset_path Asset path
+ * @return string
+ */
+function asset($asset_path)
+{
+    $full_path = array_merge(['assets'], array_wrap($asset_path));
+    return url($full_path);
 }
 
 /**
@@ -20,7 +44,7 @@ function url($path = '')
 function jscript($name, $no_cache = null)
 {
     $anti_cache = ((is_null($no_cache) || $no_cache) && App::isDevelopment()) ? '?time=' . time() : '';
-    return '<script src="' . url('assets/js/'. $name .'.js') . $anti_cache . '"></script>' . PHP_EOL;
+    return '<script src="' . asset(['js', $name .'.js']) . $anti_cache . '"></script>';
 }
 
 
@@ -33,5 +57,5 @@ function css($name, $no_cache = null)
 {
     $anti_cache = ((is_null($no_cache) || $no_cache) && App::isDevelopment()) ? '?time=' . time() : '';
     return 
-        '<link rel="stylesheet" href="' . url('assets/css/'. $name .'.css') . $anti_cache . ' "/>' . PHP_EOL;
+        '<link rel="stylesheet" href="' . asset(['css', $name . '.css']) . $anti_cache . ' "/>';
 }
