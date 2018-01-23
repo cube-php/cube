@@ -1,10 +1,11 @@
 <?php
 
-require 'vendor/autoload.php';
+define('DS', DIRECTORY_SEPARATOR);
+
+require_once 'main/boot/vars.php';
+require_once 'vendor/autoload.php';
 
 use App\Core\Helpers\Cli\Cli;
 
-$args = $argv;
-
-$cli = new Cli($args);
+$cli = new Cli($argv);
 $cli->listen();
