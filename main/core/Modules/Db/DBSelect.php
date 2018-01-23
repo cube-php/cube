@@ -124,9 +124,9 @@ class DBSelect extends DBQueryBuilder
         $orders_list = [];
 
         foreach($orders as $order) {
-            $orders_list = $order[0] . ' ' . $order[1];
+            $orders_list[] = $order[0] . ' ' . $order[1];
         }
-
+        
         $this->joinSql(null, 'ORDER BY', implode(', ', $orders_list));
         return $this;
     }
