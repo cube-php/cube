@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use App\Core\Interfaces\RequestInterface;
 
 use App\Core\Http\Server;
+use App\Core\Http\Headers;
 use App\Core\Http\Session;
 use App\Core\Http\Uri;
 
@@ -27,7 +28,14 @@ class Request implements RequestInterface
      * 
      * @var \App\Core\Http\Server
      */
-    private $server;
+    private $_server;
+
+    /**
+     * Header
+     * 
+     * @var \App\Core\Http\Headers
+     */
+    private $_headers;
 
     /**
      * Middlewares
@@ -42,7 +50,8 @@ class Request implements RequestInterface
      */
     public function __construct()
     {
-        $this->server = new Server;
+        $this->_server = new Server;
+        $this->_heders = new Headers;
     }
 
     /**
@@ -78,14 +87,42 @@ class Request implements RequestInterface
     /**
      * Get request body
      *
-     * @param boolean $parsed Return JSON encoded body or not
      * @return object
      */
-    public function getBody($parsed = true)
+    public function getBody()
     {
         $contents = file_get_contents('php://input');
-        return $parsed ? 
-            json_decode($contents) : $contents;
+        return $contents;
+    }
+
+    /**
+     * Return parsed request body
+     *
+     * @return string JSON parsed string
+     */
+    public function getParsedBody()
+    {
+        return json_decode($this->getBody());
+    }
+
+    /**
+     * Return request headers
+     *
+     * @return \App\Core\Http\Headers
+     */
+    public function getHeaders()
+    {
+        return $this->_headers;
+    }
+
+    /**
+     * Return request server variables
+     *
+     * @return App\Core\Http\Server;
+     */
+    public function getServer()
+    {
+        return $this->_server;
     }
 
     /**
@@ -119,17 +156,19 @@ class Request implements RequestInterface
      */
     public function getMethod()
     {
-        return strtolower($this->server->get('request_method'));
+        return strtolower($this->_server->get('request_method'));
     }
 
     /**
      * Get request attribute
      * 
-     * @return
+     * @param mixed $default_value Otherwise value to return if attribute is not found
+     * 
+     * @return mixed
      */
-    public function getAttribute($name)
+    public function getAttribute($name, $default_value = null)
     {
-        return $this->attributes[$name] ?? null;
+        return $this->attributes[$name] ?? $default_value;
     }
 
     /**
@@ -183,9 +222,9 @@ class Request implements RequestInterface
      */
     public function url()
     {
-        $scheme = $this->server->get('request_scheme');
-        $host = $this->server->get('http_host');
-        $uri = $this->server->get('request_uri');
+        $scheme = $this->_server->get('request_scheme');
+        $host = $this->_server->get('http_host');
+        $uri = $this->_server->get('request_uri');
 
         return new Uri($scheme . '://' . $host . $uri);
     }
