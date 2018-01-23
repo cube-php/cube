@@ -26,10 +26,16 @@ class File
      * 
      * @param string    $path File path
      * @param bool      $create_new  Whether to create new file if not exists
+     * @param bool      $throw_exists_exception Whether to throw an exception if file already exists
      */
-    public function __construct($path, $create_new = false)
+    public function __construct($path, $create_new = false, $throw_exists_exception = false)
     {   
         $this->_path = $path;
+        
+        if(file_exists($this->_path) && $throw_exists_exception) {
+            throw new FileSystemException
+                ('File at "' . $this->_path . ' already exists"');
+        }
         
         $modes = $create_new ? 'w+' : 'rw';
         $file = @fopen($path, $modes);
