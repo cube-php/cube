@@ -252,6 +252,20 @@ class Response implements ResponseInterface
     }
 
     /**
+     * Redirect response
+     *
+     * @param string $path Path to redirect to
+     * @param array $query_params Query to attach to path
+     * @param bool $external_location Set whether the path redirecting to is an external path
+     * @return self
+     */
+    public function redirect($path, array $query_params = [], $external_location = false)
+    {
+        $redirect_location = $external_location ? $path : url($path, $query_params);
+        return $this->withHeader('location', $redirect_location)->write(null);
+    }
+
+    /**
      * Render view
      * 
      * @param string $path Path of view to render
