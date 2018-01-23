@@ -8,6 +8,14 @@ interface RequestInterface
 
     public function getAttribute($name);
 
+    public function getBody();
+
+    public function getParsedBody();
+
+    public function getHeaders();
+
+    public function getServer();
+
     public function inputs();
 
     public function input($name);
