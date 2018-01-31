@@ -106,6 +106,18 @@ class DBQueryBuilder
     }
 
     /**
+     * And LIKE statement
+     *
+     * @param string $field
+     * @param string $keyword
+     * @return self
+     */
+    public function andLike($field, $keyword)
+    {
+        return $this->like('AND', $field, $keyword);
+    }
+
+    /**
      * AND NOT IN statement
      * 
      * @param string $field Field name
@@ -203,6 +215,18 @@ class DBQueryBuilder
     }
 
     /**
+     * Or LIKE statement
+     *
+     * @param string $field
+     * @param string $keyword
+     * @return void
+     */
+    public function orLike($field, $keyword)
+    {
+        return $this->like('OR', $field, $keyword);
+    }
+
+    /**
      * OR NOT IN statememnt
      * 
      * @param string $field Field name
@@ -225,6 +249,17 @@ class DBQueryBuilder
     public function orNotNull($field)
     {
         return $this->notNull('OR', $field);
+    }
+
+    /**
+     * Or is null
+     *
+     * @param string $field
+     * @return self
+     */
+    public function orNull($field)
+    {
+        return $this->null('OR', $field);
     }
 
     /**
@@ -292,6 +327,18 @@ class DBQueryBuilder
     }
 
     /**
+     * Where like statement
+     *
+     * @param string $field
+     * @param mixed $keyword
+     * @return self
+     */
+    public function whereLike($field, $keyword)
+    {
+        return $this->like('WHERE', $field, $keyword);
+    }
+
+    /**
      * Where not in
      * 
      * @param string $field Field name
@@ -325,7 +372,7 @@ class DBQueryBuilder
      */
     public function whereNull($field)
     {
-        
+        $this->null('WHERE', $field);
     }
 
     /**
@@ -392,6 +439,21 @@ class DBQueryBuilder
     {
         $this->joinSql(null, $key, $field, 'IN', null);
         return $this->parseInGroup($group);
+    }
+
+    /**
+     * SQL like statement initiator
+     *
+     * @param string $key
+     * @param string $field
+     * @param mixed $key
+     * @return self
+     */
+    protected function like($key, $field, $keyword)
+    {
+        $filteredKey = $this->addParam("%{$keyword}%");
+        $this->joinSql(null, $key, $field, 'LIKE', $filteredKey);
+        return $this;
     }
 
     /**
