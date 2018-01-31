@@ -141,6 +141,56 @@ class Model
     }
 
     /**
+     * Get first entry based on specified field
+     * Or primary key if field is not specified
+     *
+     * @param string|null $field
+     * @return object|null
+     */
+    public static function getFirst($field = null)
+    {
+        return DB::table(static::$schema)
+                ->select(static::$fields)
+                ->getFirst(($field ?? static::$primary_key));
+    }
+
+    /**
+     * Get last entry based on specified field
+     * Or primary key if field is not specified
+     *
+     * @param string|null $field
+     * @return object|null
+     */
+    public static function getLast($field = null)
+    {
+        return DB::table(static::$schema)
+                ->select(static::$fields)
+                ->getLast(($field ?? static::$primary_key));
+    }
+
+    /**
+     * Search for matching fields
+     *
+     * @param string $field Field to search
+     * @param int|null $offset Offset
+     * @param int|null $limit Limit
+     * @return object[]|null
+     */
+    public static function search($field, $keyword, $limit = null, $offset = null)
+    {
+        $query = DB::table(static::$schema)
+                ->select(static::$fields)
+                ->whereLike($field, $keyword);
+
+        if(!$limit) {
+            return $query->fetchAll();
+        }
+
+        $offset = $offset ?? 0;
+        return $query->fetch($offset, $limit);
+    }
+
+    /**
      * Parse fields to readable
      * 
      * @return string
