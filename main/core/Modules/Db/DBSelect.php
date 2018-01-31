@@ -84,6 +84,30 @@ class DBSelect extends DBQueryBuilder
     }
 
     /**
+     * Get first row based on specified field
+     *
+     * @param string $field Database table field
+     * @return object|null
+     */
+    public function getFirst($field)
+    {
+        $this->orderByRaw("{$field} DESC");
+        return $this->fetchOne();
+    }
+
+    /**
+     * Get last row based on on specified field
+     *
+     * @param string $field Database table field
+     * @return object|null
+     */
+    public function getLast($field)
+    {
+        $this->orderByRaw("{$field} ASC");
+        return $this->fetchOne();
+    }
+
+    /**
      * Group query
      * 
      * @param string $field Field name
