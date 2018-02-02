@@ -20,7 +20,7 @@ class Folder
     public static function create($dir, $name, $chmod = '0777', $silent = false){
 
         $folder_path = $dir . DS . $name;
-        $exists = static::exists($dir);
+        $exists = static::exists($folder_path);
 
         if($exists && !$silent) {
             throw new FileSystemException
