@@ -10,15 +10,22 @@ Upon download, In the root directory, there are 6 directories and 5 files.
 **/app**: the app directory is where all your code and logic goes.
 The app directory has 6 sub-folders
 1. **controllers**: This folder contains all route controllers
+
 2. **core:** This folder contains 2 files. The **routes.php** file which should contain all the app's routes and the bootstrap file. Which can contain pretty much any other function/method you want to run on runtime.
+
 3. **helpers**: All the files here are automatically included for use on runtime. You can add all other custom methods here.
+
 4. **providers**: I see providers to be the link up between the model and the controller, since cube is a simple MVC framework, the provider should contain other logic classes that don't feel suitable in the controller (eg. re-usable methods/classes).
+
 5. **views**: This directory should contain all the view files. Using the ```dwoo\dwoo``` templating engine for cube.
 
 **/config**: The config directory has 4 files in which 2 are required and the other 2 are option.
 1. **app.php**: This contains the app's basic configuration
+
 2. **auth.php**: This is an option configuration file, It will be required when you want to use the authentication module
+
 3. **database.php**: This contains the database configuration
+
 4. **middleware.php**: This works, but need upgrades. Contains all the middlewares you want loaded on request.
 
 **/main**: This contains all cube's code.
