@@ -70,11 +70,15 @@ class Model
      * 
      * @return array|null
      */
-    public static function findAllBy($field, $value, $params)
+    public static function findAllBy($field, $value, $params = [])
     {
         $query = DB::table(static::$schema)
                  ->select(static::$fields)
                  ->where($field, $value);
+
+        if(!$params) {
+            return call_user_func([$query, 'fetchAll']);
+        }
 
         return call_user_func_array([$query, 'fetch'], $params);
     }
