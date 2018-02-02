@@ -57,13 +57,16 @@ $router->get('/', 'MyController.index');
 I assumed that you already have class ```App\Controllers\MyController``` created and it has method ```index```
 So we assigned a route which will be listened to whenever the index of our app is sent a request via the "GET" request method.
 You might want to assign a different controller controller when visited with any other request method eg. Post. 
+
 ```php
 $router->post('/', 'MyController.indexPost');
 ```
+
 But mostly we'd want same content displayed on the index via any request method right, We can:
 ```php
 $router->any('/', 'MyController.index');
 ```
+
 **Grouping routes**
 To keep things clean, the ```Router::group()``` method is added so your routes can be grouped. Let's say you want to assign routes for users. We can:
 ```php
@@ -100,7 +103,11 @@ We can enforce only integer values by doing:
 $router->get('/users/{*int:userid}', 'UserController.getUser');
 ```
 Other methods available are:
+
 **{\*string:name}**: Accept only strings values for attribute
+
 **{\*bool:name}**: Accept only true or false as value for attribute
+
 You can as well use custom values:
+
 **{value1|value2|value3:name}** If the attribute did not fall within these values, it'll return a page not found error
