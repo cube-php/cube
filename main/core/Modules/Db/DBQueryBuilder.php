@@ -40,13 +40,7 @@ class DBQueryBuilder
      * @var string
      */
     protected $parameters = array();
-
-    public function __destruct()
-    {
-        //echo $this->sql_query;
-        //$this->getSqlQuery();
-    }
-
+    
     /**
      * Class to string
      * 
