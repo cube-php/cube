@@ -118,6 +118,7 @@ class Cli
 
             case static::COMMAND_PROVIDER:
                 $this->buildProvider($action);
+                break;
         }
     }
 
@@ -218,6 +219,12 @@ class Cli
         }
     }
 
+    /**
+     * Add extension to filename
+     *
+     * @param string $name
+     * @return string
+     */
     public function addExt($name)
     {
         return "{$name}.php";
