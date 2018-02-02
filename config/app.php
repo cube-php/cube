@@ -36,6 +36,6 @@ return array(
      * 
      * @var Boolean
      */
-    'force_https' => true
+    'force_https' => false
 
 );
