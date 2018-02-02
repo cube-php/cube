@@ -8,7 +8,9 @@ Set up is very easy.
 Upon download, In the root directory, there are 6 directories and 5 files.
 
 **/app**: the app directory is where all your code and logic goes.
+
 The app directory has 6 sub-folders
+
 1. **controllers**: This folder contains all route controllers
 
 2. **core:** This folder contains 2 files. The **routes.php** file which should contain all the app's routes and the bootstrap file. Which can contain pretty much any other function/method you want to run on runtime.
@@ -19,7 +21,9 @@ The app directory has 6 sub-folders
 
 5. **views**: This directory should contain all the view files. Using the ```dwoo\dwoo``` templating engine for cube.
 
-**/config**: The config directory has 4 files in which 2 are required and the other 2 are option.
+
+**/config**: The config directory has 4 files in which 2 are required and the other 2 are optional.
+
 1. **app.php**: This contains the app's basic configuration
 
 2. **auth.php**: This is an option configuration file, It will be required when you want to use the authentication module
@@ -31,6 +35,7 @@ The app directory has 6 sub-folders
 **/main**: This contains all cube's code.
 
 **/storage**: This should contain all the assets required by your app.
+
 **The assets you want public available (such as: css, javascript, images, etc) should be in ```storage/public``` directory**
 
 **/vendor**: Composer installed modules
