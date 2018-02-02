@@ -3,13 +3,19 @@
 namespace App\Core\Modules\Db;
 
 use PDO;
-
 use PDOStatement;
+use PDOException;
 
 use App\Core\App;
 
 class DBConnection
 {
+    /**
+     * Set whether database has initiated connection
+     *
+     * @var boolean
+     */
+    private static $_connected = false;
 
     /**
      * Database instance
@@ -56,7 +62,14 @@ class DBConnection
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         );
         
-        $this->connection = new PDO($dsn, $username, $password, $opts);
+        try {
+
+            $this->connection = new PDO($dsn, $username, $password, $opts);
+
+        } catch (PDOException $e) {
+
+            //Message should be logged
+        }
     }
 
     /**
@@ -151,5 +164,15 @@ class DBConnection
 
         $stmt->execute();
         return $stmt;
+    }
+
+    /**
+     * Returns whether database is connected
+     *
+     * @return boolean
+     */
+    public static function isConnected()
+    {
+        return static::$_connected;
     }
 }
