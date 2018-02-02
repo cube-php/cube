@@ -3,9 +3,16 @@
 namespace App\Core\Modules;
 
 use App\Core\Modules\DB;
+use App\Core\Modules\Db\DBConnection;
 
 class SessionManager
 {
+    /**
+     * Set if other session manager activities can proceed
+     *
+     * @var boolean
+     */
+    private static $can_run = false;
 
     /**
      * Class constructor
@@ -100,7 +107,6 @@ class SessionManager
      */
     public function write($session_id, $session_data)
     {
-
         $query = DB::table('sessions')
                     ->replace([
                         'sess_id' => $session_id,
@@ -112,16 +118,33 @@ class SessionManager
     }
 
     /**
+     * Returns if session manager is ready
+     *
+     * @return boolean
+     */
+    public static function isReady()
+    {
+        return static::$can_run;
+    }
+
+    /**
      * Build session schema
      * 
      * For session handler
      */
     private function up()
     {
+
+        if(!DBConnection::isConnected()) {
+            return false;
+        }
+    
         DB::table('sessions')->create(function($table) {
             $table->field('sess_id')->varchar()->primary();
             $table->field('sess_data')->text();
             $table->field('last_update')->datetime();
         });
+
+        static::$can_run = true;
     }
 }
