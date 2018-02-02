@@ -299,11 +299,11 @@ class App
         $url  = $this->_request->url()->getUrlWithoutScheme();
         $rdr_url = $secure_scheme . $url;
         
-        $response = new Response;
-        $response
+        $response = (new Response())
             ->withStatusCode(301)
             ->withHeader('location', $rdr_url)
             ->write(null);
+
         exit;
     }
 
