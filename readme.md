@@ -43,7 +43,8 @@ The app directory has 6 sub-folders
 **/webroot**: As the name denotes, it typically receives and handles requests, sends requests and logic to the appropraite channels.
 
 #####Files
-**.env**: This should contain key and value pairs (Enviroment variables) and are available system wide with the ```php Env::get('key')``` method
+**.env**: This should contain key and value pairs (Enviroment variables) and are available system wide with the ``` Env::get('key')``` method
+
 **cube.php**: This is the Command-Line-Interface helper to run some specific tasks faster. Like creating a model, a controller and a provider.
 
 ###Adding Routes
