@@ -48,6 +48,17 @@ class Input implements InputInterface
     }
 
     /**
+     * Check if input's value matches specified value
+     *
+     * @param mixed $value
+     * @return boolean
+     */
+    public function equals($value)
+    {
+        return $this->value() == $value;
+    }
+
+    /**
      * Check if $value is email
      * 
      * @return bool
@@ -123,6 +134,16 @@ class Input implements InputInterface
         }
 
         return new InputValidator($this->key, $this->value);
+    }
+
+    /**
+     * Return input's value as an integer
+     *
+     * @return int
+     */
+    public function toInt()
+    {
+        return (int) $this->value();
     }
 
     /**
