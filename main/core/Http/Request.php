@@ -51,7 +51,7 @@ class Request implements RequestInterface
     public function __construct()
     {
         $this->_server = new Server;
-        $this->_heders = new Headers;
+        $this->_headers = new Headers;
     }
 
     /**
