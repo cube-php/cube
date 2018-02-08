@@ -49,18 +49,6 @@ class File
     }
 
     /**
-     * Class destructor
-     * 
-     * Close file resource on destruct
-     * 
-     * @return void
-     */
-    public function __destruct()
-    {
-        
-    }
-
-    /**
      * Change file mode
      * 
      * @param int $mode New file mode
@@ -105,6 +93,16 @@ class File
     }
 
     /**
+     * Read file
+     *
+     * @return int
+     */
+    public function read()
+    {
+        return readfile($this->_path);
+    }
+
+    /**
      * Rename file
      * 
      * @return string New link
@@ -138,6 +136,17 @@ class File
     {
         fwrite($this->_file, $content);
         return $this;
+    }
+
+    /**
+     * Make path from arguments
+     *
+     * @param string ...$args
+     * @return string
+     */
+    public static function joinPath(...$args)
+    {
+        return implode(DS, $args);
     }
 
     /**
