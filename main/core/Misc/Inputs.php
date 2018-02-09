@@ -33,10 +33,8 @@ class Inputs extends Collection
         $vars = explode('.', trim($key));
         $value = $items = $this->all();
 
-        foreach($vars as $var)
-        {
+        foreach($vars as $var) {
             $value = $value[$var] ?? null;
-            if($value === null) return null;
         }
 
         if(!is_array($value)) return new Input($value, $var);
