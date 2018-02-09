@@ -72,7 +72,11 @@ class InputValidator
     }
 
     /**
-     * 
+     * Callung anonymous methods
+     *
+     * @param string $name Method name
+     * @param string $args Arguments
+     * @return self
      */
     public function __call($name, $args)
     {
@@ -92,9 +96,9 @@ class InputValidator
     /**
      * Extend validator
      * 
-     * @param string $method_name Validator name
+     * @param array $methods Methods to extend the validator
      * 
-     * @return
+     * @return void
      */
     public static function extend($methods)
     {
