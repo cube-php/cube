@@ -138,11 +138,19 @@ class InputValidator
     /**
      * Starts/refreshes input validator
      * 
+     * @param array $extensions Callback functions to extend validator
+     * 
      * @return void
      */
-    public static function init()
+    public static function init($extensions = [])
     {
         static::$_validation_errors_msgs = static::$_validation_errors = [];
+
+        #If there are any extensions call the extend method
+        #And pass in the extensions
+        if($extensions) {
+            static::extend($extensions);
+        }
     }
 
     /**
@@ -335,5 +343,7 @@ class InputValidator
 
         static::$_validation_errors_msgs[] = $error;
         static::$_validation_errors[$this->_id][] = $error;
+
+        return $this;
     }
 }
