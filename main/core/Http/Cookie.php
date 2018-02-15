@@ -19,7 +19,7 @@ class Cookie
      * 
      * @param string $name Cookie name
      * @param string $value Cookie value
-     * @param string $expires Cookie duration
+     * @param float|int $expires Cookie duration
      * 
      * @return void
      */
@@ -45,7 +45,7 @@ class Cookie
      * Return cookie's value
      *
      * @param string $name Cookie name
-     * @return void
+     * @return mixed|null
      */
     public static function get($name)
     {
@@ -66,6 +66,5 @@ class Cookie
     public static function remove($name)
     {
         setcookie($name, null, time() - 300);
-        parent::remove($name);
     }
 }
