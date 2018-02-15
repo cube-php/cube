@@ -7,6 +7,10 @@ interface InputInterface
 
     public function __toString();
 
+    public function equals($value);
+
+    public function equalsIgnoreCase($value);
+
     public function isEmail();
 
     public function isEmpty();
