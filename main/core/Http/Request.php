@@ -26,21 +26,21 @@ class Request implements RequestInterface
     /**
      * Server
      * 
-     * @var \App\Core\Http\Server
+     * @var Server
      */
     private $_server;
 
     /**
      * Header
      * 
-     * @var \App\Core\Http\Headers
+     * @var Headers
      */
     private $_headers;
 
     /**
      * Middlewares
      * 
-     * @var string]
+     * @var string[]
      */
     public $_wares = array();
 
@@ -50,8 +50,8 @@ class Request implements RequestInterface
      */
     public function __construct()
     {
-        $this->_server = new Server;
-        $this->_headers = new Headers;
+        $this->_server = new Server();
+        $this->_headers = new Headers();
     }
 
     /**
@@ -60,7 +60,7 @@ class Request implements RequestInterface
      * @param string $method Method name
      * @param string[] $args Method arguments
      * 
-     * @return void
+     * @return callable
      */
     public function __call($method, $args)
     {
@@ -78,6 +78,8 @@ class Request implements RequestInterface
      * Getter
      * 
      * @param string $name Getter name
+     *
+     * @return mixed
      */
     public function __get($name)
     {
@@ -118,7 +120,7 @@ class Request implements RequestInterface
     /**
      * Return request server variables
      *
-     * @return App\Core\Http\Server;
+     * @return Server;
      */
     public function getServer()
     {
@@ -127,8 +129,10 @@ class Request implements RequestInterface
 
     /**
      * Get uploaded files
-     * 
-     * @return \App\Core\Http\UploadedFile
+     *
+     * @param string $index Uploaded file name path
+     *
+     * @return UploadedFile|array
      */
     public function getUploadedFiles($index = null)
     {
@@ -161,7 +165,8 @@ class Request implements RequestInterface
 
     /**
      * Get request attribute
-     * 
+     *
+     * @param string $name Attribute name
      * @param mixed $default_value Otherwise value to return if attribute is not found
      * 
      * @return mixed
@@ -173,6 +178,8 @@ class Request implements RequestInterface
 
     /**
      * Check if input field exists
+     *
+     * @param string $name Input name
      * 
      * @return bool
      */
@@ -183,7 +190,9 @@ class Request implements RequestInterface
 
     /**
      * Get input
-     * 
+     *
+     * @param string $name Input name
+     *
      * @return \App\Core\Misc\Input
      */
     public function input($name)
@@ -194,7 +203,7 @@ class Request implements RequestInterface
     /**
      * Get all inputs sent in the request
      * 
-     * @return App\Core\Misc\Input
+     * @return Inputs
      */
     public function inputs()
     {
@@ -206,13 +215,14 @@ class Request implements RequestInterface
      * Add request attributes to space
      * 
      * @param string $name Attribute field name
-     * @param mixed[] $value Atrribute field value
+     * @param mixed[] $value Attribute field value
      * 
      * @return self
      */
     public function setAttribute($name, $value)
     {
         $this->attributes[$name] = $value;
+        return $this;
     }
 
     /**
@@ -232,7 +242,9 @@ class Request implements RequestInterface
     /**
      * Undocumented function
      *
-     * @return void
+     * @param string $middleware Middleware name
+     *
+     * @return self
      * 
      * @throws \InvalidArgumentException
      */
