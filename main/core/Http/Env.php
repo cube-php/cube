@@ -15,10 +15,10 @@ class Env
     private static $_vars = array();
 
     /**
-     * Get Enviroment Variable
+     * Get Environment Variable
      *
      * @param [type] $name
-     * @return void
+     * @return mixed|null
      */
     public static function get($name)
     {
@@ -29,7 +29,7 @@ class Env
     }
 
     /**
-     * Load up all enviroment variables
+     * Load up all environment variables
      * 
      * @return string[]
      */
