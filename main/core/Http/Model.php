@@ -86,7 +86,8 @@ class Model
     /**
      * Fetch data using passed $field value
      * 
-     * @param string|int $primary_key
+     * @param string $field Field name
+     * @param mixed $value Field value
      * 
      * @return array|null
      */
