@@ -59,6 +59,20 @@ class Input implements InputInterface
     }
 
     /**
+     * Check if input's value matches specified value disregarding case
+     *
+     * @param [type] $value
+     * @return void
+     */
+    public function equalsIgnoreCase($value)
+    {
+        $input_value = strtolower($this->value());
+        $value = strtoupper($this->value());
+
+        return $input_value == $value;
+    }
+
+    /**
      * Check if $value is email
      * 
      * @return bool
