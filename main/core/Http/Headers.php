@@ -35,7 +35,7 @@ class Headers extends Collection
      * 
      * @param string $content Header conetn
      * 
-     * @return
+     * @return void
      */
     public function raw($content)
     {
@@ -66,9 +66,9 @@ class Headers extends Collection
      */
     private function removeAll()
     {
-        foreach(headers_list() as $header)
+        foreach(headers_list() as $header_name)
         {    
-            $header = $this->getHeaderName($header);
+            $header = $this->getHeaderName($header_name);
         }
     }
 
