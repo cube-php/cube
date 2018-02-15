@@ -54,7 +54,7 @@ class DBTable
      * 
      * @param string $structure Structure from \App\Core\Modules\DB\DBSchemaBuilder
      * 
-     * @return string[] all fields
+     * @return void
      */
     public function addField($structure)
     {
@@ -71,7 +71,7 @@ class DBTable
      * 
      * @param string $field Field name
      * 
-     * @return
+     * @return int
      */
     public function avg($field)
     {
@@ -93,7 +93,7 @@ class DBTable
      * 
      * @param callable $callback
      * 
-     * @return DB
+     * @return self
      */
     public function create(callable $callback)
     {
@@ -108,7 +108,7 @@ class DBTable
     /**
      * Delete from table
      * 
-     * @return \App\Core\Modules\DB\DBDelete
+     * @return DBDelete
      */
     public function delete()
     {
@@ -174,7 +174,7 @@ class DBTable
     /**
      * Check if table has field
      * 
-     * @param string $field Field name
+     * @param string $name Field name
      * 
      * @return bool
      */
@@ -262,7 +262,7 @@ class DBTable
     /**
      * Select from table
      * 
-     * @return \App\Core\Modules\DB\DBSelect
+     * @return DBSelect
      */
     public function select(array $fields)
     {
@@ -271,8 +271,11 @@ class DBTable
 
     /**
      * Raw select statement
-     * 
-     * @return QueryBuilder
+     *
+     * @param string $statement Sql statement
+     * @param string $param Sql parameters
+     *
+     * @return DBQueryBuilder
      */
     public function selectRaw($statement, $params = [])
     {
@@ -285,7 +288,7 @@ class DBTable
      * 
      * @param string $field Field name
      * 
-     * @return
+     * @return int
      */
     public function sum($field)
     {
@@ -309,7 +312,7 @@ class DBTable
      * 
      * @param string[] $entry New update entry
      * 
-     * @return \App\Core\Modules\DB\DBUpdate
+     * @return int Affected row count
      */
     public function update(array $entry)
     {
