@@ -9,6 +9,7 @@ return array(
     'Dwoo\\' => array($vendorDir . '/dwoo/dwoo/lib/Dwoo'),
     'App\\Providers\\' => array($baseDir . '/app/providers'),
     'App\\Models\\' => array($baseDir . '/app/models'),
+    'App\\Exceptions\\' => array($baseDir . '/app/exceptions'),
     'App\\Core\\' => array($baseDir . '/main/core'),
     'App\\Controllers\\' => array($baseDir . '/app/controllers'),
 );

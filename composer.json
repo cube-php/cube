@@ -6,7 +6,7 @@
             "App\\Controllers\\": "app/controllers",
             "App\\Models\\": "app/models",
             "App\\Providers\\": "app/providers",
-            "App\\Exceptions": "app/exceptions",
+            "App\\Exceptions\\": "app/exceptions",
             "App\\Core\\": "main/core"
         }
     },
