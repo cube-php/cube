@@ -146,6 +146,37 @@ class Model
     }
 
     /**
+     * Return the number of rows on table
+     *
+     * @return int
+     */
+    public static function getCount()
+    {
+        $key = static::$primary_key;
+        return DB::table(static::$schema)
+                ->select(['count('. $key .') tcount'])
+                ->fetchOne()
+                ->tcount;
+    }
+
+    /**
+     * Return the number of rows on table based on specified field and value
+     *
+     * @param string $field Schema column name
+     * @param mixed $value Value
+     * @return int
+     */
+    public static function getCountBy($field, $value)
+    {
+        $key = static::$primary_key;
+        return DB::table(static::$schema)
+                ->select(['count('. $key .') tcount'])
+                ->where($field, $value)
+                ->fetchOne()
+                ->tcount;
+    }
+
+    /**
      * Get first entry based on specified field
      * Or primary key if field is not specified
      *
