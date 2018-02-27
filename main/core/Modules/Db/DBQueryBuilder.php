@@ -5,10 +5,8 @@ namespace App\Core\Modules\Db;
 use InvalidArgumentException;
 
 use App\Core\Modules\DB;
-
-use App\Core\Modules\Db\DBQueryGroup;
-
 use App\Core\Modules\Db\DBOrWhere;
+use App\Core\Modules\Db\DBQueryGroup;
 
 class DBQueryBuilder
 {
@@ -367,6 +365,7 @@ class DBQueryBuilder
     public function whereNull($field)
     {
         $this->null('WHERE', $field);
+        return $this;
     }
 
     /**
@@ -379,6 +378,7 @@ class DBQueryBuilder
     {
         $this->joinSql($statement);
         $this->bindParam($params);
+        return $this;
     }
 
     /**

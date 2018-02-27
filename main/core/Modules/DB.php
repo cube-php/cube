@@ -2,9 +2,8 @@
 
 namespace App\Core\Modules;
 
-use App\Core\Modules\Db\DBConnection;
-
 use App\Core\Modules\Db\DBTable;
+use App\Core\Modules\Db\DBConnection;
 
 class DB
 {

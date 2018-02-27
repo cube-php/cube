@@ -3,7 +3,6 @@
 namespace App\Core\Modules\Db;
 
 use App\Core\Modules\DB;
-
 use App\Core\Modules\Db\DbQueryBuilder;
 
 class DBDelete extends DBQueryBuilder

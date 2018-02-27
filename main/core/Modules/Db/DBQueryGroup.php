@@ -10,14 +10,14 @@ class DBQueryGroup extends DBQueryBuilder
     /**
      * Builder
      * 
-     * @var \App\Core\Modules\DB\DBQueryBuilder
+     * @var DBQueryBuilder
      */
     private $_builder;
 
     /**
      * Class constructor
      * 
-     * @param \App\Core\Modules\DB\DBQueryBuilder $builder
+     * @param DBQueryBuilder $builder
      */
     public function __construct(DBQueryBuilder $builder)
     {

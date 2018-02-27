@@ -7,19 +7,12 @@ use InvalidArgumentException;
 use App\Core\Modules\DB;
 
 use App\Core\Modules\Db\DBDelete;
-
 use App\Core\Modules\Db\DBInsert;
-
 use App\Core\Modules\Db\DBReplace;
-
 use App\Core\Modules\Db\DBSelect;
-
 use App\Core\Modules\Db\DBUpdate;
-
 use App\Core\Modules\Db\DBSchemaBuilder;
-
 use App\Core\Modules\Db\DBTableBuilder;
-
 use App\Core\Modules\Db\DBWordConstruct;
 
 class DBTable
@@ -256,7 +249,7 @@ class DBTable
      */
     public function rename($new_name)
     {
-
+        return DB::statement(DBWordConstruct::renameTable($this->name, $new_name));
     }
 
     /**

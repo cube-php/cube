@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Modules\DB;
+namespace App\Core\Modules\Db;
 
 class DBWordConstruct
 {
@@ -66,6 +66,18 @@ class DBWordConstruct
     public static function dropTable($table_name)
     {
         return 'DROP TABLE ' . $table_name;
+    }
+
+    /**
+     * Rename table statement
+     *
+     * @param string $old_name Old table name
+     * @param string $new_name New name for table
+     * @return string
+     */
+    public static function renameTable($old_name, $new_name)
+    {
+        return 'RENAME TABLE ' . $old_name . ' to ' . $new_name;
     }
 
     /**

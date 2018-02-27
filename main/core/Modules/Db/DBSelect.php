@@ -5,7 +5,6 @@ namespace App\Core\Modules\Db;
 use InvalidArgumentException;
 
 use App\Core\Modules\DB;
-
 use App\Core\Modules\Db\DBQueryBuilder;
 
 class DBSelect extends DBQueryBuilder
@@ -43,7 +42,7 @@ class DBSelect extends DBQueryBuilder
      * @param int $offset
      * @param int $limit
      * 
-     * @return array|null results
+     * @return object|null results
      */
     public function fetch($offset, $limit = null)
     {
@@ -65,7 +64,7 @@ class DBSelect extends DBQueryBuilder
     /**
      * Fetch all results
      * 
-     * @return array|null result
+     * @return object|null result
      */
     public function fetchAll()
     {
@@ -75,7 +74,7 @@ class DBSelect extends DBQueryBuilder
     /**
      * Fetch just one result
      * 
-     * @return array|null result
+     * @return object|null result
      */
     public function fetchOne()
     {
@@ -203,7 +202,7 @@ class DBSelect extends DBQueryBuilder
     /**
      * Union stateent
      * 
-     * @param \App\Core\Modules\DB\DBQueryBuilder $query Query
+     * @param DBQueryBuilder $query Query
      * 
      * @return self
      */
@@ -219,7 +218,7 @@ class DBSelect extends DBQueryBuilder
     /**
      * UnionAll statement
      * 
-     * @param \App\Core\Modules\DB\DBQueryBuilder $query
+     * @param DBQueryBuilder $query
      * 
      * @return self
      */
@@ -235,7 +234,7 @@ class DBSelect extends DBQueryBuilder
     /**
      * Finish query
      * 
-     * @return array|null
+     * @return object|null
      */
     private function get()
     {

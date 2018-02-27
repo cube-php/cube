@@ -10,7 +10,7 @@ class DBOrWhere
     /**
      * Builder
      * 
-     * @var \App\Core\Modules\DB\DBQueryBuilder
+     * @var DBQueryBuilder
      */
     private $_builder;
 
@@ -31,7 +31,7 @@ class DBOrWhere
     /**
      * Class constructor
      * 
-     * @param \App\Core\Modules\DB\DBQueryBuilder $builder Query Builder
+     * @param DBQueryBuilder $builder Query Builder
      */
     public function __construct(DBQueryBuilder $builder)
     {
