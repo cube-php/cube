@@ -139,7 +139,7 @@ class Cli
             static::respond('creating controller: ' . $filename);
             $file = new File($model_path, true, true);
             $file->write($refined_template);
-            static::respond('created controller' . $filename);
+            static::respond('created controller: ' . $filename);
         }
         catch(FileSystemException $e) {
             static::respond($e->getMessage());
@@ -164,7 +164,7 @@ class Cli
             static::respond('creating model: ' . $filename);
             $file = new File($model_path, true, true);
             $file->write($refined_template);
-            static::respond('created model' . $filename);
+            static::respond('created model: ' . $filename);
         }
         catch(FileSystemException $e) {
             static::respond($e->getMessage());
@@ -189,7 +189,7 @@ class Cli
             static::respond('creating provider: ' . $filename);
             $file = new File($model_path, true, true);
             $file->write($refined_template);
-            static::respond('created provider' . $filename);
+            static::respond('created provider: ' . $filename);
         }
         catch(FileSystemException $e) {
             static::respond($e->getMessage());
