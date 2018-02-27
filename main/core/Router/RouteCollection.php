@@ -18,21 +18,21 @@ class RouteCollection
     /**
      * Routes collection
      * 
-     * @var \App\Core\Tools\Route[]
+     * @var \Route[]
      */
     private static $routes = array();
 
     /**
      * Routes on request method
      * 
-     * @var \App\Core\Tools\Route[]
+     * @var Route[]
      */
     private static $attached_routes = array();
 
     /**
      * Request interface
      * 
-     * @var \App\Core\Http\Request
+     * @var Request
      */
     private $request;
 
@@ -47,7 +47,7 @@ class RouteCollection
     /**
      * Attach new route to collection
      * 
-     * @param $route \App\Core\Tools\Route
+     * @param Route $route Route to attach
      */
     public static function attachRoute(Route $route)
     {
@@ -126,6 +126,12 @@ class RouteCollection
         );
     }
 
+    /**
+     * Trim route path
+     *
+     * @param string $path
+     * @return string
+     */
     public function trimPath($path)
     {
         $path = preg_replace('#([\/]{1,})#', '/', $path);

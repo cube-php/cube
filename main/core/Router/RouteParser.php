@@ -5,7 +5,6 @@ namespace App\Core\Router;
 use InvalidArgumentException;
 
 use App\Core\Router\Route;
-
 use App\Core\Router\RouteCollection;
 
 class RouteParser

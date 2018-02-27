@@ -230,7 +230,7 @@ class Route
     /**
      * Return the regexp-fied route path
      * 
-     * @return \App\Core\Tools\RouteParser
+     * @return RouteParser
      */
     public function path()
     {
