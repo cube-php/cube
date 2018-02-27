@@ -35,19 +35,21 @@ class Env
      */
     private static function load()
     {
-        if(!static::$_vars) {
-            $env_file = APP_PATH . DS . '.env';
-            
-            if(!file_exists($env_file)) {
-                $file = new File($env_file, true);
-                $file->write('HELLO_WORLD="hello world"');
-            }
-
-            if(!static::$_vars) {
-                static::$_vars = parse_ini_file($env_file);
-            }
-
+        if(static::$_vars) {
             return static::$_vars;
         }
+
+        $env_file = APP_PATH . DS . '.env';
+
+        if(!file_exists($env_file)) {
+            $file = new File($env_file, true);
+            $file->write('HELLO_WORLD="hello world"');
+        }
+
+        if(!static::$_vars) {
+            static::$_vars = parse_ini_file($env_file);
+        }
+
+        return static::$_vars;
     }
 }
