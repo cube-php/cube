@@ -56,7 +56,9 @@ class InputValidator
         'url' => '{input} is required to be a valid url',
         'number' => '{input} is required to be a number',
         'required' => '{input} is required',
-        'equals' => '{input} must be equal to {value}'
+        'equals' => '{input} must be equal to {value}',
+        'greater_than' => '{input} must be greater than {value}',
+        'lesser_than' => '{input} must be lesser than {value}'
     );
 
     /**
@@ -235,6 +237,48 @@ class InputValidator
     public function getValue()
     {
         return $this->_input;
+    }
+
+    /**
+     * Greater than validator
+     * check if specified value is greater than input's value
+     *
+     * @param mixed $value
+     * @param string|null $msg
+     * @return self
+     */
+    public function greaterThan($value, $msg = null)
+    {
+        $msg = static::getMessage('greater_than', $msg);
+
+        if($this->getValue() > $value) {
+            $this->attachError($msg, [
+                'value' => $value
+            ]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Lesser than validator
+     * check if specified value is lesser than input's value
+     *
+     * @param mixed $value
+     * @param string|null $msg
+     * @return self
+     */
+    public function lesserThan($value, $msg = null)
+    {
+        $msg = static::getMessage('lesser_than', $msg);
+
+        if($this->getValue() < $value) {
+            $this->attachError($msg, [
+                'value' => $value
+            ]);
+        }
+
+        return $this;
     }
     
     /**
