@@ -3,10 +3,8 @@
 namespace App\Core\Misc;
 
 use InvalidArgumentException;
-
-use App\Core\Interfaces\InputInterface;
-
 use App\Core\Misc\InputValidator;
+use App\Core\Interfaces\InputInterface;
 
 class Input implements InputInterface
 {
@@ -67,9 +65,9 @@ class Input implements InputInterface
     public function equalsIgnoreCase($value)
     {
         $input_value = strtolower($this->value());
-        $value = strtoupper($this->value());
+        $value = strtolower($this->value());
 
-        return $input_value == $value;
+        return $input_value === $value;
     }
 
     /**
@@ -137,7 +135,7 @@ class Input implements InputInterface
     /**
      * Create input's validator instance
      * 
-     * @return \App\Core\Misc\InputValidator
+     * @return InputValidator
      */
     public function validate()
     {
