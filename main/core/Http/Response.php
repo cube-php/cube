@@ -95,14 +95,21 @@ class Response implements ResponseInterface
      * 
      * @var \App\Core\Http\Headers;
      */
-    private $header;
+    private $_header;
 
     /**
      * Response body content
      * 
      * @var string
      */
-    private $body = '';
+    private $_body = '';
+
+    /**
+     * Set whether headers have been output
+     * 
+     * @var bool
+     */
+    private $_has_render_headers = false;
 
     /**
      * View data
@@ -117,7 +124,7 @@ class Response implements ResponseInterface
      */
     public function __construct()
     {
-        $this->header = new Headers;
+        $this->_header = new Headers;
     }
 
     /**
@@ -140,7 +147,7 @@ class Response implements ResponseInterface
      */
     public function __toString()
     {
-        return $this->body;
+        return $this->_body;
     }
 
     /**
@@ -153,10 +160,10 @@ class Response implements ResponseInterface
      */
     public function withAddedHeader($name, $value) {
 
-        $old_value = $this->header->get($name) ?? '';
+        $old_value = $this->_header->get($name) ?? '';
         $new_value = $old_value . ', ' . $value;
 
-        $this->header->set($name, $new_value);
+        $this->_header->set($name, $new_value);
         return $this;
     }
 
@@ -170,7 +177,7 @@ class Response implements ResponseInterface
      */
     public function withHeader($name, $value) {
 
-        $this->header->set($name, $value);
+        $this->_header->set($name, $value);
         return $this;
     }
 
@@ -196,7 +203,7 @@ class Response implements ResponseInterface
      * @return self
      */
     public function withoutHeader($name) {
-        $this->header->remove($name);
+        $this->_header->remove($name);
         return $this;
     }
 
@@ -218,7 +225,7 @@ class Response implements ResponseInterface
 
         $reason = ($reason) ? $reason : (static::$response_codes[$code] ?? '');
 
-        $this->header->raw("HTTP/1.1 {$code} {$reason}");
+        $this->_header->raw("HTTP/1.1 {$code} {$reason}");
         return $this;
     }
 
@@ -231,8 +238,14 @@ class Response implements ResponseInterface
      */
     public function write($string) {
 
-        $this->header->render();
-        $this->body .= $string;
+        #Check if headers have been output
+        #Else output headers
+        if(!$this->_has_render_headers) {
+            $this->_header->render();
+            $this->_has_render_headers = true;
+        }
+
+        $this->_body .= $string;
 
         echo $string;
         return $this;
@@ -262,7 +275,26 @@ class Response implements ResponseInterface
     public function redirect($path, array $query_params = [], $external_location = false)
     {
         $redirect_location = $external_location ? $path : url($path, $query_params);
-        return $this->withHeader('location', $redirect_location)->write(null);
+        return $this
+            ->withStatusCode(301)
+            ->withHeader('location', $redirect_location)
+            ->write(null);
+    }
+
+    /**
+     * Render view
+     * 
+     * @deprecated v.012
+     * Use the view method instead
+     * 
+     * @param string $path Path of view to render
+     * @param array $options Parameters to render via view
+     * 
+     * @return self
+     */
+    public function renderView($path, array $options = []) {
+
+        return $this->view($path, $options);
     }
 
     /**
@@ -273,7 +305,7 @@ class Response implements ResponseInterface
      * 
      * @return self
      */
-    public function renderView($path, array $options = []) {
+    public function view($path, array $options = []) {
 
         $engine = new ResponseView($path);
         $data = $engine->renderViewContent($options);
