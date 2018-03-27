@@ -6,7 +6,7 @@ use InvalidArgumentException;
 
 use App\Core\Interfaces\CollectionInterface;
 
-class Collection implements CollectionInterface
+abstract class Collection implements CollectionInterface
 {
 
     /**
