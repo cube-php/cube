@@ -95,10 +95,14 @@ class RouteCollection
                 $path_attributes = array_slice($matches, 1);
                 $route_attributes = $route->getAttributes();
 
-                array_walk($route_attributes, function($attribute, $index) use ($path_attributes) {
+                array_walk($route_attributes, function($attribute, $index) use ($path_attributes, $route) {
 
                     $name = $attribute;
                     $value = $path_attributes[$index] ?? null;
+
+                    if($route->hasOptionalParameter()) {
+                        $value = substr($value, 0, strlen($value) - 1);
+                    }
 
                     $this->request->setAttribute($name, $value);
                 });

@@ -19,20 +19,34 @@ class RouteParser
         '*int' => '([0-9]+)',
         '*string' => '([\w]+)',
         '*bool' => '(true|false)',
-        '*any' => '([^\/]+)'
+        '*any' => '([^\/]+)',
+        '*all' => '(.*?)'
+    );
+
+    /**
+     * Route regexp matcher
+     * 
+     * @var array
+     */
+    private static $regex_opt = array(
+        '*int' => '([0-9]?+)',
+        '*string' => '([\w]?+)',
+        '*bool' => '(true|false)?',
+        '*any' => '(.*?)',
+        '*all' => '(.*?)'
     );
 
     /**
      * Route
      * 
-     * @var \App\Core\Tools\Route
+     * @var Route
      */
     private $_route;
 
     /**
      * Class constructor
      * 
-     * @param \App\Core\Tools\Route $route
+     * @param Route
      */
     public function __construct(Route $route)
     {
@@ -52,10 +66,7 @@ class RouteParser
         $path = $this->compileRegularPath($rawpath);
         $path = $this->compileStrictPathParams($path);
 
-        #Enforce trailing slash
-        $path = (substr($path, -1, 1) === '/') ? $path : $path . '/';
-
-        return $path;
+        return $this->_addRemoveTrailingSlash($path, $this->_route->hasOptionalParameter());
     }
     
     /**
@@ -75,11 +86,14 @@ class RouteParser
 
         $newpath = $path;
 
-        foreach($matches[1] as $index => $match)
-        {
+        foreach($matches[1] as $index => $match) {
+
             #remove brackets
             $regexps = static::$regex;
             $match_without_brackets = str_replace(['{','}'], '', $match);
+            $last_char = substr($match_without_brackets, -1, 1);
+
+            $is_optional = $last_char === '?';
             $match_vars = explode(':', $match_without_brackets);
             $match_vars_count = count($match_vars);
             $isRegularPath = preg_match('/\:/', $match);
@@ -97,11 +111,17 @@ class RouteParser
             $parameter_raw_value = trim($match_vars[0]);
             $parameter_value = '';
 
+            #Check if it has optional parameters
+            $last_char = substr($parameter_name, -1, 1);
+            $is_optional = $last_char === '?';
+
             #Specify attribute's index to route
             $this->_route->setAttribute($parameter_name);
+            $this->_route->setHasOptionalParameter($is_optional);
 
             if(array_key_exists($parameter_raw_value, $regexps)){
-                $parameter_value = $regexps[$parameter_raw_value];
+                $regexp = $is_optional ? static::$regex_opt : $regexps;
+                $parameter_value = $regexp[$parameter_raw_value] ?? null;
             }
 
             if(!$parameter_value) {
@@ -130,14 +150,40 @@ class RouteParser
 
         $newpath = $path;
 
-        foreach($matches[0] as $index => $match)
-        {
+        foreach($matches[0] as $index => $match) {
 
             $parameter_name = str_replace(['{', '}'], '', $match);
+            $last_char = substr($parameter_name, -1, 1);
+            $is_optional = $last_char === '?';
+
+            if($is_optional) {
+                $parameter_name = substr($parameter_name, 0, strlen($parameter_name) - 1);
+            }
+
             $this->_route->setAttribute($parameter_name);
-            $newpath = str_replace($match, static::$regex['*any'], $newpath);
+            $this->_route->setHasOptionalParameter($is_optional);
+
+            $replace_with = $is_optional ? static::$regex_opt : static::$regex;
+            $newpath = str_replace($match, $replace_with['*any'], $newpath);
         }
 
         return $newpath;
+    }
+
+    /**
+     * Add or remove trailing slash
+     *
+     * @param boolean $is_optional
+     * @return string
+     */
+    private function _addRemoveTrailingSlash($path, $is_optional = false)
+    {
+        if(!$is_optional) {
+            #Enforce trailing slash
+            return (substr($path, -1, 1) === '/') ? $path : $path . '/';
+        }
+
+        #Remove trailing slash
+        return (substr($path, -1, 1) === '/') ? substr($path, 0, strlen($path) - 1) : $path;
     }
 }

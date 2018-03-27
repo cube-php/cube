@@ -30,7 +30,7 @@ class Route
     /**
      * Route controller
      * 
-     * @var string[]
+     * @var string[]|callable
      */
     private $_controller = array();
 
@@ -39,14 +39,28 @@ class Route
      * 
      * @var string
      */
-    private static $controllerNamespace = 'App\\Controllers\\';
+    private static $_controllerNamespace = 'App\\Controllers\\';
 
     /**
      * Route attributes
      * 
      * @var string[]
      */
-    private $attributes = array();
+    private $_attributes = array();
+
+    /**
+     * Set if the controller is a callable
+     *
+     * @var boolean
+     */
+    private $_is_callble_controller = false;
+
+    /**
+     * Has optional parameter
+     *
+     * @var boolean
+     */
+    private $_has_optional_parameter = false;
 
     /**
      * Middlewares
@@ -76,8 +90,7 @@ class Route
      */
     public function engageMiddleware(Request $request)
     {
-        foreach($this->getMiddlewares() as $middleware)
-        {
+        foreach($this->getMiddlewares() as $middleware) {
             $request->useMiddleware($middleware);
         }
 
@@ -104,6 +117,12 @@ class Route
      */
     public function setController($controller)
     {
+        if(is_callable($controller)) {
+            $this->_is_callble_controller = true;
+            $this->_controller = $controller;
+            return true;
+        }
+
         $controller_vars = explode('.', $controller);
         $controller_vars_count = count($controller_vars);
         
@@ -112,13 +131,15 @@ class Route
                 ('Controller should be passed as "ClassName.methodName"');
         }
 
-        $controller_class_name = static::$controllerNamespace . $controller_vars[0];
+        $controller_class_name = static::$_controllerNamespace . $controller_vars[0];
         $controller_method_name = $controller_vars[1];
 
         $this->_controller = array(
             'class_name' => $controller_class_name,
             'method_name' => $controller_method_name
         );
+
+        return true;
     }
 
     /**
@@ -154,7 +175,18 @@ class Route
      */
     public function setAttribute($name)
     {
-        $this->attributes[] = $name;
+        $this->_attributes[] = $name;
+    }
+
+    /**
+     * Set if route has optional parameter
+     *
+     * @param string $val
+     * @return self
+     */
+    public function setHasOptionalParameter(bool $val)
+    {
+        $this->_has_optional_parameter = $val;
     }
 
     /**
@@ -164,7 +196,7 @@ class Route
      */
     public function getAttributes()
     {
-        return $this->attributes;
+        return $this->_attributes;
     }
 
     /**
@@ -198,12 +230,26 @@ class Route
     }
 
     /**
+     * Check if route has an optional parameter
+     *
+     * @return boolean
+     */
+    public function hasOptionalParameter()
+    {
+        return $this->_has_optional_parameter;
+    }
+
+    /**
      * Call the controller
      * 
      * @return void
      */
     public function initController(Request $request, Response $response)
     {
+        if($this->_is_callble_controller) {
+            return call_user_func_array($this->_controller, [$request, $response]);
+        }
+
         $class = $this->_controller['class_name'];
         $method = $this->_controller['method_name'];
 
