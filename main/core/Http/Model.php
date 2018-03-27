@@ -127,6 +127,8 @@ class Model
                 ->delete()
                 ->where(static::$primary_key, $primary_key)
                 ->fulfil();
+
+        return $query;
     }
 
     /**
@@ -143,6 +145,8 @@ class Model
                 ->update($update)
                 ->where(static::$primary_key, $primary_key)
                 ->fulfil();
+
+        return $rows;
     }
 
     /**
