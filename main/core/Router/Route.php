@@ -39,7 +39,7 @@ class Route
      * 
      * @var string
      */
-    private static $_controllerNamespace = 'App\\Controllers\\';
+    private $_controllerNamespace = 'App\\Controllers';
 
     /**
      * Route attributes
@@ -117,29 +117,7 @@ class Route
      */
     public function setController($controller)
     {
-        if(is_callable($controller)) {
-            $this->_is_callble_controller = true;
-            $this->_controller = $controller;
-            return true;
-        }
-
-        $controller_vars = explode('.', $controller);
-        $controller_vars_count = count($controller_vars);
-        
-        if($controller_vars_count < 2 || $controller_vars_count > 2) {
-            throw new InvalidArgumentException
-                ('Controller should be passed as "ClassName.methodName"');
-        }
-
-        $controller_class_name = static::$_controllerNamespace . $controller_vars[0];
-        $controller_method_name = $controller_vars[1];
-
-        $this->_controller = array(
-            'class_name' => $controller_class_name,
-            'method_name' => $controller_method_name
-        );
-
-        return true;
+        $this->_controller = $controller;
     }
 
     /**
@@ -164,6 +142,17 @@ class Route
     public function setMethod($method)
     {
         $this->_method = $method;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $namespace
+     * @return void
+     */
+    public function setNamespace($namespace)
+    {
+        $this->_controllerNamespace = $namespace;
     }
 
     /**
@@ -246,6 +235,9 @@ class Route
      */
     public function initController(Request $request, Response $response)
     {
+        #Parse controller
+        $this->_parseController();
+
         if($this->_is_callble_controller) {
             return call_user_func_array($this->_controller, [$request, $response]);
         }
@@ -300,5 +292,40 @@ class Route
 
         $this->_middlewares[] = $wares;
         return $this;
+    }
+
+    /**
+     * Parse controller
+     *
+     * @return bool
+     */
+    private function _parseController()
+    {
+
+        $controller = $this->_controller;
+
+        if(is_callable($controller)) {
+            $this->_is_callble_controller = true;
+            $this->_controller = $controller;
+            return true;
+        }
+
+        $controller_vars = explode('.', $controller);
+        $controller_vars_count = count($controller_vars);
+        
+        if($controller_vars_count < 2 || $controller_vars_count > 2) {
+            throw new InvalidArgumentException
+                ('Controller should be passed as "ClassName.methodName"');
+        }
+
+        $controller_class_name = $this->_controllerNamespace . '\\' . $controller_vars[0];
+        $controller_method_name = $controller_vars[1];
+
+        $this->_controller = array(
+            'class_name' => $controller_class_name,
+            'method_name' => $controller_method_name
+        );
+
+        return true;
     }
 }
