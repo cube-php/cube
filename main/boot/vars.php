@@ -38,3 +38,12 @@ define('APP_MODELS_PATH', MAIN_APP_PATH . DS . 'models');
 
 #Providers Path
 define('APP_PROVIDERS_PATH', MAIN_APP_PATH . DS . 'providers');
+
+#Providers Path
+define('APP_EXCEPTIONS_PATH', MAIN_APP_PATH . DS . 'exceptions');
+
+#Providers Path
+define('APP_HELPERS_PATH', MAIN_APP_PATH . DS . 'helpers');
+
+#Providers Path
+define('APP_PUBLIC_STORAGE_PATH', APP_STORAGE . DS . 'public');
