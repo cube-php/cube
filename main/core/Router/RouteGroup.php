@@ -14,21 +14,28 @@ class RouteGroup
      * 
      * @var string
      */
-    private static $multi_method_name = 'map';
+    private static $_multi_method_name = 'map';
 
     /**
      * Route group path
      * 
      * @var string
      */
-    private $parent;
+    private $_parent;
 
     /**
      * Routes 
      * 
      * @var \App\Core\Router\Router
      */
-    private $router;
+    private $_router;
+
+    /**
+     * Route Namespace
+     *
+     * @var string
+     */
+    private $_namespace;
 
     /**
      * Route group constructor
@@ -37,9 +44,20 @@ class RouteGroup
      */
     public function __construct($path, Router $router)
     {
-        $this->parent = $path;
+        $this->_parent = $path;
+        $this->_router = $router;
+    }
 
-        $this->router = $router;
+    /**
+     * Register namespace for route group
+     *
+     * @param string $namespace
+     * @return self
+     */
+    public function setNamespace($namespace)
+    {
+        $this->_namespace = $namespace;
+        return $this;
     }
 
     /**
@@ -57,26 +75,33 @@ class RouteGroup
 
         $num_args = count($args);
 
-        if($name === static::$multi_method_name && $num_args != 3) {
+        if($name === static::$_multi_method_name && $num_args != 3) {
             throw new InvalidArgumentException
                 ('"map" method should contain 3 arguments (string[] $methods, string $path, string $controller)');
         }
 
-        if($num_args != 2 && $name !== static::$multi_method_name) {
+        if($num_args != 2 && $name !== static::$_multi_method_name) {
             throw new InvalidArgumentException
                 ('"' . $name . '" method should contain 2 arguments (string $path, string $controller)');
         }
 
         #Arrange path
         $old_path = ($num_args == 2) ? $args[0] : $args[1];
-        $new_path = $this->parent . $old_path;
+        $new_path = $this->_parent . $old_path;
         
         #name path
-        if($name === static::$multi_method_name) {
-            return $this->router->map($args[0], $new_path, $args[2]);
+        if($name === static::$_multi_method_name) {
+            return $this->_router->map($args[0], $new_path, $args[2]);
         }
 
         #register path
-        return $this->router->{$name}($new_path, $args[1]);
+        $registered_route = $this->_router->{$name}($new_path, $args[1]);
+
+        if($this->_namespace) {
+            $registered_route->setNamespace($this->_namespace);
+        }
+
+        #Return registered route
+        return $registered_route;
     }
 }
