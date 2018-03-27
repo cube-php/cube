@@ -26,7 +26,7 @@ class Router
      * @param string $path Route path
      * @param string $controller Controller route
      * 
-     * @return void
+     * @return Route
      */
     public function any($path, $controller)
     {
@@ -39,7 +39,7 @@ class Router
      * @param string $path Route path
      * @param string $controller Controller route
      * 
-     * @return void
+     * @return Route
      */
     public function get($path, $controller)
     {
@@ -52,7 +52,7 @@ class Router
      * @param string $path Route path
      * @param string $controller Controller route
      * 
-     * @return void
+     * @return Route
      */
     public function delete($path, $controller)
     {
@@ -63,14 +63,22 @@ class Router
      * Add a new route group
      * 
      * @param string $parent Parent path
+     * @param string $namespaces
      * @param callable $fn Callback function
-     * @param string[] $middlewares
      * 
-     * @return void
+     * @return RouteGroup
      */
-    public function group($parent, $fn, $middlewares = [])
+    public function group($parent, $namespace = null, $fn = null)
     {
-        return $fn(new RouteGroup($parent, $this, $middlewares));
+        $group = (new RouteGroup($parent, $this))
+                    ->setNamespace($namespace);
+
+        if(!$fn) {
+            return $group;
+        }
+
+        $fn($group);
+        return $group;
     }
     
     /**
@@ -79,7 +87,7 @@ class Router
      * @param string $path Route path
      * @param string $controller Controller route
      * 
-     * @return void
+     * @return Route
      */
     public function post($path, $controller)
     {
@@ -92,7 +100,7 @@ class Router
      * @param string $path Route path
      * @param string $controller Controller route
      * 
-     * @return void
+     * @return Route
      */
     public function patch($path, $controller)
     {
@@ -106,7 +114,7 @@ class Router
      * @param string $path Route path
      * @param string $controller Controller route
      * 
-     * @return void
+     * @return Route
      */
     public function map($methods, $path, $controller)
     {
@@ -127,11 +135,12 @@ class Router
      * @param string $path Route path
      * @param string $controller Controller route
      * 
-     * @return void
+     * @return Route
      */
     public function on($method, $path, $controller)
     {
         $route = new Route($method, $path, $controller);
-        return RouteCollection::attachRoute($route);
+        RouteCollection::attachRoute($route);
+        return $route;
     }
 }
