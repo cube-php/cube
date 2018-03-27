@@ -8,11 +8,14 @@ use App\Core\Exceptions\FileSystemException;
 class Cli
 {
 
-    private const COMMAND_MODEL = '--makeModel';
-    private const COMMAND_PROVIDER = '--makeProvider';
-    private const COMMAND_CONTROLLER = '--makeController';
-    private const COMMAND_HELPER = '--makeHelper';
-    private const COMMAND_STORAGE = '--storage';
+    const COMMAND_MODEL = '--makeModel';
+    const COMMAND_PROVIDER = '--makeProvider';
+    const COMMAND_CONTROLLER = '--makeController';
+    const COMMAND_HELPER = '--makeHelper';
+    const COMMAND_EXCEPTION = '--makeException';
+    const COMMAND_CSS = '--css';
+    const COMMAND_JSCRIPT = '--js';
+    const COMMAND_HELP = '--help';
 
     private $_default_templates = '.reserved';
 
@@ -28,17 +31,7 @@ class Cli
      *
      * @var string[]
      */
-    private static $_allowed_args = array(
-        '--makeModel',
-        '--makeProvider',
-        '--makeController',
-        '--makeHelper',
-        '--makeView',
-        '--help',
-        '--storage',
-        '--css',
-        '--js'
-    );
+    private static $_allowed_args = [];
     
     /**
      * Constructor
@@ -47,6 +40,17 @@ class Cli
      */
     public function __construct($args)
     {
+        static::$_allowed_args = array(
+            self::COMMAND_MODEL,
+            self::COMMAND_CONTROLLER,
+            self::COMMAND_EXCEPTION,
+            self::COMMAND_HELPER,
+            self::COMMAND_PROVIDER,
+            self::COMMAND_CSS,
+            self::COMMAND_JSCRIPT,
+            self::COMMAND_HELP
+        );
+
         foreach (array_slice($args, 1) as $arg) {
             $this->_args[] = $arg;
         }
@@ -61,7 +65,8 @@ class Cli
     {
 
         if(!$this->_args) {
-            static::respond('No command sent!', true);
+            static::respond('No command sent!');
+            return $this->buildHelp();
         }
 
         foreach($this->_args as $arg)
@@ -88,6 +93,7 @@ class Cli
 
         if(!in_array($mainCommand, static::$_allowed_args)) {
             static::respond("\033[31m Invalid command \"{$mainCommand}\"");
+            $this->buildHelp();
             return false;
         }
 
@@ -119,7 +125,92 @@ class Cli
             case static::COMMAND_PROVIDER:
                 $this->buildProvider($action);
                 break;
+
+            case self::COMMAND_EXCEPTION:
+                $this->buildException($action);
+                break;
+
+            case self::COMMAND_CSS:
+                $this->buildAssetCss($action);
+                break;
+
+            case self::COMMAND_JSCRIPT:
+                $this->buildAssetJs($action);
+                break;
+
+            case self::COMMAND_HELPER:
+                $this->buildHelper($action);
+                break;
+
+            case self::COMMAND_HELP:
+                $this->buildHelp();
+                break;
+
+            default:
+                self::respond('Invalid command sent!');
+                $this->buildHelp();
+                break;
         }
+    }
+
+    /**
+     * CLI Build asset
+     *
+     * @param string $name
+     * @return void
+     */
+    private function buildAsset($type, $name)
+    {
+        $allowed_types = ['css', 'js'];
+        $type = strtolower($type);
+
+        if(!in_array($type, $allowed_types)) {
+            return self::respond("Unknown asset type {$type}", true);
+        }
+
+        $filename = "{$name}.{$type}";
+        $template = $this->getReservedTemplate('asset');
+        $model_path = APP_PUBLIC_STORAGE_PATH . DS . $type . DS . $filename;
+        $refined_template = strtr($template, [
+            '{name}' => $name,
+            '{type}' => $type,
+            '{date}' => date('jS-M-Y')
+        ]);
+
+        try {
+            static::respond("creating {$type} asset: {$filename}");
+            $file = new File($model_path, true, true);
+            $file->write($refined_template);
+            static::respond("created {$type} asset: {$filename}");
+        }
+        catch(FileSystemException $e) {
+            static::respond($e->getMessage());
+            static::respond("Unable to create {$type} asset: {$filename}", true);
+        }
+
+        return true;
+    }
+
+    /**
+     * CLI Build css asset
+     *
+     * @param string $name
+     * @return void
+     */
+    private function buildAssetCss($name)
+    {
+        return $this->buildAsset('css', $name);
+    }
+
+    /**
+     * CLI Build js asset
+     *
+     * @param string $name
+     * @return void
+     */
+    private function buildAssetJs($name)
+    {
+        return $this->buildAsset('js', $name);
     }
 
     /**
@@ -144,6 +235,68 @@ class Cli
         catch(FileSystemException $e) {
             static::respond($e->getMessage());
             static::respond('create controller failed', true);
+        }
+    }
+
+    /**
+     * CLI Build exception
+     *
+     * @param string $name
+     * @return void
+     */
+    private function buildException($name)
+    {
+        $filename = $this->addExt($name);
+        $template = $this->getReservedTemplate('exception');
+        $exception_path = APP_EXCEPTIONS_PATH . DS . $filename;
+        $refined_template = strtr($template, ['{className}' => $name]);
+
+        try {
+            static::respond('creating exception: ' . $filename);
+            $file = new File($exception_path, true, true);
+            $file->write($refined_template);
+            static::respond('created exception: ' . $filename);
+        }
+        catch(FileSystemException $e) {
+            static::respond($e->getMessage());
+            static::respond('create exception failed', true);
+        }
+    }
+
+    /**
+     * CLI Build help
+     *
+     * @param string $name
+     * @return void
+     */
+    private function buildHelp()
+    {
+        $template = $this->getReservedTemplate('help');
+        static::respond($template, true);
+    }
+
+    /**
+     * CLI Build helper
+     *
+     * @param string $name
+     * @return void
+     */
+    private function buildHelper($name)
+    {
+        $filename = $this->addExt($name);
+        $template = $this->getReservedTemplate('helper');
+        $exception_path = APP_HELPERS_PATH . DS . $filename;
+        $refined_template = strtr($template, ['{fn}' => $name]);
+
+        try {
+            static::respond('creating helper: ' . $filename);
+            $file = new File($exception_path, true, true);
+            $file->write($refined_template);
+            static::respond('created helper: ' . $filename);
+        }
+        catch(FileSystemException $e) {
+            static::respond($e->getMessage());
+            static::respond('unable to create helper ' . $filename, true);
         }
     }
 
@@ -238,7 +391,7 @@ class Cli
      */
     private static function respond($msg, $kill = false)
     {
-        echo 'php-cube: ' . $msg . PHP_EOL;
+        echo "php-cube: {$msg} ". PHP_EOL;
         if($kill) {
             die();
         }
