@@ -256,12 +256,23 @@ class Response implements ResponseInterface
      * 
      * @param string
      */
-    public function writeJson($data) {
+    public function json($data) {
 
         $this->withHeader('Content-Type', 'application/json');
         $data = json_encode($data);
 
         return $this->write($data);
+    }
+
+    /**
+     * Write json encoded string to response body
+     * 
+     * @deprecated v0.12
+     * 
+     * @param string
+     */
+    public function writeJson($data) {
+        return $this->json($data);
     }
 
     /**
