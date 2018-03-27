@@ -2,18 +2,31 @@
 
 use App\Core\Tools\Csrf;
 
-function csrf_form()
-{
+/**
+ * Create csrf form input
+ *
+ * @return string
+ */
+function csrf_form() {
     $csrf = Csrf::get();
     return '<input type="hidden" name="csrf_token" value="'. $csrf .'"/>';
 }
 
-function csrf_token()
-{
+/**
+ * Get current csrf token
+ *
+ * @return void
+ */
+function csrf_token() {
     return Csrf::get();
 }
 
-function csrf($token)
-{
+/**
+ * Check if csrf token is valid
+ *
+ * @param string $token
+ * @return bool
+ */
+function csrf($token) {
     return Csrf::isValid($token);
 }
