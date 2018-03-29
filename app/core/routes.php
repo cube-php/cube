@@ -1,16 +1,10 @@
 <?php
 
-/**
- * Use the router module
- */
+#Use the router module
 use App\Core\Router\Router;
 
-/**
- * Create instance of router
- */
+#Create instance of router
 $router = new Router();
 
-/**
- * Add a route
- */
+#Add routes
 $router->any('/', 'CubeController.home');
