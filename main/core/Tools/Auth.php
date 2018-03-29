@@ -5,35 +5,43 @@ namespace App\Core\Tools;
 use InvalidArgumentException;
 
 use App\Core\App;
-
 use App\Core\Modules\DB;
-
 use App\Core\Http\Request;
-
 use App\Core\Http\Response;
-
 use App\Core\Http\Session;
-
-use App\Core\Interfaces\MiddlewareInterface;
-
+use App\Core\Http\Cookie;
 use App\Core\Exceptions\AuthException;
 
-class Auth implements MiddlewareInterface
+class Auth
 {
 
     /**
      * Authentication configuration
      * 
-     * @param string[]
+     * @var string[]
      */
     private static $_config;
 
     /**
      * Get authentication status
      * 
-     * @return string[]
+     * @var string[]
      */
     private static $_auth_name = 'session_auth';
+
+    /**
+     * Cube cookie token dbname
+     *
+     * @var string
+     */
+    private static $_cookie_token_dbname = 'cube_auth_tokens';
+
+    /**
+     * Get authenticated user
+     * 
+     * @var object
+     */
+    private static $_auth_user;
     
 
     /**
@@ -46,6 +54,9 @@ class Auth implements MiddlewareInterface
      */
     public static function attempt($combination, $remember = false)
     {
+        #Check schema
+        static::up();
+
         #Load the auth configuaration
         $config = static::getConfig();
 
@@ -118,7 +129,14 @@ class Auth implements MiddlewareInterface
             throw new AuthException('Invalid account credentials');
         }
 
-        Session::set(static::$_auth_name, $query->{$primary_key});
+        $schema_primary_key = $query->{$primary_key};
+
+        #Check for the remeber feature
+        if($remember) {
+            static::setUserCookieToken($schema_primary_key);
+        }
+
+        Session::set(static::$_auth_name, $schema_primary_key);
         return true;
     }
 
@@ -130,6 +148,7 @@ class Auth implements MiddlewareInterface
     public static function logout()
     {
         Session::remove(static::$_auth_name);
+        Cookie::remove(static::$_auth_name);
     }
 
     /**
@@ -139,35 +158,47 @@ class Auth implements MiddlewareInterface
      */
     public static function user()
     {
-        $auth_id = Session::get(static::$_auth_name);
-
-        if(!$auth_id) {
-            return false;
+        if(static::$_auth_user) {
+            return static::$_auth_user;
         }
 
-        $instance = static::getConfig()['instance'];
-        return new $instance($auth_id);
-    }
+        #Check for authenticated session
+        $auth_id = Session::get(static::$_auth_name);
+        $instance = static::getConfig('instance');
 
-    /**
-     * Handle middleware
-     * 
-     * @param \App\Core\Http\Request $request
-     * @param \App\Core\Http\Response $response
-     * 
-     * @return \App\Core\Http\Response
-     */
-    public function handle(Request $request, Response $response)
-    {
-        return Auth::user();
+        if($auth_id) {
+            static::$_auth_user = new $instance($auth_id);
+            return static::$_auth_user;
+        }
+
+        #Check for user auto log cookie
+        $cookie_token = Cookie::get(static::$_auth_name);
+
+        if($cookie_token) {
+            $user_id = static::validateAuthCookieToken($cookie_token);
+
+            if(!$user_id) {
+                static::logout();
+                return false;
+            }
+
+            static::$_auth_user = new $instance($user_id);
+            #update cookie
+            static::setUserCookieToken($user_id);
+            return static::$_auth_user;
+        }
+
+        return false;
     }
 
     /**
      * Get Auth config
      * 
+     * @param string|null $field
+     * 
      * @return string[]
      */
-    private static function getConfig()
+    private static function getConfig($field = null)
     {
         if(!static::$_config) {
             static::$_config = App::getConfigByName('auth');
@@ -177,6 +208,92 @@ class Auth implements MiddlewareInterface
             throw new AuthException('Auth config not found in "' . CONFIG_PATH . '"');
         }
 
+        if($field) {
+            return static::$_config[$field] ?? null;
+        }
+
         return static::$_config;
+    }
+
+    /**
+     * Create new user cookie token
+     *
+     * @return string Generated user token
+     */
+    private static function setUserCookieToken($user_id)
+    {
+        $cookie_table = DB::table(static::$_cookie_token_dbname);
+        $token = generate_token(32);
+
+        $cookie_table->replace([
+            'user_id' => $user_id,
+            'token' => $token,
+            'expires' => gettime(time() + (30 * 24 * 60 * 60))
+        ]);
+
+        Cookie::set(static::$_auth_name, $token);
+        return $token;
+    }
+
+    /**
+     * Create schema
+     *
+     * @return boolean
+     */
+    private static function up()
+    {
+        $cookie_table = DB::table(static::$_cookie_token_dbname);
+
+        #Check if cookie table exists
+        #If not create the table with it's fields
+        if(!DB::hasTable(static::$_cookie_token_dbname)) {
+            $cookie_table
+                ->create(function ($table) {
+                    $table->field('user_id')->varchar()->primary();
+                    $table->field('token')->text();
+                    $table->field('expires')->datetime();
+                }); 
+        }
+        
+        return true;
+    }
+
+    /**
+     * Validate user's cookie
+     *
+     * @param string $token
+     * @return boolean
+     */
+    private static function validateAuthCookieToken($token)
+    {
+
+        $cookie_table = DB::table(static::$_cookie_token_dbname);
+
+        #Check if cookie table exists
+        #If not create the table with it's fields
+        if(!DB::hasTable(static::$_cookie_token_dbname)) {
+            $cookie_table
+                ->create(function ($table) {
+                    $table->field('user_id')->varchar()->primary();
+                    $table->field('token')->text();
+                    $table->field('expires')->datetime();
+                }); 
+        }
+
+        $schema_primary_key = static::getConfig('primary_key');
+        $is_valid = $cookie_table
+                        ->select(['user_id', 'token'])
+                        ->where('token', $token)
+                        ->fetchOne();
+
+        if(!$is_valid) {
+            return false;
+        }
+
+        #Update user's token to a new hash
+        $new_token = static::setUserCookieToken($is_valid->user_id);
+
+        #Set user
+        return $is_valid->user_id;
     }
 }
