@@ -305,7 +305,7 @@ class DBTable
      * 
      * @param string[] $entry New update entry
      * 
-     * @return int Affected row count
+     * @return DBUpdate
      */
     public function update(array $entry)
     {
