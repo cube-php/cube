@@ -115,9 +115,12 @@ class RouteCollection
 
                 #Set Middlewares
                 $request = $route->engageMiddleware($this->request);
+                
+                #Get parsed response
+                $response = $route->parseResponse((new Response));
 
                 #Instantiate route controller
-                $route->initController($request, new Response);
+                $route->initController($request, $response);
                 
                 return true;
             }

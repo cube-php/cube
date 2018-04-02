@@ -38,6 +38,13 @@ class RouteGroup
     private $_namespace;
 
     /**
+     * Group's CORS origin
+     *
+     * @var string
+     */
+    private $_enable_cors = true;
+
+    /**
      * Route group constructor
      * 
      * @param string $path
@@ -57,6 +64,18 @@ class RouteGroup
     public function setNamespace($namespace)
     {
         $this->_namespace = $namespace;
+        return $this;
+    }
+
+    /**
+     * Set grouped routes origin
+     *
+     * @param bool $status
+     * @return self
+     */
+    public function setEnableCors(bool $status)
+    {
+        $this->_enable_cors = $status;
         return $this;
     }
 
@@ -97,6 +116,10 @@ class RouteGroup
         #register path
         $registered_route = $this->_router->{$name}($new_path, $args[1]);
 
+        #Set route's origin
+        $registered_route->setEnableCors($this->_enable_cors);
+
+        #Set route's namespace
         if($this->_namespace) {
             $registered_route->setNamespace($this->_namespace);
         }

@@ -157,8 +157,7 @@ class Response implements ResponseInterface
      */
     public function disableCors()
     {
-        $this->withHeader('Access-Control-Allow-Origin', url());
-        return $this;
+        return $this->setOrigin(url());
     }
 
     /**
@@ -168,8 +167,7 @@ class Response implements ResponseInterface
      */
     public function enableCors()
     {
-        $this->withHeader('Access-Control-Allow-Origin', '*');
-        return $this;
+        return $this->setOrigin('*');
     }
 
     /**
@@ -180,8 +178,8 @@ class Response implements ResponseInterface
      * 
      * @return self
      */
-    public function withAddedHeader($name, $value) {
-
+    public function withAddedHeader($name, $value)
+    {
         $old_value = $this->_header->get($name) ?? '';
         $new_value = $old_value . ', ' . $value;
 
@@ -197,8 +195,8 @@ class Response implements ResponseInterface
      * 
      * @return self
      */
-    public function withHeader($name, $value) {
-
+    public function withHeader($name, $value)
+    {
         $this->_header->set($name, $value);
         return $this;
     }
@@ -224,7 +222,8 @@ class Response implements ResponseInterface
      * 
      * @return self
      */
-    public function withoutHeader($name) {
+    public function withoutHeader($name)
+    {
         $this->_header->remove($name);
         return $this;
     }
@@ -237,8 +236,8 @@ class Response implements ResponseInterface
      * 
      * @return self
      */
-    public function withStatusCode($code, $reason = '') {
-
+    public function withStatusCode($code, $reason = '')
+    {
         $code = (int) $code;
 
         if(!$code or $code < 100 or $code > 599) {
@@ -258,8 +257,8 @@ class Response implements ResponseInterface
      * 
      * @return self
      */
-    public function write($string) {
-
+    public function write($string)
+    {
         #Check if headers have been output
         #Else output headers
         if(!$this->_has_render_headers) {
@@ -325,9 +324,22 @@ class Response implements ResponseInterface
      * 
      * @return self
      */
-    public function renderView($path, array $options = []) {
+    public function renderView($path, array $options = [])
+    {
 
         return $this->view($path, $options);
+    }
+
+    /**
+     * Set response CORS Origin
+     *
+     * @param string $origin
+     * @return self
+     */
+    public function setOrigin($origin)
+    {
+        $this->withHeader('Access-Control-Allow-Origin', $origin);
+        return $this;
     }
 
     /**
@@ -338,7 +350,8 @@ class Response implements ResponseInterface
      * 
      * @return self
      */
-    public function view($path, array $options = []) {
+    public function view($path, array $options = [])
+    {
 
         $engine = new ResponseView($path);
         $data = $engine->renderViewContent($options);

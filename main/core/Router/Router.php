@@ -63,15 +63,20 @@ class Router
      * Add a new route group
      * 
      * @param string $parent Parent path
-     * @param string $namespaces
+     * @param array $options Group Options
      * @param callable $fn Callback function
      * 
      * @return RouteGroup
      */
-    public function group($parent, $namespace = null, $fn = null)
+    public function group($parent, $options = [], $fn = null)
     {
+
+        $namespace = $options['namespace'] ?? null;
+        $cors = $options['cors'] ?? true;
+
         $group = (new RouteGroup($parent, $this))
-                    ->setNamespace($namespace);
+                    ->setNamespace($namespace)
+                    ->setEnableCors($cors);
 
         if(!$fn) {
             return $group;

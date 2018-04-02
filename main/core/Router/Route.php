@@ -70,6 +70,13 @@ class Route
     private $_middlewares = [];
 
     /**
+     * CORS status
+     *
+     * @var boolean
+     */
+    private $_enable_cors = true;
+
+    /**
      * Class constructor
      * 
      * @param string|string[] $method
@@ -86,7 +93,7 @@ class Route
     /**
      * Add middlewares to request
      *
-     * @return void
+     * @return Request
      */
     public function engageMiddleware(Request $request)
     {
@@ -111,13 +118,14 @@ class Route
      * 
      * <</Controller pattern>>
      * 
-     * @return void
+     * @return self
      * 
      * @throws \InvalidArgumentException if $controller is not callable
      */
     public function setController($controller)
     {
         $this->_controller = $controller;
+        return $this;
     }
 
     /**
@@ -125,11 +133,12 @@ class Route
      * 
      * @param string $path Route path
      * 
-     * @return void
+     * @return self
      */
     public function setPath($path)
     {
         $this->_path = $path;
+        return $this;
     }
 
     /**
@@ -137,22 +146,36 @@ class Route
      * 
      * @param string|string[] $method String or array of HTTP request methods
      * 
-     * @return void
+     * @return self
      */
     public function setMethod($method)
     {
         $this->_method = $method;
+        return $this;
     }
 
     /**
-     * Undocumented function
+     * Set route namespace
      *
-     * @param [type] $namespace
-     * @return void
+     * @param string $namespace
+     * @return self
      */
     public function setNamespace($namespace)
     {
         $this->_controllerNamespace = $namespace;
+        return $this;
+    }
+
+    /**
+     * Set whether or not to allow CORS
+     *
+     * @param boolean $cors
+     * @return self
+     */
+    public function setEnableCors(bool $cors)
+    {
+        $this->_enable_cors = $cors;
+        return $this;
     }
 
     /**
@@ -165,6 +188,7 @@ class Route
     public function setAttribute($name)
     {
         $this->_attributes[] = $name;
+        return $this;
     }
 
     /**
@@ -176,6 +200,7 @@ class Route
     public function setHasOptionalParameter(bool $val)
     {
         $this->_has_optional_parameter = $val;
+        return $this;
     }
 
     /**
@@ -263,6 +288,19 @@ class Route
     public function getPath()
     {
         return $this->_path;
+    }
+
+    /**
+     * Custom response values/header
+     *
+     * @param Response $response
+     * @return Response
+     */
+    public function parseResponse(Response $response)
+    {
+        $cors_method = $this->_enable_cors ? 'enableCors' : 'disableCors';
+        $response = call_user_func([$response, $cors_method]);
+        return $response;
     }
 
     /**
