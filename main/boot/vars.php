@@ -39,6 +39,9 @@ define('APP_MODELS_PATH', MAIN_APP_PATH . DS . 'models');
 #Providers Path
 define('APP_PROVIDERS_PATH', MAIN_APP_PATH . DS . 'providers');
 
+#Middlewares Path
+define('APP_MIDDLEWARES_PATH', MAIN_APP_PATH . DS . 'middlewares');
+
 #Providers Path
 define('APP_EXCEPTIONS_PATH', MAIN_APP_PATH . DS . 'exceptions');
 

@@ -224,7 +224,7 @@ class Cli
         $filename = $this->addExt($name);
         $template = $this->getReservedTemplate('controller');
         $model_path = APP_CONTROLLERS_PATH . DS . $filename;
-        $refined_template = strtr($template, ['{className}' => $name]);
+        $refined_template = strtr($template, ['{className}' => $this->getClassName($name)]);
 
         try {
             static::respond('creating controller: ' . $filename);
@@ -351,6 +351,21 @@ class Cli
     }
 
     /**
+     * Get file name paths
+     *
+     * @param string $name
+     * @return object
+     */
+    private function getClassName($name)
+    {
+        $name_vars = explode('/', $name);
+        $vars_count = count($name_vars);
+        $main_name = $name_vars[$vars_count - 1];
+
+        return $main_name;
+    }
+
+    /**
      * Return reserved template
      *
      * @param string $action_type
@@ -378,7 +393,7 @@ class Cli
      * @param string $name
      * @return string
      */
-    public function addExt($name)
+    private function addExt($name)
     {
         return "{$name}.php";
     }

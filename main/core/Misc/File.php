@@ -37,6 +37,13 @@ class File
                 ('File at "' . $this->_path . ' already exists"');
         }
         
+        if($create_new) {
+            $dir_vars = explode('/', $path);
+            $dir_name_vars = array_slice($dir_vars, 0, count($dir_vars) - 1);
+            $dir_name = implode(DS, $dir_name_vars);
+            Folder::create($dir_name, '');
+        }
+
         $modes = $create_new ? 'w+' : 'rw';
         $file = @fopen($path, $modes);
 

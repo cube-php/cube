@@ -17,7 +17,7 @@ class Folder
      * 
      * @return string $path
      */
-    public static function create($dir, $name, $chmod = '0777', $silent = false){
+    public static function create($dir, $name, $chmod = 0775, $silent = false){
 
         $folder_path = $dir . DS . $name;
         $exists = static::exists($folder_path);
