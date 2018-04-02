@@ -151,6 +151,28 @@ class Response implements ResponseInterface
     }
 
     /**
+     * Disable Cross Origin Resource Sharing
+     *
+     * @return self
+     */
+    public function disableCors()
+    {
+        $this->withHeader('Access-Control-Allow-Origin', url());
+        return $this;
+    }
+
+    /**
+     * Enable Cross Origin Resource Sharing
+     *
+     * @return self
+     */
+    public function enableCors()
+    {
+        $this->withHeader('Access-Control-Allow-Origin', '*');
+        return $this;
+    }
+
+    /**
      * Add new header to previously added header
      * 
      * @param string|int $name Header field name
