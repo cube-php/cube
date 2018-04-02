@@ -3,6 +3,7 @@
 namespace App\Core\Http;
 
 use App\Core\Modules\DB;
+use App\Core\Modules\Db\DBSelect;
 
 class Model
 {
@@ -206,6 +207,16 @@ class Model
         return DB::table(static::$schema)
                 ->select(static::$fields)
                 ->getLast(($field ?? static::$primary_key));
+    }
+
+    /**
+     * Run custom queries on model's schema
+     *
+     * @return DBSelect
+     */
+    public static function select()
+    {
+        return new DBSelect(static::$schema, static::$fields);
     }
 
     /**
