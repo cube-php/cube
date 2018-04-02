@@ -249,7 +249,7 @@ class Cli
         $filename = $this->addExt($name);
         $template = $this->getReservedTemplate('exception');
         $exception_path = APP_EXCEPTIONS_PATH . DS . $filename;
-        $refined_template = strtr($template, ['{className}' => $name]);
+        $refined_template = strtr($template, ['{className}' => $this->getClassName($name)]);
 
         try {
             static::respond('creating exception: ' . $filename);
@@ -311,7 +311,7 @@ class Cli
         $filename = $this->addExt($name);
         $template = $this->getReservedTemplate('model');
         $model_path = APP_MODELS_PATH . DS . $filename;
-        $refined_template = strtr($template, ['{className}' => $name]);
+        $refined_template = strtr($template, ['{className}' => $this->getClassName($name)]);
 
         try {
             static::respond('creating model: ' . $filename);
@@ -336,7 +336,7 @@ class Cli
         $filename = $this->addExt($name);
         $template = $this->getReservedTemplate('provider');
         $model_path = APP_PROVIDERS_PATH . DS . $filename;
-        $refined_template = strtr($template, ['{className}' => $name]);
+        $refined_template = strtr($template, ['{className}' => $this->getClassName($name)]);
 
         try {
             static::respond('creating provider: ' . $filename);
