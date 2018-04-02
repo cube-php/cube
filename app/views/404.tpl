@@ -15,7 +15,7 @@
         Error 404
     </div>
     <div class="cube-version">
-        Page <b>{$_current_path}</b> not assigned on the <strong>{strtoupper($_request_method)}</strong> request sent.
+        Route "<b>{$_path}</b>" not assigned on the "<strong>{strtoupper($_request_method)}</strong>" request sent.
     </div>
     <div class="cube-version">
         v0.1
