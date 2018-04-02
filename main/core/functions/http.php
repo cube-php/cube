@@ -28,6 +28,5 @@ function redirect($path, $params = [], $is_external = false) {
   * @return Response
   */
 function response() {
-    Controller::getInstance();
     return (new Response());
 }

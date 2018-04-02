@@ -109,7 +109,7 @@ class RouteCollection
 
                 #Do any other events when route is matched
                 EventManager::dispatchEvent(
-                    $current_url,
+                    $this->request,
                     App::EVENT_ROUTE_MATCH_FOUND
                 );
 
@@ -125,7 +125,7 @@ class RouteCollection
 
         #Oh no, no matches
         EventManager::dispatchEvent(
-            $current_url,
+            $this->request,
             App::EVENT_ROUTE_NO_MATCH_FOUND
         );
     }
