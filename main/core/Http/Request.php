@@ -71,7 +71,7 @@ class Request implements RequestInterface
                 ('Middleware "'. $method .'" not found');
         }
         
-        return $this->_wares[$method];
+        return call_user_func($this->_wares[$method], $args);
     }
 
     /**
@@ -226,6 +226,26 @@ class Request implements RequestInterface
     }
 
     /**
+     * Set custom method
+     *
+     * @param string $name Method name
+     * @param Closure $fn Callable
+     * @return self
+     */
+    public function setCustomMethod($name, $fn)
+    {
+        $reserved_method_names = array_map('strtolower', get_class_methods($this));
+
+        if(in_array(strtolower($name), $reserved_method_names)) {
+            throw new InvalidArgumentException
+                ('The specifed method name is a reserved method name');
+        }
+
+        $this->_wares[$name] = $fn;
+        return $this;
+    }
+
+    /**
      * Get this request url
      * 
      * @return \App\Core\Http\Uri
@@ -242,24 +262,33 @@ class Request implements RequestInterface
     /**
      * Undocumented function
      *
-     * @param string $middleware Middleware name
+     * @param string[] $middleware Middleware name
      *
      * @return self
      * 
      * @throws \InvalidArgumentException
      */
-    public function useMiddleware($middleware)
+    public function useMiddleware($middlewares)
     {
-        $wares = App::getConfigByFile('middleware');
-        $class = $wares[$middleware] ?? null;
-
-        if(!$class) {
-            throw new \InvalidArgumentException
-                ('Middleware "'.$middleware.'" is not assigned');
+        if(!count($middlewares)) {
+            return $this;
         }
 
-        $cls = new $class;
-        $this->_wares[$middleware] = call_user_func_array([$cls, 'handle'], [$this, new Response]);
-        return $this;
+        $wares = App::getConfigByFile('middleware');
+        $result = $this;
+
+        foreach($middlewares as $middleware) {
+
+            $class = $wares[$middleware] ?? null;
+
+            if(!$class) {
+                throw new \InvalidArgumentException
+                    ('Middleware "'.$middleware.'" is not assigned');
+            }
+
+            $result = call_user_func_array([new $class, 'trigger'], [$result]);
+        }
+
+        return $result;
     }
 }

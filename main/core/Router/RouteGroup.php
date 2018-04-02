@@ -45,6 +45,13 @@ class RouteGroup
     private $_enable_cors = true;
 
     /**
+     * Group's middleware
+     *
+     * @var string|string[]
+     */
+    private $_middlewares;
+
+    /**
      * Route group constructor
      * 
      * @param string $path
@@ -56,18 +63,6 @@ class RouteGroup
     }
 
     /**
-     * Register namespace for route group
-     *
-     * @param string $namespace
-     * @return self
-     */
-    public function setNamespace($namespace)
-    {
-        $this->_namespace = $namespace;
-        return $this;
-    }
-
-    /**
      * Set grouped routes origin
      *
      * @param bool $status
@@ -76,6 +71,30 @@ class RouteGroup
     public function setEnableCors(bool $status)
     {
         $this->_enable_cors = $status;
+        return $this;
+    }
+
+    /**
+     * Set group's middlewares
+     *
+     * @param string|string[] $middlewares
+     * @return self
+     */
+    public function setMiddlewares($middlewares)
+    {
+        $this->_middlewares = $middlewares;
+        return $this;
+    }
+
+    /**
+     * Register namespace for route group
+     *
+     * @param string $namespace
+     * @return self
+     */
+    public function setNamespace($namespace)
+    {
+        $this->_namespace = $namespace;
         return $this;
     }
 
@@ -118,6 +137,11 @@ class RouteGroup
 
         #Set route's origin
         $registered_route->setEnableCors($this->_enable_cors);
+
+        #Check for middlewares
+        if($this->_middlewares) {
+            $registered_route->use($this->_middlewares);
+        }
 
         #Set route's namespace
         if($this->_namespace) {

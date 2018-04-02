@@ -1,9 +1,7 @@
 <?php
 
-use App\Core\Tools\Auth;
-use App\Core\Tools\Csrf;
+use App\Middlewares\Authentication;
 
 return array(
-    'auth' => Auth::class,
-    'csrf' => Csrf::class
+    'auth' => Authentication::class
 );

@@ -8,5 +8,5 @@ use App\Core\Http\Response;
 
 interface MiddlewareInterface
 {
-    public function handle(Request $request, Response $response);
+    public function trigger(Request $request);
 }

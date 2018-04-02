@@ -13,6 +13,7 @@ class Cli
     const COMMAND_CONTROLLER = '--makeController';
     const COMMAND_HELPER = '--makeHelper';
     const COMMAND_EXCEPTION = '--makeException';
+    const COMMAND_MIDDLEWARE = '--makeMiddleware';
     const COMMAND_CSS = '--css';
     const COMMAND_JSCRIPT = '--js';
     const COMMAND_HELP = '--help';
@@ -48,7 +49,8 @@ class Cli
             self::COMMAND_PROVIDER,
             self::COMMAND_CSS,
             self::COMMAND_JSCRIPT,
-            self::COMMAND_HELP
+            self::COMMAND_HELP,
+            self::COMMAND_MIDDLEWARE
         );
 
         foreach (array_slice($args, 1) as $arg) {
@@ -128,6 +130,10 @@ class Cli
 
             case self::COMMAND_EXCEPTION:
                 $this->buildException($action);
+                break;
+
+            case self::COMMAND_MIDDLEWARE:
+                $this->buildMiddleware($action);
                 break;
 
             case self::COMMAND_CSS:
@@ -322,6 +328,31 @@ class Cli
         catch(FileSystemException $e) {
             static::respond($e->getMessage());
             static::respond('create model failed', true);
+        }
+    }
+
+    /**
+     * CLI Model builder
+     *
+     * @param string $name
+     * @return void
+     */
+    private function buildMiddleware($name)
+    {
+        $filename = $this->addExt($name);
+        $template = $this->getReservedTemplate('middleware');
+        $middleware_path = APP_MIDDLEWARES_PATH . DS . $filename;
+        $refined_template = strtr($template, ['{className}' => $this->getClassName($name)]);
+
+        try {
+            static::respond('creating middleware: ' . $filename);
+            $file = new File($middleware_path, true, true);
+            $file->write($refined_template);
+            static::respond('created middleware: ' . $filename);
+        }
+        catch(FileSystemException $e) {
+            static::respond($e->getMessage());
+            static::respond('create middleware failed', true);
         }
     }
 

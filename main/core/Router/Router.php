@@ -73,16 +73,17 @@ class Router
 
         $namespace = $options['namespace'] ?? null;
         $cors = $options['cors'] ?? true;
+        $middlewares = $options['use'] ?? null;
 
         $group = (new RouteGroup($parent, $this))
+                    ->setMiddlewares($middlewares)
                     ->setNamespace($namespace)
                     ->setEnableCors($cors);
 
-        if(!$fn) {
-            return $group;
+        if($fn) {
+            $fn($group);
         }
 
-        $fn($group);
         return $group;
     }
     

@@ -97,11 +97,7 @@ class Route
      */
     public function engageMiddleware(Request $request)
     {
-        foreach($this->getMiddlewares() as $middleware) {
-            $request->useMiddleware($middleware);
-        }
-
-        return $request;
+       return $request->useMiddleware($this->_middlewares);
     }
 
     /**
@@ -231,16 +227,6 @@ class Route
     public function getController()
     {
         return $this->_controller;
-    }
-
-    /**
-     * Return Assigned Middlewares
-     *
-     * @return string[]
-     */
-    public function getMiddlewares()
-    {
-        return $this->_middlewares;
     }
 
     /**
