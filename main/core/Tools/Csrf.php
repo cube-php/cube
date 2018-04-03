@@ -54,16 +54,4 @@ class Csrf
     {
         return ((string) $token === static::get());
     }
-
-    /**
-     * Middleware handler
-     *
-     * @param Request $request
-     * @param Response $response
-     * @return void
-     */
-    public function handle(Request $request, Response $response)
-    {
-        return static::isValid($request->input('csrf_token'));
-    }
 }

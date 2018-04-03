@@ -8,6 +8,13 @@ use App\Core\Http\Controller;
 
 class CubeController extends Controller
 {
+    /**
+     * Home controller
+     *
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
     public function home(Request $request, Response $response)
     {   
         return $response->renderView('home');

@@ -110,7 +110,7 @@ class Response implements ResponseInterface
      * @var bool
      */
     private $_has_render_headers = false;
-
+    
     /**
      * View data
      * 
@@ -211,7 +211,7 @@ class Response implements ResponseInterface
      */
     public function withSession($name, $value)
     {
-        add_session($name, $value);
+        Session::set($name, $value);
         return $this;
     }
 
