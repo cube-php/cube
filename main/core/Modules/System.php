@@ -33,16 +33,6 @@ class System
     }
 
     /**
-     * Return database tables
-     *
-     * @return mixed
-     */
-    public function dbTables()
-    {
-
-    }
-
-    /**
      * Init system commands
      *
      * @return string
@@ -60,6 +50,26 @@ class System
             Cli::respond($e->getMessage(), true);
         }
             
+    }
+
+    /**
+     * Load up all schemas
+     *
+     * @return void
+     */
+    public function schemas()
+    {
+        $tables = DB::tables();
+        if(!$tables) {
+            Cli::respond('No schemas created yet', true);
+        }
+
+        Cli::respond('FETCHING DATABASE SCHEMAS...');
+        Cli::respond('');
+
+        foreach($tables as $table) {
+            Cli::respond($table);
+        }
     }
 
     /**
