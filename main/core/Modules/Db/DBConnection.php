@@ -7,6 +7,7 @@ use PDOStatement;
 use PDOException;
 
 use App\Core\App;
+use App\Core\Exceptions\DBException;
 
 class DBConnection
 {
@@ -65,10 +66,10 @@ class DBConnection
         try {
 
             $this->connection = new PDO($dsn, $username, $password, $opts);
+            static::$_connected = true;
 
         } catch (PDOException $e) {
-
-            //Message should be logged
+            throw new DBException('Unable to establish database connection', 500);
         }
     }
 
@@ -151,6 +152,10 @@ class DBConnection
      */
     public function query($sql, array $params = [])
     {
+        if(!$this->connection) {
+            throw new DBException('Connection failed');
+        }
+
         $stmt = $this->connection->prepare($sql);
         
         if(count($params)) {

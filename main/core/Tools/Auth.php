@@ -54,9 +54,6 @@ class Auth
      */
     public static function attempt($combination, $remember = false)
     {
-        #Check schema
-        static::up();
-
         #Load the auth configuaration
         $config = static::getConfig();
 
@@ -240,7 +237,7 @@ class Auth
      *
      * @return boolean
      */
-    private static function up()
+    public static function up()
     {
         $cookie_table = DB::table(static::$_cookie_token_dbname);
 

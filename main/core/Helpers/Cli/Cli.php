@@ -3,6 +3,7 @@
 namespace App\Core\Helpers\Cli;
 
 use App\Core\Misc\File;
+use App\Core\Modules\System;
 use App\Core\Exceptions\FileSystemException;
 
 class Cli
@@ -17,6 +18,7 @@ class Cli
     const COMMAND_CSS = '--css';
     const COMMAND_JSCRIPT = '--js';
     const COMMAND_HELP = '--help';
+    const COMMAND_SYSTEM = '--system';
 
     private $_default_templates = '.reserved';
 
@@ -50,7 +52,8 @@ class Cli
             self::COMMAND_CSS,
             self::COMMAND_JSCRIPT,
             self::COMMAND_HELP,
-            self::COMMAND_MIDDLEWARE
+            self::COMMAND_MIDDLEWARE,
+            self::COMMAND_SYSTEM
         );
 
         foreach (array_slice($args, 1) as $arg) {
@@ -150,6 +153,10 @@ class Cli
 
             case self::COMMAND_HELP:
                 $this->buildHelp();
+                break;
+
+            case self::COMMAND_SYSTEM:
+                $this->runSystemCommand($action);
                 break;
 
             default:
@@ -430,12 +437,24 @@ class Cli
     }
 
     /**
+     * Executes system command logic
+     *
+     * @param string $action
+     * @return self
+     */
+    private function runSystemCommand($action)
+    {
+        $system = new System;
+        return call_user_func([$system, $action]);
+    }
+
+    /**
      * CLI Response renderer
      *
      * @param [type] $msg
      * @return string
      */
-    private static function respond($msg, $kill = false)
+    public static function respond($msg, $kill = false)
     {
         echo "php-cube: {$msg} ". PHP_EOL;
         if($kill) {

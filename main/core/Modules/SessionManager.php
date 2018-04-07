@@ -20,7 +20,12 @@ class SessionManager
      * Check if the session table has been created
      */
     public function __construct() {
-        $this->up();
+        /**
+         * Switched the initialization to be powered by the 
+         * Command line to free up system
+         * 
+         * $this->up();
+         */
     }
 
     /**
@@ -128,6 +133,16 @@ class SessionManager
     }
 
     /**
+     * Initialize Session manager
+     *
+     * @return void
+     */
+    public function init()
+    {
+        return $this->up();
+    }
+
+    /**
      * Build session schema
      * 
      * For session handler
@@ -146,5 +161,6 @@ class SessionManager
         });
 
         static::$can_run = true;
+        return true;
     }
 }
