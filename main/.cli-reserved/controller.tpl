@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers{subNamespace};
 
 use App\Core\Http\Response;
 use App\Core\Http\Request;

@@ -237,7 +237,10 @@ class Cli
         $filename = $this->addExt($name);
         $template = $this->getReservedTemplate('controller');
         $model_path = APP_CONTROLLERS_PATH . DS . $filename;
-        $refined_template = strtr($template, ['{className}' => $this->getClassName($name)]);
+        $refined_template = strtr($template, [
+            '{className}' => $this->getClassName($name),
+            '{subNamespace}' => $this->getClassNamespace($name)
+        ]);
 
         try {
             static::respond('creating controller: ' . $filename);
@@ -262,7 +265,10 @@ class Cli
         $filename = $this->addExt($name);
         $template = $this->getReservedTemplate('exception');
         $exception_path = APP_EXCEPTIONS_PATH . DS . $filename;
-        $refined_template = strtr($template, ['{className}' => $this->getClassName($name)]);
+        $refined_template = strtr($template, [
+            '{className}' => $this->getClassName($name),
+            '{subNamespace}' => $this->getClassNamespace($name)
+        ]);
 
         try {
             static::respond('creating exception: ' . $filename);
@@ -324,7 +330,10 @@ class Cli
         $filename = $this->addExt($name);
         $template = $this->getReservedTemplate('model');
         $model_path = APP_MODELS_PATH . DS . $filename;
-        $refined_template = strtr($template, ['{className}' => $this->getClassName($name)]);
+        $refined_template = strtr($template, [
+            '{className}' => $this->getClassName($name),
+            '{subNamespace}' => $this->getClassNamespace($name)
+        ]);
 
         try {
             static::respond('creating model: ' . $filename);
@@ -349,7 +358,10 @@ class Cli
         $filename = $this->addExt($name);
         $template = $this->getReservedTemplate('middleware');
         $middleware_path = APP_MIDDLEWARES_PATH . DS . $filename;
-        $refined_template = strtr($template, ['{className}' => $this->getClassName($name)]);
+        $refined_template = strtr($template, [
+            '{className}' => $this->getClassName($name),
+            '{subNamespace}' => $this->getClassNamespace($name)
+        ]);
 
         try {
             static::respond('creating middleware: ' . $filename);
@@ -374,7 +386,10 @@ class Cli
         $filename = $this->addExt($name);
         $template = $this->getReservedTemplate('provider');
         $model_path = APP_PROVIDERS_PATH . DS . $filename;
-        $refined_template = strtr($template, ['{className}' => $this->getClassName($name)]);
+        $refined_template = strtr($template, [
+            '{className}' => $this->getClassName($name),
+            '{subNamespace}' => $this->getClassNamespace($name)
+        ]);
 
         try {
             static::respond('creating provider: ' . $filename);
@@ -401,6 +416,21 @@ class Cli
         $main_name = $name_vars[$vars_count - 1];
 
         return $main_name;
+    }
+
+    public function getClassNamespace($name)
+    {
+        $name_vars = explode('/', $name);
+        $vars_count = count($name_vars);
+
+        if(!$vars_count) {
+            return '';
+        }
+
+        $main_vars = array_slice($name_vars, 0, $vars_count - 1);
+        $child_namespace = implode('\\', $main_vars);
+
+        return '\\' . $child_namespace;
     }
 
     /**
