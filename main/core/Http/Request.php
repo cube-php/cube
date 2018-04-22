@@ -68,7 +68,7 @@ class Request implements RequestInterface
 
         if(!$ware) {
             throw new InvalidArgumentException
-                ('Middleware "'. $method .'" not found');
+                ('Custom method "'. $method .'" not assigned');
         }
         
         return call_user_func($this->_wares[$method], $args);
@@ -110,7 +110,7 @@ class Request implements RequestInterface
     /**
      * Return request headers
      *
-     * @return \App\Core\Http\Headers
+     * @return Headers
      */
     public function getHeaders()
     {
@@ -193,7 +193,7 @@ class Request implements RequestInterface
      *
      * @param string $name Input name
      *
-     * @return \App\Core\Misc\Input
+     * @return Input
      */
     public function input($name)
     {

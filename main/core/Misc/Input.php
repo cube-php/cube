@@ -67,7 +67,7 @@ class Input implements InputInterface
         $input_value = strtolower($this->value());
         $value = strtolower($this->value());
 
-        return $input_value === $value;
+        return $input_value == $value;
     }
 
     /**
