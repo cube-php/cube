@@ -235,18 +235,7 @@ class Uri implements UriInterface
 
         if(!$query) return $data;
 
-        $query_vars = explode('&', $query);
-
-        foreach($query_vars as $query_var)
-        {
-            $query_details = explode('=', $query_var);
-
-            $index = $query_details[0];
-            $value = $query_details[1] ?? '';
-
-            $data[$index] = $value;
-        }
-
+        parse_str($query, $data);
         $this->parsed_query = $data;
         return $this;
     }
