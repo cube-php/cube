@@ -252,7 +252,7 @@ class Request implements RequestInterface
      */
     public function url()
     {
-        $scheme = $this->_server->get('request_scheme');
+        $scheme = $this->_server->isHTTPs() ? 'https' : 'http';
         $host = $this->_server->get('http_host');
         $uri = $this->_server->get('request_uri');
 

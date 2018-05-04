@@ -15,11 +15,9 @@ class Server extends Collection implements ServerInterface
      */
     public function __construct($attributes = null)
     {
-
         if(!isset($_SERVER)) return;
 
-        foreach($_SERVER as $attribute => $value)
-        {
+        foreach($_SERVER as $attribute => $value) {
             $this->set($attribute, $value);
         }
     }
