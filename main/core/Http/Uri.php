@@ -13,42 +13,42 @@ class Uri implements UriInterface
      * 
      * @var string
      */
-    private $host = '';
+    private $_host = '';
 
     /**
      * Url scheme
      * 
      * @var string
      */
-    private $scheme = '';
+    private $_scheme = '';
 
     /**
      * Query string
      * 
      * @var string
      */
-    private $query = '';
+    private $_query = '';
 
     /**
      * Url port
      * 
      * @var int|null
      */
-    private $port = null;
+    private $_port = null;
 
     /**
      * Url pathname
      * 
      * @var string
      */
-    private $path = '/';
+    private $_path = '/';
 
     /**
      * Query string in array format
      * 
      * @var string[]
      */
-    private $parsed_query;
+    private $_parsed_query;
     
     /**
      * Uri constructor
@@ -76,7 +76,7 @@ class Uri implements UriInterface
      */
     public function getFullUrl()
     {
-        $query = ($this->query) ? '?' . $this->query : '';
+        $query = ($this->_query) ? '?' . $this->_query : '';
         return $this->getUrl() . $query;
     }
 
@@ -87,7 +87,7 @@ class Uri implements UriInterface
      */
     public function getPath()
     {
-        return $this->path;
+        return $this->_path;
     }
 
     /**
@@ -96,7 +96,7 @@ class Uri implements UriInterface
      * @return int|null
      */
     public function getPort() {
-        return $this->port;
+        return $this->_port;
     }
 
     /**
@@ -106,8 +106,8 @@ class Uri implements UriInterface
      */
     public function getUrl($with_scheme = true)
     {
-        $url = $with_scheme ?$this->scheme : '';
-        $url .= '://' . $this->host . $this->path;
+        $url = $with_scheme ? $this->_scheme : '';
+        $url .= '://' . $this->_host . $this->_path;
 
         return $url;
     }
@@ -127,7 +127,7 @@ class Uri implements UriInterface
      * @return string
      */
     public function getHost() {
-        return $this->host;
+        return $this->_host;
     }
 
     /**
@@ -136,7 +136,7 @@ class Uri implements UriInterface
      * @return string
      */
     public function getScheme() {
-        return $this->scheme;
+        return $this->_scheme;
     }
 
     /**
@@ -147,7 +147,7 @@ class Uri implements UriInterface
      * @return string
      */
     public function getQuery($name) {
-        return $this->parsed_query[$name] ?? null;
+        return $this->_parsed_query[$name] ?? null;
     }
 
     /**
@@ -156,7 +156,7 @@ class Uri implements UriInterface
      * @return string
      */
     public function getQueryParams() {
-        return $this->query;
+        return $this->_query;
     }
 
     /**
@@ -197,27 +197,27 @@ class Uri implements UriInterface
 
         #Let's get scheme
         $url_scheme = explode(':', $url)[0];
-        $this->scheme = $url_scheme;
+        $this->_scheme = $url_scheme;
 
         #Let's get host name
         $url_host_vars = explode($url_scheme . '://', $url)[1];
         $url_host = explode('/', $url_host_vars)[0];
-        $this->host = $url_host;
+        $this->_host = $url_host;
 
         #Get query string
         $query_string = explode('?', $url)[1] ?? null;
-        $this->query = $query_string;
+        $this->_query = $query_string;
 
         #Get port number
         $url_port = explode(':', $url_host);
-        $this->port = $url_port[0] ?? null;
+        $this->_port = $url_port[0] ?? null;
 
         #Get url path
         $url_path_vars  = explode('/', $url_host_vars);
         $url_path_chunks = array_slice($url_path_vars, 1);
         $url_path_join = implode('/', $url_path_chunks);
         $url_path = '/' . explode('?', $url_path_join)[0];
-        $this->path = (substr($url_path, -1, 1) === '/') ? $url_path : $url_path . '/';
+        $this->_path = (substr($url_path, -1, 1) === '/') ? $url_path : $url_path . '/';
 
         #Parse query params
         $this->parseQueryParams();
@@ -230,13 +230,13 @@ class Uri implements UriInterface
      */
     private function parseQueryParams()
     {
-        $query = $this->query;
+        $query = $this->_query;
         $data = array();
 
         if(!$query) return $data;
 
         parse_str($query, $data);
-        $this->parsed_query = $data;
+        $this->_parsed_query = $data;
         return $this;
     }
 }

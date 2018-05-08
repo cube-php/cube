@@ -12,6 +12,7 @@ use App\Core\Http\Uri;
 
 use App\Core\Misc\FilesParser;
 use App\Core\Misc\Inputs;
+use App\Core\Misc\Input;
 use App\Core\App;
 
 class Request implements RequestInterface

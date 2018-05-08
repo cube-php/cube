@@ -11,6 +11,7 @@ use App\Core\Modules\Db\DBInsert;
 use App\Core\Modules\Db\DBReplace;
 use App\Core\Modules\Db\DBSelect;
 use App\Core\Modules\Db\DBUpdate;
+use App\Core\Modules\Db\DBQueryBuilder;
 use App\Core\Modules\Db\DBSchemaBuilder;
 use App\Core\Modules\Db\DBTableBuilder;
 use App\Core\Modules\Db\DBWordConstruct;
@@ -101,7 +102,7 @@ class DBTable
     /**
      * Delete from table
      * 
-     * @return DBDelete
+     * @return DBDelete|DBQueryBuilder
      */
     public function delete()
     {
@@ -156,8 +157,7 @@ class DBTable
 
         $fields = array();
 
-        while($fetch = $query->fetch())
-        {
+        while($fetch = $query->fetch()) {
             $fields[] = $fetch->Field;
         }
 
@@ -255,7 +255,7 @@ class DBTable
     /**
      * Select from table
      * 
-     * @return DBSelect
+     * @return DBSelect|DBQUeryBuilder
      */
     public function select(array $fields)
     {
@@ -268,7 +268,7 @@ class DBTable
      * @param string $statement Sql statement
      * @param string $param Sql parameters
      *
-     * @return DBQueryBuilder
+     * @return DBQueryBuilder|DBSelect
      */
     public function selectRaw($statement, $params = [])
     {
@@ -305,7 +305,7 @@ class DBTable
      * 
      * @param string[] $entry New update entry
      * 
-     * @return DBUpdate
+     * @return DBUpdate|DBQueryBuilder
      */
     public function update(array $entry)
     {

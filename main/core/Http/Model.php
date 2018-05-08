@@ -4,6 +4,7 @@ namespace App\Core\Http;
 
 use App\Core\Modules\DB;
 use App\Core\Modules\Db\DBSelect;
+use App\Core\Modules\Db\DBQueryBuilder;
 
 class Model
 {
@@ -212,7 +213,7 @@ class Model
     /**
      * Run custom queries on model's schema
      *
-     * @return DBSelect
+     * @return DBSelect|DBQueryBuilder
      */
     public static function select()
     {

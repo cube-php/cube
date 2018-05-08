@@ -423,9 +423,11 @@ class Cli
         $name_vars = explode('/', $name);
         $vars_count = count($name_vars);
 
-        if(!$vars_count) {
+        if($vars_count == 1) {
             return '';
         }
+
+        echo $vars_count;
 
         $main_vars = array_slice($name_vars, 0, $vars_count - 1);
         $child_namespace = implode('\\', $main_vars);

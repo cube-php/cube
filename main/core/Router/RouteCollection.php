@@ -20,28 +20,29 @@ class RouteCollection
      * 
      * @var \Route[]
      */
-    private static $routes = array();
+    private static $_routes = array();
 
     /**
      * Routes on request method
      * 
      * @var Route[]
      */
-    private static $attached_routes = array();
+    private static $_attached_routes = array();
 
     /**
      * Request interface
      * 
      * @var Request
      */
-    private $request;
+    private $_request;
 
     /**
      * Class constructor
      * 
      */
-    public function __construct(){
-        $this->request = new Request;
+    public function __construct()
+    {
+        $this->_request = new Request;
     }
 
     /**
@@ -52,7 +53,7 @@ class RouteCollection
     public static function attachRoute(Route $route)
     {
         #Attach route to all routes
-        static::$routes[] = $route;
+        static::$_routes[] = $route;
 
         $request = new Request;
 
@@ -60,7 +61,7 @@ class RouteCollection
         if($route->getMethod() && $request->getMethod() !== $route->getMethod()) {
             return $route;
         }
-        static::$attached_routes[] = $route;
+        static::$_attached_routes[] = $route;
         return $route;
     }
 
@@ -73,11 +74,11 @@ class RouteCollection
     {
 
         $path_match_found = false;
-        $current_request_method = $this->request->getMethod();
-        $raw_current_url = (string) $this->request->url()->getPath();
+        $current_request_method = $this->_request->getMethod();
+        $raw_current_url = (string) $this->_request->url()->getPath();
         $current_url = $this->trimPath($raw_current_url);
 
-        foreach(static::$attached_routes as $route)
+        foreach(static::$_attached_routes as $route)
         {
             
             if($path_match_found) return true;
@@ -104,23 +105,20 @@ class RouteCollection
                         $value = substr($value, 0, strlen($value) - 1);
                     }
 
-                    $this->request->setAttribute($name, $value);
+                    $this->_request->setAttribute($name, $value);
                 });
 
                 #Do any other events when route is matched
                 EventManager::dispatchEvent(
-                    $this->request,
+                    $this->_request,
                     App::EVENT_ROUTE_MATCH_FOUND
                 );
-
-                #Set Middlewares
-                $request = $route->engageMiddleware($this->request);
                 
                 #Get parsed response
                 $response = $route->parseResponse((new Response));
 
                 #Instantiate route controller
-                $route->initController($request, $response);
+                $route->initController($this->_request, $response);
                 
                 return true;
             }
@@ -128,7 +126,7 @@ class RouteCollection
 
         #Oh no, no matches
         EventManager::dispatchEvent(
-            $this->request,
+            $this->_request,
             App::EVENT_ROUTE_NO_MATCH_FOUND
         );
     }
