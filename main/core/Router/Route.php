@@ -91,6 +91,17 @@ class Route
     }
 
     /**
+     * Add specified middlewares to request
+     *
+     * @param Request $request
+     * @return Request
+     */
+    public function engageMiddleware(Request $request)
+    {
+        return $request->useMiddleware($this->_middlewares);
+    }
+
+    /**
      * Set route controller
      * 
      * @param string $controller Controller pattern
