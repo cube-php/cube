@@ -3,7 +3,7 @@
 namespace App\Core\Http;
 
 use InvalidArgumentException;
-
+use App\Core\App;
 use App\Core\Interfaces\UriInterface;
 
 class Uri implements UriInterface
@@ -195,6 +195,9 @@ class Uri implements UriInterface
             throw new InvalidArgumentException('Argument "$url" is not a valid url');
         }
 
+        $config = App::getConfigByName('app');
+        $directory = $config['directory'];
+
         #Let's get scheme
         $url_scheme = explode(':', $url)[0];
         $this->_scheme = $url_scheme;
@@ -203,6 +206,9 @@ class Uri implements UriInterface
         $url_host_vars = explode($url_scheme . '://', $url)[1];
         $url_host = explode('/', $url_host_vars)[0];
         $this->_host = $url_host;
+        if($directory) {
+            $this->_host .= $directory;
+        }
 
         #Get query string
         $query_string = explode('?', $url)[1] ?? null;
@@ -218,6 +224,9 @@ class Uri implements UriInterface
         $url_path_join = implode('/', $url_path_chunks);
         $url_path = '/' . explode('?', $url_path_join)[0];
         $this->_path = (substr($url_path, -1, 1) === '/') ? $url_path : $url_path . '/';
+        if($directory) {
+            $this->_path = preg_replace("#{$directory}#", "", $this->_path);
+        }
 
         #Parse query params
         $this->parseQueryParams();

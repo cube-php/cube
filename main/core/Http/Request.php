@@ -46,6 +46,13 @@ class Request implements RequestInterface
     public $_wares = array();
 
     /**
+     * Url
+     *
+     * @var Uri
+     */
+    public static $_url;
+
+    /**
      * Class constructor
      * 
      */
@@ -253,19 +260,16 @@ class Request implements RequestInterface
      */
     public function url()
     {
-        $config = (object) App::getConfigByName('app');
-        $directory = $config->directory;
+        if(static::$_url) {
+            return static::$_url;
+        }
 
         $scheme = $this->_server->isHTTPs() ? 'https' : 'http';
         $host = $this->_server->get('http_host');
         $uri = $this->_server->get('request_uri');
 
-        if($directory) {
-            $host .= $directory;
-            $uri = preg_replace("#{$directory}#", '', $uri);
-        }
-
-        return new Uri($scheme . '://' . $host . $uri);
+        static::$_url = new Uri($scheme . '://' . $host . $uri);
+        return static::$_url;
     }
 
     /**
