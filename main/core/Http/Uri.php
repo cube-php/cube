@@ -65,7 +65,8 @@ class Uri implements UriInterface
      * 
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getFullUrl();
     }
 
@@ -95,7 +96,8 @@ class Uri implements UriInterface
      * 
      * @return int|null
      */
-    public function getPort() {
+    public function getPort()
+    {
         return $this->_port;
     }
 
@@ -117,7 +119,8 @@ class Uri implements UriInterface
      * 
      * @return string
      */
-    public function getUrlWithoutScheme() {
+    public function getUrlWithoutScheme()
+    {
         return $this->getUrl(false);
     }
 
@@ -126,7 +129,8 @@ class Uri implements UriInterface
      * 
      * @return string
      */
-    public function getHost() {
+    public function getHost()
+    {
         return $this->_host;
     }
 
@@ -135,19 +139,34 @@ class Uri implements UriInterface
      * 
      * @return string
      */
-    public function getScheme() {
+    public function getScheme()
+    {
         return $this->_scheme;
     }
 
     /**
      * Return query
      * 
-     * @param name
-     * 
+     * @param string $name Name fields
+     * @param mixed $otherwise Another value if then query key doesn't exist
      * @return string
      */
-    public function getQuery($name) {
-        return $this->_parsed_query[$name] ?? null;
+    public function getQuery($name, $otherwise = null)
+    {
+        $name_vars = explode(',', $name);
+        $name_vars_count = count($name_vars);
+
+        if($name_vars == 1) {
+            return $this->_parsed_query[$name] ?? $otherwise;
+        }
+
+        $keys = [];
+
+        foreach($name_vars as $key) {
+            $keys[] = $this->_parsed_query[$key] ?? $otherwise;
+        }
+
+        return $keys;
     }
 
     /**
