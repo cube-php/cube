@@ -253,9 +253,17 @@ class Request implements RequestInterface
      */
     public function url()
     {
+        $config = (object) App::getConfigByName('app');
+        $directory = $config->directory;
+
         $scheme = $this->_server->isHTTPs() ? 'https' : 'http';
         $host = $this->_server->get('http_host');
         $uri = $this->_server->get('request_uri');
+
+        if($directory) {
+            $host .= $directory;
+            $uri = preg_replace("#{$directory}#", '', $uri);
+        }
 
         return new Uri($scheme . '://' . $host . $uri);
     }

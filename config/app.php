@@ -36,6 +36,13 @@ return array(
      * 
      * @var Boolean
      */
-    'force_https' => false
+    'force_https' => false,
+
+    /**
+     * Specify app directory
+     * 
+     * if app is not installed in the root directory
+     */
+    'directory' => ''
 
 );
