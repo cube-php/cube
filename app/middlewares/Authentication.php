@@ -17,9 +17,15 @@ class Authentication implements MiddlewareInterface
     */
     public function trigger(Request $request)
     {   
-        if(!Auth::user()) {
+        $user = Auth::user();
+
+        if(!$user) {
             return redirect('/login');
         }
+
+        $request->setCustomMethod(function () use ($user) {
+            return $user;
+        });
 
         return $request;
     }

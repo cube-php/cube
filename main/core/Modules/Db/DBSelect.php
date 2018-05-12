@@ -141,13 +141,17 @@ class DBSelect extends DBQueryBuilder
      * 
      * @return self
      */
-    public function orderBy(array $orders)
+    public function orderBy($orders)
     {
+
+        if(!$orders) {
+            return $this;
+        }
 
         $orders_list = [];
 
-        foreach($orders as $order) {
-            $orders_list[] = $order[0] . ' ' . $order[1];
+        foreach($orders as $field => $method) {
+            $orders_list[] = $field . ' ' . $method;
         }
         
         $this->joinSql(null, 'ORDER BY', implode(', ', $orders_list));
@@ -244,7 +248,7 @@ class DBSelect extends DBQueryBuilder
         $stmt = DB::statement($sql, $params);
         
         if(!$stmt->rowCount()) {
-            return null;
+            return [];
         }
 
         return $stmt->fetchAll();

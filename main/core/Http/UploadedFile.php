@@ -3,9 +3,7 @@
 namespace App\Core\Http;
 
 use InvalidArgumentException;
-
 use App\Core\Misc\Storage;
-
 use App\Core\Interfaces\UploadedFileInterface;
 
 class UploadedFile implements UploadedFileInterface

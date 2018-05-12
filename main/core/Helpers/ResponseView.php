@@ -3,6 +3,7 @@
 namespace App\Core\Helpers;
 
 use Dwoo\Core;
+use App\Core\Exceptions\ResponseViewException;
 
 class ResponseView
 {
@@ -45,11 +46,10 @@ class ResponseView
 
         $filename = VIEW_PATH . DS . $file . $this->extension;
         if(!file_exists($filename)) {
-            throw new ResponseViewException($file . '.mustache not found in ' . VIEW_PATH);
+            throw new ResponseViewException($file . '.tpl not found in ' . VIEW_PATH);
         }
 
         $this->path = $filename;
-
         $this->dwoo = new Core;
     }
 
@@ -88,8 +88,7 @@ class ResponseView
      */
     public static function multiAssign($items)
     {
-        foreach($items as $field => $value)
-        {
+        foreach($items as $field => $value) {
             static::assign($field, $value);
         }
     }

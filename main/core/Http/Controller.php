@@ -3,7 +3,6 @@
 namespace App\Core\Http;
 
 use App\Core\Http\Request;
-
 use App\Core\Helpers\ResponseView;
 
 class Controller

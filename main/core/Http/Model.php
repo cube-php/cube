@@ -41,11 +41,8 @@ class Model
     public static function all(array $order = [], array $opts = [])
     {
         $query = DB::table(static::$schema)
-                    ->select(static::$fields);
-                
-        if($order) {
-            $query->orderBy([$order]);
-        }
+                    ->select(static::$fields)
+                    ->orderBy($order);
 
         return $opts ? 
             call_user_func_array([$query, 'fetch'], $opts) : $query->fetchAll();
@@ -68,15 +65,16 @@ class Model
      *
      * @param string $field Field name
      * @param mixed $value Field value
-     * @param array $params Parameters
-     * 
-     * @return array|null
+     * @param array|null $order Order methods
+     * @param array|null $params Parameters
+     * @return array
      */
-    public static function findAllBy($field, $value, $params = [])
+    public static function findAllBy($field, $value, $order = null, $params = null)
     {
         $query = DB::table(static::$schema)
                  ->select(static::$fields)
-                 ->where($field, $value);
+                 ->where($field, $value)
+                 ->orderBy($order);
 
         if(!$params) {
             return call_user_func([$query, 'fetchAll']);
@@ -208,6 +206,16 @@ class Model
         return DB::table(static::$schema)
                 ->select(static::$fields)
                 ->getLast(($field ?? static::$primary_key));
+    }
+
+    /**
+     * Query schema's table directly
+     *
+     * @return DBTable;
+     */
+    public static function query()
+    {
+        return DB::table(static::$schema);
     }
 
     /**
