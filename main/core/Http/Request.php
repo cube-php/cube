@@ -25,20 +25,6 @@ class Request implements RequestInterface
     private $attributes = array();
 
     /**
-     * Server
-     * 
-     * @var Server
-     */
-    private $_server;
-
-    /**
-     * Header
-     * 
-     * @var Headers
-     */
-    private $_headers;
-
-    /**
      * Middlewares
      * 
      * @var string[]
@@ -46,11 +32,32 @@ class Request implements RequestInterface
     public $_wares = array();
 
     /**
+     * Server
+     * 
+     * @var Server
+     */
+    private static $_server;
+
+    /**
+     * Header
+     * 
+     * @var Headers
+     */
+    private static $_headers;
+
+    /**
      * Url
      *
      * @var Uri
      */
-    public static $_url;
+    private static $_url;
+    
+    /**
+     * Input
+     *
+     * @var Input
+     */
+    private static $_input;
 
     /**
      * Class constructor
@@ -58,8 +65,7 @@ class Request implements RequestInterface
      */
     public function __construct()
     {
-        $this->_server = new Server();
-        $this->_headers = new Headers();
+        //Nothing to do here
     }
 
     /**
@@ -122,7 +128,12 @@ class Request implements RequestInterface
      */
     public function getHeaders()
     {
-        return $this->_headers;
+        if(static::$_headers) {
+            return static::$_headers;
+        }
+
+        static::$_headers = new Headers();
+        return static::$_headers;
     }
 
     /**
@@ -132,7 +143,12 @@ class Request implements RequestInterface
      */
     public function getServer()
     {
-        return $this->_server;
+        if(static::$_server) {
+            return static::$_server;
+        }
+
+        static::$_server = new Server();
+        return static::$_server;
     }
 
     /**
@@ -168,7 +184,7 @@ class Request implements RequestInterface
      */
     public function getMethod()
     {
-        return strtolower($this->_server->get('request_method'));
+        return strtolower($this->getServer()->get('request_method'));
     }
 
     /**
@@ -200,12 +216,30 @@ class Request implements RequestInterface
      * Get input
      *
      * @param string $name Input name
-     *
+     * @param string $defaults Default value if input isn't found
      * @return Input
      */
-    public function input($name)
+    public function input($name, $defaults = null)
     {
-        return $this->inputs()->get($name);
+        $names = explode(',', $name);
+        
+        if(count($names) == 1) {
+            $input = $this->inputs()->get($name)->value() ?? $defaults;
+            return new Input($input, $name);
+        }
+
+        $names = array_map('trim', $names);
+        $defaults_vars = explode(',', $defaults);
+        $single_default = count($defaults_vars) == 1;
+        $inputs = [];
+
+        foreach($names as $index => $rname) {
+            $default = $single_default ? $defaults : $defaults_vars[$index];
+            $input = $this->inputs()->get($rname)->value() ?? $default;
+            $inputs[] = new Input($input, $rname);
+        }
+
+        return $inputs;
     }
 
     /**
@@ -215,8 +249,12 @@ class Request implements RequestInterface
      */
     public function inputs()
     {
-        $inputs = new Inputs;
-        return $inputs;
+        if(static::$_input) {
+            return static::$_input;
+        }
+
+        static::$_input = new Inputs($this->getBody());
+        return static::$_input;
     }
 
     /**
@@ -264,9 +302,9 @@ class Request implements RequestInterface
             return static::$_url;
         }
 
-        $scheme = $this->_server->isHTTPs() ? 'https' : 'http';
-        $host = $this->_server->get('http_host');
-        $uri = $this->_server->get('request_uri');
+        $scheme = $this->getServer()->isHTTPs() ? 'https' : 'http';
+        $host = $this->getServer()->get('http_host');
+        $uri = $this->getServer()->get('request_uri');
 
         static::$_url = new Uri($scheme . '://' . $host . $uri);
         return static::$_url;

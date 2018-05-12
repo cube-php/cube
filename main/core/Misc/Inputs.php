@@ -13,10 +13,10 @@ class Inputs extends Collection
      * Inputs constructor
      * 
      */
-    public function __construct()
+    public function __construct($content)
     {
-        foreach($_POST as $index => $value)
-        {
+        $parse = parse_str($content, $data);
+        foreach($data as $index => $value) {
             $this->set($index, $value);
         }
     }
@@ -38,7 +38,6 @@ class Inputs extends Collection
         }
 
         if(!is_array($value)) return new Input($value, $var);
-
         return $value;
     }
 }
