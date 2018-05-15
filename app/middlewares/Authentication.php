@@ -23,7 +23,7 @@ class Authentication implements MiddlewareInterface
             return redirect('/login');
         }
 
-        $request->setCustomMethod(function () use ($user) {
+        $request->setCustomMethod('user', function () use ($user) {
             return $user;
         });
 
