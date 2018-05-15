@@ -3,6 +3,7 @@
 namespace App\Core\Http;
 
 use App\Core\Modules\DB;
+use App\Core\Modules\Db\DBTable;
 use App\Core\Modules\Db\DBSelect;
 use App\Core\Modules\Db\DBQueryBuilder;
 
@@ -211,7 +212,7 @@ class Model
     /**
      * Query schema's table directly
      *
-     * @return DBTable;
+     * @return DBTable
      */
     public static function query()
     {

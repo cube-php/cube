@@ -253,7 +253,8 @@ class Request implements RequestInterface
             return static::$_input;
         }
 
-        static::$_input = new Inputs($this->getBody());
+        $content = http_build_query($_POST);
+        static::$_input = new Inputs($content);
         return static::$_input;
     }
 
