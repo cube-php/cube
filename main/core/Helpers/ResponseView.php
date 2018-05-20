@@ -43,8 +43,10 @@ class ResponseView
      */
     public function __construct($file)
     {
+        $raw_file_vars = explode('.', $file);
+        $raw_filename = implode('/', $raw_file_vars);
 
-        $filename = VIEW_PATH . DS . $file . $this->extension;
+        $filename = VIEW_PATH . DS . $raw_filename . $this->extension;
         if(!file_exists($filename)) {
             throw new ResponseViewException($file . '.tpl not found in ' . VIEW_PATH);
         }

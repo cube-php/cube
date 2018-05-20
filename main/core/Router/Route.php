@@ -14,6 +14,13 @@ class Route
 {
 
     /**
+     * Prefix to register a view rather than a controller for route
+     *
+     * @var string
+     */
+    private $_view_prefix = '@';
+
+    /**
      * Route method
      * 
      * @var string[]
@@ -247,8 +254,14 @@ class Route
      */
     public function initController(Request $request, Response $response)
     {
+        #Check if route is registered with a view
+        $view_file_path = $this->_isReturnView();
+        if($view_file_path) {
+            return $response->view($view_file_path);
+        }
+
         #Parse controller
-        $this->_parseController();
+        $parse = $this->_parseController();
 
         if($this->_is_callble_controller) {
             return call_user_func_array($this->_controller, [$request, $response]);
@@ -317,6 +330,23 @@ class Route
 
         $this->_middlewares[] = $wares;
         return $this;
+    }
+
+    /**
+     * Return value if route is registered to return only view
+     *
+     * @return boolean|string
+     */
+    private function _isReturnView()
+    {
+        $controller = $this->_controller;
+        $first_value = substr($controller, 0, 1);
+
+        if($first_value != $this->_view_prefix) {
+            return false;
+        }
+
+        return substr($controller, 1);
     }
 
     /**

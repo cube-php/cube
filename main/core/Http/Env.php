@@ -43,7 +43,7 @@ class Env
 
         if(!file_exists($env_file)) {
             $file = new File($env_file, true);
-            $file->write('HELLO_WORLD="hello world"');
+            $file->write('');
         }
 
         if(!static::$_vars) {
