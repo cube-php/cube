@@ -83,6 +83,16 @@ class DBSelect extends DBQueryBuilder
     }
 
     /**
+     * Return query count
+     *
+     * @return int
+     */
+    public function getCount()
+    {
+        return $this->fetchOne()->count;
+    }
+
+    /**
      * Get first row based on specified field
      *
      * @param string $field Database table field
