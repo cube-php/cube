@@ -182,6 +182,18 @@ class Model
     }
 
     /**
+     * Return a raw query-able count query
+     *
+     * @return DBSelect
+     */
+    public static function getCountQuery()
+    {
+        $key = static::$primary_key;
+        return DB::table(static::$schema)
+                ->select(["count({$key}) as count"]);
+    }
+
+    /**
      * Get first entry based on specified field
      * Or primary key if field is not specified
      *
