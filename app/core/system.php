@@ -11,9 +11,9 @@
  * Every logic registered here, will be executed
  * When the command line is action below is commanded
  * 
- * $ php ./cube --system up
+ * $ php ./cube --system:init
  * 
- * Basically, no gui logic is expected here,
+ * Technically, no gui logic is expected here,
  * Only backend logic is adviced to be registered.
  * 
  * For example creating a database schema.

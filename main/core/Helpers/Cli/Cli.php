@@ -477,6 +477,11 @@ class Cli
     private function runSystemCommand($action)
     {
         $system = new System;
+
+        if(!is_callable([$system, $action])) {
+            return static::respond('Invalid system command', true);
+        }
+
         return call_user_func([$system, $action]);
     }
 
