@@ -16,7 +16,7 @@ class CubeController extends Controller
      * @return Response
      */
     public function home(Request $request, Response $response)
-    {   
-        return $response->view('home');
+    {
+        return $response->view('default.home');
     }
 }
