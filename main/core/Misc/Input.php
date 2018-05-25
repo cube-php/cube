@@ -14,14 +14,14 @@ class Input implements InputInterface
      * 
      * @var mixed
      */
-    private $key = '';
+    private $_key = '';
 
     /**
      * Value holder
      * 
      * @var mixed
      */
-    private $value = '';
+    private $_value = '';
 
     /**
      * Input constructor
@@ -31,18 +31,18 @@ class Input implements InputInterface
      */
     public function __construct($value, $key = '')
     {
-        $this->key = $key;
-        $this->value = $value;
+        $this->_key = $key;
+        $this->_value = $value;
     }
 
     /**
-     * Return $this->value when treated as string
+     * Return $this->_value when treated as string
      * 
      * @return string
      */
     public function __toString()
     {
-        return $this->value();
+        return (string) $this->getValue();
     }
 
     /**
@@ -53,21 +53,31 @@ class Input implements InputInterface
      */
     public function equals($value)
     {
-        return $this->value() == $value;
+        return $this->getValue() == $value;
     }
 
     /**
      * Check if input's value matches specified value disregarding case
      *
-     * @param [type] $value
+     * @param string|int $value
      * @return void
      */
     public function equalsIgnoreCase($value)
     {
-        $input_value = strtolower($this->value());
-        $value = strtolower($this->value());
+        $input_value = strtolower($this->getValue());
+        $value = strtolower($this->getValue());
 
         return $input_value == $value;
+    }
+
+    /**
+     * Input's value
+     *
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->_value ?? '';
     }
 
     /**
@@ -77,7 +87,7 @@ class Input implements InputInterface
      */
     public function isEmail()
     {
-        return filter_var($this->value, FILTER_VALIDATE_EMAIL);
+        return filter_var($this->_value, FILTER_VALIDATE_EMAIL);
     }
 
     /**
@@ -87,7 +97,7 @@ class Input implements InputInterface
      */
     public function isInt()
     {
-        return (is_numeric($this->value) || is_int($this->value));
+        return (is_numeric($this->_value) || is_int($this->_value));
     }
 
     /**
@@ -97,7 +107,7 @@ class Input implements InputInterface
      */
     public function isRegex()
     {
-        return filter_var($this->value, FILTER_VALIDATE_REGEXP);
+        return filter_var($this->_value, FILTER_VALIDATE_REGEXP);
     }
 
     /**
@@ -107,7 +117,7 @@ class Input implements InputInterface
      */
     public function isEmpty()
     {
-        return empty(trim($this->value));
+        return empty(trim($this->_value));
     }
 
     /**
@@ -117,7 +127,7 @@ class Input implements InputInterface
      */
     public function isUrl()
     {
-        return filter_var($this->value, FILTER_VALIDATE_URL);
+        return filter_var($this->_value, FILTER_VALIDATE_URL);
     }
 
     /**
@@ -129,7 +139,7 @@ class Input implements InputInterface
      */
     public function matches($regex)
     {
-        return !!preg_match($regex, $this->value);
+        return !!preg_match($regex, $this->_value);
     }
 
     /**
@@ -140,12 +150,12 @@ class Input implements InputInterface
     public function validate()
     {
 
-        if(!$this->key) {
+        if(!$this->_key) {
             throw new InvalidArgumentException
                 ('You are required to specify a key for input to use validator');
         }
 
-        return new InputValidator($this->key, $this->value);
+        return new InputValidator($this->_key, $this->_value);
     }
 
     /**
@@ -155,16 +165,18 @@ class Input implements InputInterface
      */
     public function toInt()
     {
-        return (int) $this->value();
+        return (int) $this->getValue();
     }
 
     /**
      * Return input's value
      * 
+     * @deprecated 0.12
+     * 
      * @return string
      */
     public function value()
     {
-        return $this->value;
+        return $this->getValue();
     }
 }
