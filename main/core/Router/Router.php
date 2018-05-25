@@ -68,8 +68,27 @@ class Router
      * 
      * @return RouteGroup
      */
-    public function group($parent, $options = [], $fn = null)
+    public function group(...$args)
     {
+        $num_args = func_num_args();
+        $parent = $args[0];
+
+        if($num_args < 2 || $num_args > 3) {
+            throw new InvalidArgumentException('Invalid route arguments');
+        }
+        
+        if($num_args == 2) {
+            $options = [];
+            $fn = $args[1];
+        } else {
+            $options = $args[1];
+
+            if(!is_array($options)) {
+                throw new InvalidArgumentException('Invalid route group options');
+            }
+
+            $fn = $args[2];
+        }
 
         $namespace = $options['namespace'] ?? null;
         $cors = $options['cors'] ?? true;

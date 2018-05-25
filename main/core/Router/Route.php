@@ -340,6 +340,11 @@ class Route
     private function _isReturnView()
     {
         $controller = $this->_controller;
+
+        if(!is_string($controller)) {
+            return false;
+        }
+
         $first_value = substr($controller, 0, 1);
 
         if($first_value != $this->_view_prefix) {
