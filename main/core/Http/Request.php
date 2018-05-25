@@ -217,7 +217,7 @@ class Request implements RequestInterface
      *
      * @param string $name Input name
      * @param string $defaults Default value if input isn't found
-     * @return Input
+     * @return Input|Input[]
      */
     public function input($name, $defaults = null)
     {
