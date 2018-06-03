@@ -320,6 +320,10 @@ class App
      */
     private function initRoutes()
     {
+        #Load up assigned routes
+        $this->loadDirFiles(APP_ROUTES_PATH);
+
+        #Build routes
         $routes = new RouteCollection();
         $routes->build();
     }   
@@ -368,11 +372,13 @@ class App
     }
 
     /**
-     * Loading configuration files
-     * 
+     * Load and require all files from specified directory
+     *
+     * @param string $dir_path Directory to load php files from
+     * @param boolean $save_to_instance Save included file to app's config instances
      * @return void
      */
-    private function loadDirFiles($dir_path)
+    private function loadDirFiles($dir_path, $save_to_instance = true)
     {
 
         #Oh dots
@@ -391,9 +397,16 @@ class App
             $extension = strtolower($ext = array_slice($name_vars, -1)[0]);
             $name = implode('.', $left_vars = array_splice($name_vars, 0, -1));
 
-            if($extension === 'php' && !isset(static::$config[$name])) {
-                static::$config[$name] = require_once($file_path);
+            if(!($extension === 'php' && !isset(static::$config[$name]))) {
+                continue;
             }
+
+            if($save_to_instance) {
+                static::$config[$name] = require_once($file_path);
+                continue;
+            }
+
+            require_once($file_path);
         }
     }
 }

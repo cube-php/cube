@@ -21,6 +21,9 @@ define('CORE_APP_PATH', APP_PATH . DS . 'main');
 #Main app directory
 define('MAIN_APP_PATH', APP_PATH . DS . 'app');
 
+#App's routes directory
+define('APP_ROUTES_PATH', MAIN_APP_PATH . DS . 'routes');
+
 # Set app view directory
 define('VIEW_PATH', MAIN_APP_PATH . DS . '/views');
 

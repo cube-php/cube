@@ -27,15 +27,6 @@ require_once MAIN_APP_PATH . DS . 'core' . DS . 'bootstrap.php';
 
 /**
  * -----------------------------------------------------
- * Let's use the routes
- * -----------------------------------------------------
- * Include specified routes to listen to
- * App registers routes and controllers respectively
- */
-require_once MAIN_APP_PATH . DS . 'core' . DS . 'routes.php';
-
-/**
- * -----------------------------------------------------
  * Let's start the app.
  * ----------------------------------------------------
  * Create an instance of app
