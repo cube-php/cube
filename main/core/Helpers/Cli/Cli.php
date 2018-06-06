@@ -444,7 +444,7 @@ class Cli
      */
     private function getReservedTemplate($action_type)
     {
-        $path = CORE_APP_PATH . DS . '.cli-reserved' . DS . "{$action_type}.tpl";
+        $path = __DIR__ . DS . '.cli-reserved' . DS . "{$action_type}.tpl";
         
         try {
             $file = new File($path);
