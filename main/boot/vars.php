@@ -31,7 +31,7 @@ define('VIEW_PATH', MAIN_APP_PATH . DS . '/views');
 define('CONFIG_PATH', APP_PATH . DS . 'config' . DS);
 
 # Storage path
-define('APP_STORAGE', APP_PATH . DS . 'storage' .  DS);
+define('APP_STORAGE', APP_PATH . DS . 'webroot' .  DS . 'assets');
 
 #Controllers Path
 define('APP_CONTROLLERS_PATH', MAIN_APP_PATH . DS . 'controllers');
