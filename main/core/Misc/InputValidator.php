@@ -102,7 +102,7 @@ class InputValidator
      */
     public function attachError($error, $vars = [])
     {
-       $vars['input'] = $this->_id;
+       $vars['input'] = strtolower(self::methodify($this->_id, ' '));
 
         foreach($vars as $key => $value)
         {
@@ -160,6 +160,16 @@ class InputValidator
     public static function getFirstError()
     {
         return static::getErrorByIndex(0);
+    }
+
+    /**
+     * Return all errors
+     *
+     * @return string[]
+     */
+    public static function getListedErrors()
+    {
+        return static::$_validation_errors_msgs;
     }
 
     /**
@@ -406,6 +416,12 @@ class InputValidator
         return $this;
     }
 
+    /**
+     * Register validators using stringified method names
+     *
+     * @param string $rules
+     * @return self
+     */
     public function validateStr($rules)
     {
         $methods = explode('|', $rules);
@@ -432,7 +448,14 @@ class InputValidator
         return $validator;
     }
 
-    private static function methodify($str)
+    /**
+     * Methodifier 
+     *
+     * @param string $str String to methodify
+     * @param string $delimeter Delimeter
+     * @return string
+     */
+    private static function methodify($str, $delimeter = '')
     {
         $vars = explode('_', $str);
         $val1 = $vars[0];
@@ -443,6 +466,6 @@ class InputValidator
         }, $other_vals);
 
         array_unshift($recap_vals, $val1);
-        return implode($recap_vals);
+        return implode($delimeter, $recap_vals);
     }
 }
