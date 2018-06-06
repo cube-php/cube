@@ -103,12 +103,40 @@ class Request implements RequestInterface
     /**
      * Get request body
      *
-     * @return object
+     * @param boolean $has_input Set whether body content should be wrapped as an input
+     * @param array $fields Fields to retrieve if return content is Input
+     * @return Input[]|mixed
      */
-    public function getBody()
+    public function getBody($has_input = false, $fields = [])
     {
         $contents = file_get_contents('php://input');
-        return $contents;
+
+        if(!$contents) {
+            return null;
+        }
+
+        if(!$has_input) {
+            return $contents;
+        }
+
+        $returns = [];
+        $fields = is_array($fields) ? $fields : explode(',', $fields);
+        $fields = array_map(function ($field) {
+            return trim($field);
+        }, $fields);
+
+        $data = json_decode($contents, true);
+        $inputs = new Inputs(http_build_query($data) ?? []);
+
+        if(!count($fields)) {
+            return $inputs;
+        }
+
+        foreach($fields as $field) {
+            $returns[] = $inputs->get($field);
+        }
+
+        return $returns;
     }
 
     /**
