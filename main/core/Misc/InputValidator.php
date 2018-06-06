@@ -3,7 +3,6 @@
 namespace App\Core\Misc;
 
 use Closure;
-
 use InvalidArgumentException;
 
 class InputValidator
@@ -50,11 +49,11 @@ class InputValidator
      * @var array
      */
     private static $_messages = array(
-        'max_length' => '{input} should not exceed a maximum {length} chars',
-        'min_length' => '{input} should be a minimum of {length}',
-        'email' => '{input} is required to be a valid email address',
-        'url' => '{input} is required to be a valid url',
-        'number' => '{input} is required to be a number',
+        'max_length' => '{input} should not exceed a {length} characters',
+        'min_length' => '{input} should be a minimum of {length} characters',
+        'email' => '{input} is not a valid email address',
+        'url' => '{input} is not a valid url',
+        'number' => '{input} is not a number',
         'required' => '{input} is required',
         'equals' => '{input} must be equal to {value}',
         'greater_than' => '{input} must be greater than {value}',
@@ -85,14 +84,36 @@ class InputValidator
 
         $validators = static::$_custom_validators;
 
-        if(!array_key_exists($name, $validators)) {
-            throw new InvalidArgumentException('Validator "'. $name .'" not found');
+        if(!$this->hasValidation($name)) {
+            throw new InvalidArgumentException('Unassigned validation method "' .$name. '"');
         }
 
         $method_name = $validators[$name];
         $args = array_merge($validator = [$this], $args);
 
-        return call_user_func_array($method_name, $args);
+        $validation = call_user_func_array($method_name, $args);
+        return $validator;
+    }
+
+    /**
+     * Attach new validation error
+     * 
+     * @return self
+     */
+    public function attachError($error, $vars = [])
+    {
+       $vars['input'] = $this->_id;
+
+        foreach($vars as $key => $value)
+        {
+            $replacer = '{'. $key .'}';
+            $error = str_replace($replacer, $value, $error);
+        }
+
+        static::$_validation_errors_msgs[] = $error;
+        static::$_validation_errors[$this->_id][] = $error;
+
+        return $this;
     }
 
     /**
@@ -106,7 +127,7 @@ class InputValidator
     {
        foreach($methods as $name => $method)
        {
-           static::$_custom_validators[$name] = $method;
+           static::$_custom_validators[static::methodify($name)] = $method;
        }
     }
 
@@ -139,6 +160,17 @@ class InputValidator
     public static function getFirstError()
     {
         return static::getErrorByIndex(0);
+    }
+
+    /**
+     * Check if validator has been assigned
+     *
+     * @param string $name Validator method name
+     * @return boolean
+     */
+    public function hasValidation($name)
+    {
+        return array_key_exists($name, static::$_custom_validators);
     }
 
     /**
@@ -374,24 +406,43 @@ class InputValidator
         return $this;
     }
 
-    /**
-     * Attach new validation error
-     * 
-     * @return self
-     */
-    public function attachError($error, $vars = [])
+    public function validateStr($rules)
     {
-       $vars['input'] = $this->_id;
-
-        foreach($vars as $key => $value)
-        {
-            $replacer = '{'. $key .'}';
-            $error = str_replace($replacer, $value, $error);
+        $methods = explode('|', $rules);
+        $methods = array_filter($methods);
+        
+        if(!count($methods)) {
+            throw new InvalidArgumentException('No validation rules passed');
         }
 
-        static::$_validation_errors_msgs[] = $error;
-        static::$_validation_errors[$this->_id][] = $error;
+        $validator = $this;
 
-        return $this;
+        foreach ($methods as $method) {
+            $vars = explode(':', $method);
+            $method_name = static::methodify($vars[0]);
+
+            if(!is_callable([$this, $method_name])) {
+                throw new InvalidArgumentException('Input validator "' . $method_name . '" not assigned');
+            }
+
+            $args = array_slice($vars, 1);
+            $validator = call_user_func_array([$this, $method_name], $args);
+        }
+
+        return $validator;
+    }
+
+    private static function methodify($str)
+    {
+        $vars = explode('_', $str);
+        $val1 = $vars[0];
+
+        $other_vals = array_slice($vars, 1);
+        $recap_vals = array_map(function ($val) {
+            return ucfirst($val);
+        }, $other_vals);
+
+        array_unshift($recap_vals, $val1);
+        return implode($recap_vals);
     }
 }

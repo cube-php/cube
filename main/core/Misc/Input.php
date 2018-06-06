@@ -147,7 +147,7 @@ class Input implements InputInterface
      * 
      * @return InputValidator
      */
-    public function validate()
+    public function validate($rules = null)
     {
 
         if(!$this->_key) {
@@ -155,7 +155,8 @@ class Input implements InputInterface
                 ('You are required to specify a key for input to use validator');
         }
 
-        return new InputValidator($this->_key, $this->_value);
+        $validator = new InputValidator($this->_key, $this->_value);
+        return $rules ? $validator->validateStr($rules) : $validator;
     }
 
     /**
