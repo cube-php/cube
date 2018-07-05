@@ -3,7 +3,6 @@
 namespace App\Core\Misc;
 
 use App\Core\Misc\Collection;
-
 use App\Core\Misc\Input;
 
 class Inputs extends Collection

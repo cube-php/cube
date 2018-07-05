@@ -5,12 +5,14 @@ namespace App\Core\Tools;
 use InvalidArgumentException;
 
 use App\Core\App;
+use ReflectionClass;
 use App\Core\Modules\DB;
 use App\Core\Http\Request;
 use App\Core\Http\Response;
 use App\Core\Http\Session;
 use App\Core\Http\Cookie;
 use App\Core\Exceptions\AuthException;
+use App\Core\Interfaces\ModelInterface;
 
 class Auth
 {
@@ -132,6 +134,42 @@ class Auth
         if($remember) {
             static::setUserCookieToken($schema_primary_key);
         }
+
+        Session::set(static::$_auth_name, $schema_primary_key);
+        return true;
+    }
+
+    /**
+     * Authenticate user by using field values
+     *
+     * @param string $field Field name
+     * @param string $value Field value
+     * @param string $model Model to retrieve data
+     * @return bool
+     */
+    public static function byField($field, $value, $model)
+    {
+        $config = static::getConfig();
+        $primary_key = $config['primary_key'] ?? null;
+        $instance = $config['instance'] ?? null;
+
+        if(!$primary_key) {
+            throw new InvalidArgumentException('Auth config "Primary key" not assigned');
+        }
+
+        $model_class = new ReflectionClass($model);
+
+        if(!$model_class->implementsInterface('App\Core\Interfaces\ModelInterface')) {
+            throw new InvalidArgumentException('Auth config instance not specified');
+        }
+
+        $data = $model::findBy($field, $value);
+
+        if(!$data) {
+            throw new AuthException('Authentication data not found');
+        }
+
+        $schema_primary_key = $data->{$primary_key};
 
         Session::set(static::$_auth_name, $schema_primary_key);
         return true;

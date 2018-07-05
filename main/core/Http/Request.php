@@ -252,7 +252,8 @@ class Request implements RequestInterface
         $names = explode(',', $name);
         
         if(count($names) == 1) {
-            $input = $this->inputs()->get($name)->value() ?? $defaults;
+            $raw_value = $this->inputs()->get($name);
+            $input = is_array($raw_value) ? $raw_value : ($raw_value->value() ?? $defaults);
             return new Input($input, $name);
         }
 
@@ -263,7 +264,8 @@ class Request implements RequestInterface
 
         foreach($names as $index => $rname) {
             $default = $single_default ? $defaults : $defaults_vars[$index];
-            $input = $this->inputs()->get($rname)->value() ?? $default;
+            $raw_value = $this->inputs()->get($rname);
+            $input = is_array($raw_value) ? $raw_value : ($raw_value->value() ?? $defaults);
             $inputs[] = new Input($input, $rname);
         }
 
