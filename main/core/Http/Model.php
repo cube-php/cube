@@ -6,8 +6,9 @@ use App\Core\Modules\DB;
 use App\Core\Modules\Db\DBTable;
 use App\Core\Modules\Db\DBSelect;
 use App\Core\Modules\Db\DBQueryBuilder;
+use App\Core\Interfaces\ModelInterface;
 
-class Model
+class Model implements ModelInterface
 {
     /**
      * Model database table name
