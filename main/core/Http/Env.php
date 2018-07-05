@@ -17,15 +17,16 @@ class Env
     /**
      * Get Environment Variable
      *
-     * @param [type] $name
+     * @param string $name Variable name
+     * @param mixed $default Default value if variable value is not found
      * @return mixed|null
      */
-    public static function get($name)
+    public static function get($name, $default = null)
     {
         static::load();
 
         $vars = static::$_vars;
-        return $vars[$name] ?? null;
+        return $vars[strtolower($name)] ?? $default;
     }
 
     /**
@@ -47,7 +48,8 @@ class Env
         }
 
         if(!static::$_vars) {
-            static::$_vars = parse_ini_file($env_file);
+            $all_vars = parse_ini_file($env_file);
+            static::$_vars = array_change_key_case($all_vars, CASE_LOWER);
         }
 
         return static::$_vars;

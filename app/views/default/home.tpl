@@ -15,7 +15,7 @@
         Welcome to PHP Cube.
     </div>
     <div class="cube-version">
-        v0.12
+        v{env('cube_version')}
     </div>
 </body>
 </html>
