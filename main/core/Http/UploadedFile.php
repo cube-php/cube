@@ -86,6 +86,17 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
+     * Retrieve extension from file name
+     *
+     * @return string
+     */
+    public function getExtensionFromName()
+    {
+        $vars = explode('.', $this->getClientFilename());
+        return strtolower(array_pop($vars));
+    }
+
+    /**
      * Retrieve file error if any
      * 
      * @return int
@@ -93,6 +104,18 @@ class UploadedFile implements UploadedFileInterface
     public function getError() {
 
         return $this->error;
+    }
+
+    /**
+     * Return value if file's extension is in fields
+     *
+     * @param array $fields
+     * @return boolean
+     */
+    public function hasExtensionIn(array $fields)
+    {
+        $fields = array_map('strtolower', $fields);
+        return in_array($this->getExtensionFromName(), $fields);
     }
 
     /**

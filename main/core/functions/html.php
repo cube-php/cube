@@ -31,7 +31,7 @@ function h($element_name, $attributes = [], $innerhtml = '') {
 
     if($attributes) {
         foreach($attributes as $name => $value) {
-            $attrs[] = $name . '=' . $value;
+            $attrs[] = $name . '="' . $value .'"';
         }
     }
 
