@@ -156,13 +156,14 @@ class Uri implements UriInterface
         $name_vars = explode(',', $name);
         $name_vars_count = count($name_vars);
 
-        if($name_vars == 1) {
+        if($name_vars_count == 1) {
             return $this->_parsed_query[$name] ?? $otherwise;
         }
 
+        $name_vars_trimmed = array_map('trim', $name_vars);
         $keys = [];
 
-        foreach($name_vars as $key) {
+        foreach($name_vars_trimmed as $key) {
             $keys[] = $this->_parsed_query[$key] ?? $otherwise;
         }
 
