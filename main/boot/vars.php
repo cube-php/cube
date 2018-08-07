@@ -25,7 +25,10 @@ define('MAIN_APP_PATH', APP_PATH . DS . 'app');
 define('APP_ROUTES_PATH', MAIN_APP_PATH . DS . 'routes');
 
 # Set app view directory
-define('VIEW_PATH', MAIN_APP_PATH . DS . '/views');
+define('VIEW_PATH', MAIN_APP_PATH . DS . 'views');
+
+#App webroot path
+define('APP_WEBROOT_PATH', APP_PATH . DS . 'webroot');
 
 # Configuration directory
 define('CONFIG_PATH', APP_PATH . DS . 'config' . DS);

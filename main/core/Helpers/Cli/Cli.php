@@ -9,17 +9,23 @@ use App\Core\Exceptions\FileSystemException;
 class Cli
 {
 
-    const COMMAND_MODEL = '--makeModel';
-    const COMMAND_PROVIDER = '--makeProvider';
+    const COMMAND_MODEL      = '--makeModel';
+    const COMMAND_PROVIDER   = '--makeProvider';
     const COMMAND_CONTROLLER = '--makeController';
-    const COMMAND_HELPER = '--makeHelper';
-    const COMMAND_EXCEPTION = '--makeException';
+    const COMMAND_HELPER     = '--makeHelper';
+    const COMMAND_EXCEPTION  = '--makeException';
     const COMMAND_MIDDLEWARE = '--makeMiddleware';
-    const COMMAND_CSS = '--css';
-    const COMMAND_JSCRIPT = '--js';
-    const COMMAND_HELP = '--help';
-    const COMMAND_SYSTEM = '--system';
+    const COMMAND_CSS        = '--css';
+    const COMMAND_JSCRIPT    = '--js';
+    const COMMAND_HELP       = '--help';
+    const COMMAND_SYSTEM     = '--system';
+    const COMMAND_SERVE      = '--serve';
 
+    /**
+     * Reserved templates directory
+     *
+     * @var string
+     */
     private $_default_templates = '.reserved';
 
     /**
@@ -35,6 +41,20 @@ class Cli
      * @var string[]
      */
     private static $_allowed_args = [];
+
+    /**
+     * Cube's default project serve host
+     *
+     * @var string
+     */
+    private $_default_serve_host = '127.0.0.1';
+
+    /**
+     * Cube's default project port url
+     *
+     * @var string
+     */
+    private $_default_serve_port = '8888';
     
     /**
      * Constructor
@@ -53,7 +73,8 @@ class Cli
             self::COMMAND_JSCRIPT,
             self::COMMAND_HELP,
             self::COMMAND_MIDDLEWARE,
-            self::COMMAND_SYSTEM
+            self::COMMAND_SYSTEM,
+            self::COMMAND_SERVE
         );
 
         foreach (array_slice($args, 1) as $arg) {
@@ -74,9 +95,10 @@ class Cli
             return $this->buildHelp();
         }
 
-        foreach($this->_args as $arg)
-        {
+        foreach($this->_args as $arg) {
+            
             $command_pool = $this->isValidCommand($arg);
+            
             if($command_pool) {
                 $this->runCommand($command_pool['command'], $command_pool['act']);
                 continue;
@@ -95,6 +117,8 @@ class Cli
     {
         $mainCommandArgs = explode(':', $command);
         $mainCommand = $mainCommandArgs[0];
+        $commandArgs = (count($mainCommandArgs) == 2) ?
+            ($mainCommandArgs[1] ?? null) : (array_slice($mainCommandArgs, 1) ?? []);
 
         if(!in_array($mainCommand, static::$_allowed_args)) {
             static::respond("\033[31m Invalid command \"{$mainCommand}\"");
@@ -104,7 +128,7 @@ class Cli
 
         return [
             'command'  => $mainCommand,
-            'act' => $mainCommandArgs[1] ?? null
+            'act' => $commandArgs
         ];
     }
 
@@ -120,48 +144,52 @@ class Cli
         switch($command)
         {
             case static::COMMAND_CONTROLLER:
-                $this->buildController($action);
+                return $this->buildController($action);
                 break;
 
             case static::COMMAND_MODEL:
-                $this->buildModel($action);
+                return $this->buildModel($action);
                 break;
 
             case static::COMMAND_PROVIDER:
-                $this->buildProvider($action);
+                return $this->buildProvider($action);
                 break;
 
             case self::COMMAND_EXCEPTION:
-                $this->buildException($action);
+                return $this->buildException($action);
                 break;
 
             case self::COMMAND_MIDDLEWARE:
-                $this->buildMiddleware($action);
+                return $this->buildMiddleware($action);
                 break;
 
             case self::COMMAND_CSS:
-                $this->buildAssetCss($action);
+                return $this->buildAssetCss($action);
                 break;
 
             case self::COMMAND_JSCRIPT:
-                $this->buildAssetJs($action);
+                return $this->buildAssetJs($action);
                 break;
 
             case self::COMMAND_HELPER:
-                $this->buildHelper($action);
+                return $this->buildHelper($action);
                 break;
 
             case self::COMMAND_HELP:
-                $this->buildHelp();
+                return $this->buildHelp();
                 break;
 
             case self::COMMAND_SYSTEM:
-                $this->runSystemCommand($action);
+                return $this->runSystemCommand($action);
+                break;
+
+            case self::COMMAND_SERVE:
+                return $this->serve($action);
                 break;
 
             default:
                 self::respond('Invalid command sent!');
-                $this->buildHelp();
+                return $this->buildHelp();
                 break;
         }
     }
@@ -418,6 +446,12 @@ class Cli
         return $main_name;
     }
 
+    /**
+     * Retrieve class namespaces
+     *
+     * @param string $name
+     * @return string
+     */
     public function getClassNamespace($name)
     {
         $name_vars = explode('/', $name);
@@ -477,12 +511,39 @@ class Cli
     private function runSystemCommand($action)
     {
         $system = new System;
+        $method_name = is_array($action) ? $action[0] : $action;
 
-        if(!is_callable([$system, $action])) {
+        if(!is_callable([$system, $method_name])) {
             return static::respond('Invalid system command', true);
         }
 
-        return call_user_func([$system, $action]);
+        $args = is_array($action) ? array_slice($action, 1) : [$action];
+
+        return call_user_func_array([$system, $method_name], $args);
+    }
+
+    /**
+     * Serve project
+     *
+     * @param string $addr Server Address
+     * @return bool
+     */
+    private function serve($addr_args)
+    {
+        $count = count($addr_args);
+
+        if($count > 2) {
+            return self::respond('Invalid address and port', true);
+        }
+
+        $host = $addr_args[0] ?? $this->_default_serve_host;
+        $port = $addr_args[1] ?? $this->_default_serve_port;
+        $serve_addr = $host . ':' . $port;
+
+        self::respond('Php cube server now running on ' . $serve_addr);
+        
+        $dir = APP_WEBROOT_PATH;
+        return exec("php -S {$serve_addr} -t {$dir}");
     }
 
     /**
@@ -494,8 +555,6 @@ class Cli
     public static function respond($msg, $kill = false)
     {
         echo "php-cube: {$msg} ". PHP_EOL;
-        if($kill) {
-            die();
-        }
+        if($kill) die();
     }
 }

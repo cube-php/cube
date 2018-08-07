@@ -49,6 +49,8 @@ class Uri implements UriInterface
      * @var string[]
      */
     private $_parsed_query;
+
+    private $_usual_ports = [80, 443];
     
     /**
      * Uri constructor
@@ -98,7 +100,7 @@ class Uri implements UriInterface
      */
     public function getPort()
     {
-        return $this->_port;
+        return (int) $this->_port;
     }
 
     /**
@@ -110,6 +112,10 @@ class Uri implements UriInterface
     {
         $url = $with_scheme ? $this->_scheme : '';
         $url .= '://' . $this->_host . $this->_path;
+
+        if(!in_array($this->getPort(), $this->_usual_ports)) {
+            $url .= ':' . $this->getPort();
+        }
 
         return $url;
     }

@@ -73,6 +73,19 @@ class System
     }
 
     /**
+     * System function to drop table
+     *
+     * @param string $name Table name
+     * @return void
+     */
+    public function schemaDropTable($name)
+    {
+        Cli::respond('Dropping table -> ' . $name);
+        DB::table($name)->drop();
+        Cli::respond('Table "' . $name . '" dropped successfully');
+    }
+
+    /**
      * Execute custom logic code
      *
      * @return mixed
