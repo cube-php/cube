@@ -47,7 +47,7 @@ class System
             $this->initCustomCommands();
             Cli::respond('Custom logic completed');
         } catch (Exception $e) {
-            Cli::respond($e->getMessage(), true);
+            Cli::respond("Unable to intialize system \n" . $e->getMessage(), true);
         }
             
     }

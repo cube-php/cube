@@ -8,5 +8,5 @@ require_once 'vendor/autoload.php';
 
 use App\Core\Helpers\Cli\Cli;
 
-$cli = new Cli($argv);
+$cli = new Cli();
 $cli->listen();

@@ -59,10 +59,12 @@ class Cli
     /**
      * Constructor
      *
-     * @param string[] $args
      */
-    public function __construct($args)
+    public function __construct()
     {
+
+        $args = $_SERVER['argv'];
+
         static::$_allowed_args = array(
             self::COMMAND_MODEL,
             self::COMMAND_CONTROLLER,
@@ -89,7 +91,6 @@ class Cli
      */
     public function listen()
     {
-
         if(!$this->_args) {
             static::respond('No command sent!');
             return $this->buildHelp();
@@ -530,6 +531,7 @@ class Cli
      */
     private function serve($addr_args)
     {
+        $addr_args = is_array($addr_args) ? $addr_args : [$addr_args];
         $count = count($addr_args);
 
         if($count > 2) {

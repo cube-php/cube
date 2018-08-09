@@ -1,7 +1,7 @@
 {
     "name": "Cube Framework",
     "description": "",
-    "version": "0.12",
+    "version": "0.6",
     "autoload": {
         "psr-4": {
             "App\\Controllers\\": "app/controllers",
