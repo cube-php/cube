@@ -109,10 +109,7 @@ class RouteCollection
                 });
 
                 #Do any other events when route is matched
-                EventManager::dispatchEvent(
-                    $this->_request,
-                    App::EVENT_ROUTE_MATCH_FOUND
-                );
+                EventManager::dispatchEvent(App::EVENT_ROUTE_MATCH_FOUND, $this->_request);
                 
                 #Get parsed response
                 $response = $route->parseResponse((new Response));
@@ -128,10 +125,7 @@ class RouteCollection
         }
 
         #Oh no, no matches
-        EventManager::dispatchEvent(
-            $this->_request,
-            App::EVENT_ROUTE_NO_MATCH_FOUND
-        );
+        EventManager::dispatchEvent(App::EVENT_ROUTE_NO_MATCH_FOUND, $this->_request);
     }
 
     /**

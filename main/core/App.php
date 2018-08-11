@@ -99,10 +99,7 @@ class App
         
         $this->_request = new Request;
 
-        EventManager::dispatchEvent(
-            $this,
-            self::EVENT_BEFORE_RUN
-        );
+        EventManager::dispatchEvent(self::EVENT_BEFORE_RUN, $this);
     }
 
     /**
@@ -112,10 +109,7 @@ class App
      */
     public function __destruct()
     {
-        EventManager::dispatchEvent(
-            $this,
-            self::EVENT_RUNNING
-        );
+        EventManager::dispatchEvent(self::EVENT_RUNNING, $this);
     }
 
     /**
@@ -294,10 +288,7 @@ class App
                 error_reporting(E_ALL);
 
                 #Let's initiate other registered events
-                EventManager::dispatchEvent(
-                    $this,
-                    self::EVENT_APP_ON_DEVELOPMENT
-                );
+                EventManager::dispatchEvent(self::EVENT_APP_ON_DEVELOPMENT, $this);
             break;
 
             #On production mode
@@ -309,10 +300,7 @@ class App
                 error_reporting(0);
 
                 #Let's initiate other registered events
-                EventManager::dispatchEvent(
-                    $this,
-                    self::APP_MODE_PRODUCTION
-                );
+                EventManager::dispatchEvent(self::APP_MODE_PRODUCTION, $this);
             break;
         }
     }

@@ -2,20 +2,26 @@
 
 namespace App\Core\Tools;
 
+use ReflectionClass;
 use InvalidArgumentException;
 
 use App\Core\App;
-use ReflectionClass;
 use App\Core\Modules\DB;
+
 use App\Core\Http\Request;
 use App\Core\Http\Response;
 use App\Core\Http\Session;
 use App\Core\Http\Cookie;
+
+use App\Core\Misc\EventManager;
 use App\Core\Exceptions\AuthException;
 use App\Core\Interfaces\ModelInterface;
 
 class Auth
 {
+
+    const EVENT_ON_AUTHENTICATED = 'authenticated';
+    const EVENT_ON_LOGGED_OUT    = 'loggedout'; 
 
     /**
      * Authentication configuration
@@ -135,6 +141,9 @@ class Auth
             static::setUserCookieToken($schema_primary_key);
         }
 
+        #Dispatch logged in event
+        EventManager::dispatchEvent(self::EVENT_ON_AUTHENTICATED, $schema_primary_key);
+
         Session::set(static::$_auth_name, $schema_primary_key);
         return true;
     }
@@ -171,6 +180,9 @@ class Auth
 
         $schema_primary_key = $data->{$primary_key};
 
+        #Dispatch logged in event
+        EventManager::dispatchEvent(self::EVENT_ON_AUTHENTICATED, $schema_primary_key);
+
         Session::set(static::$_auth_name, $schema_primary_key);
         return true;
     }
@@ -178,12 +190,18 @@ class Auth
     /**
      * End current authenticated user's session
      *
-     * @return void
+     * @return bool
      */
     public static function logout()
     {
+        $id = Session::get(static::$_auth_name);
+
         Session::remove(static::$_auth_name);
         Cookie::remove(static::$_auth_name);
+
+        #Dispatch loggedout event
+        EventManager::dispatchEvent(self::EVENT_ON_LOGGED_OUT, $id);
+        return true;
     }
 
     /**

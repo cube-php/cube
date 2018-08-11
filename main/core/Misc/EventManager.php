@@ -50,7 +50,7 @@ class EventManager
      * 
      * @return void
      */
-    public static function dispatchEvent($arg = null, $handler)
+    public static function dispatchEvent($handler, $arg = null)
     {
         if(!static::hasAttachedEvents($handler)) return false;
 
