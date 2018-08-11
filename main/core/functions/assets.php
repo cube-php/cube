@@ -43,6 +43,17 @@ function asset($asset_path)
  */
 function jscript($name, $no_cache = null)
 {
+    if(is_array($name)) {
+
+        $links = '';
+        
+        foreach($name as $name) {
+            $links .= "\n"  . jscript($name, $no_cache);
+        }
+
+        return $links;
+    }
+
     $anti_cache = ((is_null($no_cache) || $no_cache) && App::isDevelopment()) ? '?time=' . time() : '';
     return '<script src="' . asset(['js', $name .'.js']) . $anti_cache . '"></script>';
 }
@@ -55,6 +66,17 @@ function jscript($name, $no_cache = null)
  */
 function css($name, $no_cache = null)
 {
+    if(is_array($name)) {
+
+        $links = '';
+        
+        foreach($name as $name) {
+            $links .= "\n"  . css($name, $no_cache);
+        }
+
+        return $links;
+    }
+
     $anti_cache = ((is_null($no_cache) || $no_cache) && App::isDevelopment()) ? '?time=' . time() : '';
     return 
         '<link rel="stylesheet" href="' . asset(['css', $name . '.css']) . $anti_cache . ' "/>';
