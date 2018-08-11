@@ -3,9 +3,10 @@
 namespace App\Core\Http;
 
 use InvalidArgumentException;
-use App\Core\Http\Headers;
 use App\Core\Interfaces\ResponseInterface;
-use App\Core\Helpers\ResponseView;
+use App\Core\Helpers\View;
+
+use App\Core\Http\Headers;
 use App\Core\Http\Session;
 
 class Response implements ResponseInterface
@@ -112,11 +113,11 @@ class Response implements ResponseInterface
     private $_has_render_headers = false;
     
     /**
-     * View data
-     * 
-     * @var mixed[]
+     * View
+     *
+     * @var View
      */
-     private $_view_data = [];
+    private $_view;
 
     /**
      * Response Constructor
@@ -125,6 +126,7 @@ class Response implements ResponseInterface
     public function __construct()
     {
         $this->_header = new Headers;
+        $this->_view = new View(VIEW_PATH);
     }
 
     /**
@@ -286,17 +288,6 @@ class Response implements ResponseInterface
     }
 
     /**
-     * Write json encoded string to response body
-     * 
-     * @deprecated v0.12
-     * 
-     * @param string
-     */
-    public function writeJson($data) {
-        return $this->json($data);
-    }
-
-    /**
      * Redirect response
      *
      * @param string $path Path to redirect to
@@ -311,23 +302,6 @@ class Response implements ResponseInterface
             ->withStatusCode(301)
             ->withHeader('location', $redirect_location)
             ->write(null);
-    }
-
-    /**
-     * Render view
-     * 
-     * @deprecated v.012
-     * Use the view method instead
-     * 
-     * @param string $path Path of view to render
-     * @param array $options Parameters to render via view
-     * 
-     * @return self
-     */
-    public function renderView($path, array $options = [])
-    {
-
-        return $this->view($path, $options);
     }
 
     /**
@@ -346,16 +320,12 @@ class Response implements ResponseInterface
      * Render view
      * 
      * @param string $path Path of view to render
-     * @param array $options Parameters to render via view
+     * @param array $context Context to render in view
      * 
      * @return self
      */
-    public function view($path, array $options = [])
+    public function view($path, array $context = [])
     {
-
-        $engine = new ResponseView($path);
-        $data = $engine->renderViewContent($options);
-
-        return $this->write($data);
+        echo $this->_view->render($path, $context);
     }
 }

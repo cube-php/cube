@@ -15,6 +15,16 @@ final class Env
     private static $_vars = array();
 
     /**
+     * Return all enviroment variables
+     *
+     * @return string[]
+     */
+    public static function all()
+    {
+        return static::load();
+    }
+
+    /**
      * Get Environment Variable
      *
      * @param string $name Variable name

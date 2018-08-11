@@ -14,9 +14,9 @@ interface ResponseInterface
 
     public function write($string);
 
-    public function writeJson($data);
+    public function json($data);
 
     public function redirect($path, array $query_params = [], $external_location = false);
 
-    public function renderView($path, array $options = []);
+    public function view($path, array $options = []);
 }
