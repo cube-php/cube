@@ -12,11 +12,11 @@ define('DS', DIRECTORY_SEPARATOR);
 require_once '..' . DS . 'vendor' . DS . 'autoload.php';
 
 /**
- * -----------------------------------------------------
- * Globally assigned variables
- * -----------------------------------------------------
+ * ------------------------------------------------------
+ * Register all app directories
+ * ------------------------------------------------------
  */
-require_once '..' . DS . 'main' . DS . 'boot' . DS . 'vars.php';
+App\Core\App::registerPath();
 
 /**
  * -----------------------------------------------------

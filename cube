@@ -1,12 +1,14 @@
 #!/usr/bin/php
 <?php
 
-define('DS', DIRECTORY_SEPARATOR);
+require_once './vendor/autoload.php';
 
-require_once 'main/boot/vars.php';
-require_once 'vendor/autoload.php';
-
+use App\Core\App;
 use App\Core\Helpers\Cli\Cli;
 
+#Register system paths
+App::registerPath();
+
+#Listen for command line tools
 $cli = new Cli();
 $cli->listen();

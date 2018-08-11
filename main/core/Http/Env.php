@@ -4,7 +4,7 @@ namespace App\Core\Http;
 
 use App\Core\Misc\File;
 
-class Env
+final class Env
 {
     
     /**
