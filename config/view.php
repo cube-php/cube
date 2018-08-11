@@ -15,13 +15,15 @@ return array(
      * Functions
      */
     'functions' => array(
-        'var_dump' => 'var_dump'
+        'var_dump'
     ),
 
     /**
      * Filters
      */
     'filters' => array(
-
+        'hello' => function ($str) {
+            return 'Hello world: ' . $str;
+        }
     )
 );

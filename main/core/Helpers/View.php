@@ -59,8 +59,8 @@ class View
      * @return void
      */
     public function engageFilters(array $filters) {
-        foreach ($filters as $filter) {
-            $fn = new Twig_Filter($filter, $filter, array(
+        foreach ($filters as $filter => $closure) {
+            $fn = new Twig_Filter($filter, $closure, array(
                 'is_safe' => array('html')
             ));
 
