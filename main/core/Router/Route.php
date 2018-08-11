@@ -2,6 +2,8 @@
 
 namespace App\Core\Router;
 
+use Closure;
+
 use InvalidArgumentException;
 
 use App\Core\Router\RouteCollection;
@@ -9,6 +11,7 @@ use App\Core\Router\RouteParser;
 
 use App\Core\Http\Request;
 use App\Core\Http\Response;
+use App\Core\Http\AnonController;
 
 class Route
 {
@@ -264,7 +267,8 @@ class Route
         $parse = $this->_parseController();
 
         if($this->_is_callble_controller) {
-            return call_user_func_array($this->_controller, [$request, $response]);
+            $controller = Closure::bind($this->_controller, new AnonController(), AnonController::class);
+            return call_user_func_array($controller, [$request, $response]);
         }
 
         $class = $this->_controller['class_name'];

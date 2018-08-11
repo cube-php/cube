@@ -2,15 +2,14 @@
 
 namespace App\Core;
 
+use App\Core\Http\Session;
 use App\Core\Http\Request;
-
 use App\Core\Http\Response;
 
 use App\Core\Router\RouteCollection;
 
 use App\Core\Misc\EventManager;
-
-use App\Core\Http\Session;
+use App\Core\Misc\Components;
 
 class App
 {
@@ -23,7 +22,6 @@ class App
     const APP_MODE_DEVELOPMENT = 101;
 
     /**
-     * App is production
      * 
      * @var int
      */
@@ -185,6 +183,65 @@ class App
     }
 
     /**
+     * Register paths
+     *
+     * @return bool
+     */
+    public static function registerPath()
+    {
+        if(!defined('DS')) {
+            define('DS', DIRECTORY_SEPARATOR);
+        }
+
+        #Root directory
+        define('APP_PATH', __DIR__ . DS . '..' . DS . '..');
+
+        #App directory
+        define('CORE_APP_PATH', APP_PATH . DS . 'main');
+
+        #Main app directory
+        define('MAIN_APP_PATH', APP_PATH . DS . 'app');
+
+        #App's routes directory
+        define('APP_ROUTES_PATH', MAIN_APP_PATH . DS . 'routes');
+
+        # Set app view directory
+        define('VIEW_PATH', MAIN_APP_PATH . DS . 'views');
+
+        #App webroot path
+        define('APP_WEBROOT_PATH', APP_PATH . DS . 'webroot');
+
+        # Configuration directory
+        define('CONFIG_PATH', APP_PATH . DS . 'config' . DS);
+
+        # Storage path
+        define('APP_STORAGE', APP_PATH . DS . 'webroot' .  DS . 'assets');
+
+        #Controllers Path
+        define('APP_CONTROLLERS_PATH', MAIN_APP_PATH . DS . 'controllers');
+
+        #Models Path
+        define('APP_MODELS_PATH', MAIN_APP_PATH . DS . 'models');
+
+        #Providers Path
+        define('APP_PROVIDERS_PATH', MAIN_APP_PATH . DS . 'providers');
+
+        #Middlewares Path
+        define('APP_MIDDLEWARES_PATH', MAIN_APP_PATH . DS . 'middlewares');
+
+        #Providers Path
+        define('APP_EXCEPTIONS_PATH', MAIN_APP_PATH . DS . 'exceptions');
+
+        #Providers Path
+        define('APP_HELPERS_PATH', MAIN_APP_PATH . DS . 'helpers');
+
+        #Providers Path
+        define('APP_PUBLIC_STORAGE_PATH', APP_STORAGE . DS . 'public');
+
+        return true;
+    }
+
+    /**
      * Start the app
      * 
      * @return void
@@ -193,6 +250,9 @@ class App
     {
         #Load configurations
         $this->loadConfig();
+
+        #Load components
+        $this->loadComponents();
 
         #Configure application
         $this->configure();
@@ -358,6 +418,26 @@ class App
     private function kill($reason)
     {
         die((string) $reason);
+    }
+
+    /**
+     * Load assigned components to context
+     *
+     * @return self
+     */
+    private function loadComponents()
+    {
+        $components = static::getConfigByName('components');
+        
+        if(!$components || !count($components)) {
+            return;
+        }
+
+        foreach ($components as $name => $value) {
+            Components::register($name, $value);
+        }
+
+        return $this;
     }
     
 
