@@ -94,6 +94,7 @@ class View
     {
         $loader = new Twig_Loader_Filesystem($path);
         $this->_twig = new Twig_Environment($loader, [
+            'cache' => VIEW_PATH . DS . '.cache',
             'strict_variables' => App::isProduction() ? false : true
         ]);
 
