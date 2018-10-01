@@ -14,6 +14,10 @@ use App\Core\Misc\Components;
 class App
 {
 
+    const INSTANCE_CONFIGURATIONS = 'config';
+    const INSTANCE_HELPERS        = 'helpers';
+    const INSTANCE_ROUTES         = 'routers';
+
     /**
      * App is development
      * 
@@ -121,7 +125,7 @@ class App
      */
     public static function getConfigByName($name)
     {
-        return static::$config[$name] ?? null;
+        return static::$config[self::INSTANCE_CONFIGURATIONS][$name] ?? null;
     }
 
     /**
@@ -133,8 +137,8 @@ class App
      */
     public static function getConfigByFile($name)
     {
-        if(isset(static::$config[$name])) {
-            return static:: $config[$name];
+        if(isset(static::$config[self::INSTANCE_CONFIGURATIONS][$name])) {
+            return static:: $config[self::INSTANCE_CONFIGURATIONS][$name];
         }
 
         $path = CONFIG_PATH . DS . $name . '.php';
@@ -358,7 +362,7 @@ class App
      */
     private function initHelpers()
     {
-        $this->loadDirFiles(MAIN_APP_PATH . DS . 'helpers');
+        $this->loadDirFiles(MAIN_APP_PATH . DS . 'helpers', false);
     }
 
     /**
@@ -369,7 +373,7 @@ class App
     private function initRoutes()
     {
         #Load up assigned routes
-        $this->loadDirFiles(APP_ROUTES_PATH);
+        $this->loadDirFiles(APP_ROUTES_PATH, false);
 
         #Build routes
         $routes = new RouteCollection();
@@ -446,7 +450,7 @@ class App
      * @param boolean $save_to_instance Save included file to app's config instances
      * @return void
      */
-    private function loadDirFiles($dir_path, $save_to_instance = true)
+    private function loadDirFiles($dir_path, $save_to_instance = 'config')
     {
 
         #Oh dots
@@ -470,7 +474,7 @@ class App
             }
 
             if($save_to_instance) {
-                static::$config[$name] = require_once($file_path);
+                static::$config[$save_to_instance][$name] = require_once($file_path);
                 continue;
             }
 
