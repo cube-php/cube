@@ -28,6 +28,13 @@ class View
     private $_twig;
 
     /**
+     * View config
+     *
+     * @var array
+     */
+    private $_config;
+
+    /**
      * System functions
      *
      * @var array
@@ -49,6 +56,7 @@ class View
      */
     public function __construct(string $path = '')
     {
+        $this->_config = App::getConfigByName('view');
         $this->setBasePath($path);
     }
 
@@ -93,17 +101,21 @@ class View
     public function setBasePath(string $path)
     {
         $loader = new Twig_Loader_Filesystem($path);
-        $this->_twig = new Twig_Environment($loader, [
-            'cache' => VIEW_PATH . DS . '.cache',
-            'strict_variables' => App::isProduction() ? false : true
-        ]);
 
+        $view_options = array(
+            'strict_variables' => App::isProduction(),
+        );
+
+        if($this->_config['cache']) {
+            $view_options['cache'] = VIEW_PATH . DS . '.cache';
+        }
+
+        $this->_twig = new Twig_Environment($loader, $view_options);
         $this->_twig->addGlobal('env', Env::all());
-
         $this->engageFunctions($this->_system_functions);
 
-        $custom_functions = App::getConfigByName('view')['functions'] ?? [];
-        $custom_filters = App::getConfigByName('view')['filters'] ?? [];
+        $custom_functions = $this->_config['functions'] ?? [];
+        $custom_filters = $this->_config['filters'] ?? [];
 
         $this->engageFunctions($custom_functions);
         $this->engageFilters($custom_filters);
