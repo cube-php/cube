@@ -32,7 +32,7 @@ class View
      *
      * @var array
      */
-    private $_config;
+    private $_config = array();
 
     /**
      * System functions
@@ -106,7 +106,7 @@ class View
             'strict_variables' => App::isProduction(),
         );
 
-        if($this->_config['cache']) {
+        if(isset($this->_config['cache']) && $this->_config['cache']) {
             $view_options['cache'] = VIEW_PATH . DS . '.cache';
         }
 
