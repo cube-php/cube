@@ -7,6 +7,7 @@ use App\Core\Modules\Db\DBTable;
 use App\Core\Modules\Db\DBSelect;
 use App\Core\Modules\Db\DBQueryBuilder;
 use App\Core\Interfaces\ModelInterface;
+use App\Core\Exceptions\ModelException;
 
 class Model implements ModelInterface
 {
@@ -40,10 +41,9 @@ class Model implements ModelInterface
      * @param array $opts
      * @return array|null
      */
-    public static function all(array $order = [], array $opts = [])
+    public static function all(?array $order = null, ?array $opts = null, array $fields = [])
     {
-        $query = DB::table(static::$schema)
-                    ->select(static::$fields)
+        $query = static::select($fields)
                     ->orderBy($order);
 
         return $opts ? 
@@ -69,12 +69,14 @@ class Model implements ModelInterface
      * @param mixed $value Field value
      * @param array|null $order Order methods
      * @param array|null $params Parameters
+     * @param array $fields Fields to retrieve
      * @return array
      */
-    public static function findAllBy($field, $value, $order = null, $params = null)
+    public static function findAllBy($field, $value, $order = null, $params = null, array $fields = [])
     {
-        $query = DB::table(static::$schema)
-                 ->select(static::$fields)
+        static::checkField($field);
+
+        $query = static::select($fields)
                  ->where($field, $value)
                  ->orderBy($order);
 
@@ -90,13 +92,16 @@ class Model implements ModelInterface
      * 
      * @param string $field Field name
      * @param mixed $value Field value
+     * @param mixed $fields Fields to retrieve
      * 
      * @return array|null
      */
-    public static function findBy($field, $value)
+    public static function findBy($field, $value, array $fields = [])
     {
-        return DB::table(static::$schema)
-                ->select(static::$fields)
+
+        static::checkField($field);
+
+        return static::select($fields)
                 ->where($field, $value)
                 ->fetchOne();
     }
@@ -105,14 +110,14 @@ class Model implements ModelInterface
      * Fetch data using passed primary key value
      * 
      * @param string|int $primary_key
+     * @param array $fields Fields to retrieve
      * 
      * @return array|null
      */
-    public static function findByPrimaryKey($primary_key)
+    public static function findByPrimaryKey($primary_key, array $fields = [])
     {
-        return DB::table(static::$schema)
-                ->select(static::$fields)
-                ->where(static::$primary_key, $primary_key)
+        return static::select($fields)
+                ->where(static::getPrimaryKey(), $primary_key)
                 ->fetchOne();
     }
 
@@ -127,7 +132,7 @@ class Model implements ModelInterface
     {
         $query = DB::table(static::$schema)
                 ->delete()
-                ->where(static::$primary_key, $primary_key)
+                ->where(static::getPrimaryKey(), $primary_key)
                 ->fulfil();
 
         return $query;
@@ -145,7 +150,7 @@ class Model implements ModelInterface
     {
         $rows = DB::table(static::$schema)
                 ->update($update)
-                ->where(static::$primary_key, $primary_key)
+                ->where(static::getPrimaryKey(), $primary_key)
                 ->fulfil();
 
         return $rows;
@@ -158,7 +163,7 @@ class Model implements ModelInterface
      */
     public static function getCount()
     {
-        $key = static::$primary_key;
+        $key = static::getPrimaryKey();
         return DB::table(static::$schema)
                 ->select(['count('. $key .') tcount'])
                 ->fetchOne()
@@ -174,7 +179,9 @@ class Model implements ModelInterface
      */
     public static function getCountBy($field, $value)
     {
-        $key = static::$primary_key;
+        static::checkField($field);
+        $key = static::getPrimaryKey();
+
         return DB::table(static::$schema)
                 ->select(['count('. $key .') tcount'])
                 ->where($field, $value)
@@ -189,7 +196,7 @@ class Model implements ModelInterface
      */
     public static function getCountQuery()
     {
-        $key = static::$primary_key;
+        $key = static::getPrimaryKey();
         return DB::table(static::$schema)
                 ->select(["count({$key}) as count"]);
     }
@@ -199,13 +206,16 @@ class Model implements ModelInterface
      * Or primary key if field is not specified
      *
      * @param string|null $field
+     * @param array $fields Fields to retrieve
      * @return object|null
      */
-    public static function getFirst($field = null)
+    public static function getFirst($field = null, array $fields = [])
     {
-        return DB::table(static::$schema)
-                ->select(static::$fields)
-                ->getFirst(($field ?? static::$primary_key));
+
+        static::checkField($field);
+
+        return static::select($fields)
+                ->getFirst(($field ?? static::getPrimaryKey()));
     }
 
     /**
@@ -213,13 +223,37 @@ class Model implements ModelInterface
      * Or primary key if field is not specified
      *
      * @param string|null $field
+     * @param array $fields
      * @return object|null
      */
-    public static function getLast($field = null)
+    public static function getLast($field = null, array $fields = [])
     {
-        return DB::table(static::$schema)
-                ->select(static::$fields)
-                ->getLast(($field ?? static::$primary_key));
+        static::checkField($field);
+
+        return static::select($fields)
+                ->getLast(($field ?? static::getPrimaryKey()));
+    }
+
+    /**
+     * Schema's primary key
+     *
+     * @return string
+     */
+    public static function getPrimaryKey()
+    {
+        return static::getPrimaryKey();
+    }
+
+    /**
+     * Sum schema by field
+     *
+     * @param string $field
+     * @return float Total sum
+     */
+    public static function getSumByField(string $field)
+    {
+        static::checkField($field);
+        return DB::table(static::$schema)->sum($field);
     }
 
     /**
@@ -235,11 +269,12 @@ class Model implements ModelInterface
     /**
      * Run custom queries on model's schema
      *
+     * @param array $fields Fields to override default fields
      * @return DBSelect|DBQueryBuilder
      */
-    public static function select()
+    public static function select(array $fields = [])
     {
-        return new DBSelect(static::$schema, static::$fields);
+        return new DBSelect(static::$schema, $fields ?: static::$fields);
     }
 
     /**
@@ -248,12 +283,15 @@ class Model implements ModelInterface
      * @param string $field Field to search
      * @param int|null $offset Offset
      * @param int|null $limit Limit
+     * @param array $fields Fields to retrieve
      * @return object[]|null
      */
-    public static function search($field, $keyword, $limit = null, $offset = null)
+    public static function search($field, $keyword, $limit = null, $offset = null, array $fields = [])
     {
-        $query = DB::table(static::$schema)
-                ->select(static::$fields)
+
+        static::checkField($field);
+
+        $query = static::select($fields)
                 ->whereLike($field, $keyword);
 
         if(!$limit) {
@@ -262,6 +300,23 @@ class Model implements ModelInterface
 
         $offset = $offset ?? 0;
         return $query->fetch($offset, $limit);
+    }
+
+    /**
+     * Check field if it's declared
+     *
+     * @param string $field Field name
+     * @return bool
+     * @throws ModelException
+     */
+    private static function checkField(string $field)
+    {
+
+        if(!in_array($field, static::$fields)) {
+            throw new ModelException('Trying to access undeclared field "'. $field .'"');
+        }
+
+        return true;
     }
 
     /**
