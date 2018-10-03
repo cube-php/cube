@@ -24,10 +24,8 @@ class Cookie
      * @return void
      */
     public static function set($name, $value, $expires = (7*24*60*60)) {
-
-        if($expires) {
-            setcookie($name, $value, (time() + $expires));
-        }
+        setcookie($name, $value, (time() + $expires));
+        return true;
     }
 
     /**
