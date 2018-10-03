@@ -241,7 +241,7 @@ class Model implements ModelInterface
      */
     public static function getPrimaryKey()
     {
-        return static::getPrimaryKey();
+        return static::$primary_key;
     }
 
     /**
