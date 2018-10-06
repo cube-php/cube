@@ -128,7 +128,7 @@ class DBConnection
                 return PDO::PARAM_BOOL;
             break;
 
-            case is_numeric($item) or is_int($item):
+            case is_int($item):
                 return PDO::PARAM_INT;
             break;
 
