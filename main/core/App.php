@@ -10,6 +10,7 @@ use App\Core\Router\RouteCollection;
 
 use App\Core\Misc\EventManager;
 use App\Core\Misc\Components;
+use App\Core\Exceptions\AppException;
 
 class App
 {
@@ -246,25 +247,13 @@ class App
      */
     public function run()
     {
-        #Load configurations
         $this->loadConfig();
-
-        #Load components
+        $this->setTimezone();
         $this->loadComponents();
-
-        #Configure application
         $this->configure();
-        
-        #System helpers
         $this->initSystemHelpers();
-
-        #Then, initialize sessions first
         $this->initSessions();
-
-        #Then custom helpers
         $this->initHelpers();
-
-        #Then routes
         $this->initRoutes();
     }
 
@@ -480,5 +469,21 @@ class App
 
             require_once($file_path);
         }
+    }
+
+    /**
+     * Set App timezone
+     *
+     * @return void
+     */
+    private function setTimezone() : void
+    {
+        $timezone = static::getConfigByName('app')['time_zone'] ?? null;
+
+        if(!$timezone) {
+            throw new AppException('Set App Timezone');
+        }
+
+        date_default_timezone_set($timezone);
     }
 }
