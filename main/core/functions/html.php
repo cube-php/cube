@@ -4,7 +4,15 @@
  * HTML functions should go here
  */
 
-function h($element_name, $attributes = [], $innerhtml = '') {
+/**
+ * Create HTML Element
+ *
+ * @param string $element_name Element name to create
+ * @param array|null $attributes Element attributes
+ * @param mixed $innerhtml Element content
+ * @return string Generated htmt
+ */
+function h($element_name, ?array $attributes = [], $innerhtml) {
     $self_closing = array(
         'area',
         'base',
@@ -42,5 +50,6 @@ function h($element_name, $attributes = [], $innerhtml = '') {
         return $element .= '/>';
     }
 
-    return $element .= ">{$innerhtml}</{$element_name}>";
+    $innerhtml_content = is_array($innerhtml) ? implode($innerhtml) : $innerhtml;
+    return $element .= ">{$innerhtml_content}</{$element_name}>";
 }
