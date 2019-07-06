@@ -281,7 +281,13 @@ class Route
                 ("{$class}::{$method}() on route \"{$this->getPath()}\" is not a valid callable method");
         }
 
-        return call_user_func_array([$controller, $method], [$request, $response]);
+        $result = call_user_func_array([$controller, $method], [$request, $response]);
+
+        if(is_string($result)) {
+            return $response->write($result);
+        }
+
+        return $result;
     }
 
     /**
