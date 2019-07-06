@@ -29,7 +29,7 @@ class System
     public function __construct()
     {
         $this->_session = new SessionManager();
-        $this->_system_file_path = MAIN_APP_PATH . DS . 'core' . DS . 'system.php';
+        $this->_system_file_path = APP_PATH . DS . 'core' . DS . 'system.php';
     }
 
     /**

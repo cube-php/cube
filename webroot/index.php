@@ -23,7 +23,7 @@ App\Core\App::registerPath();
  * Use app bootstraper
  * -----------------------------------------------------
  */
-require_once MAIN_APP_PATH . DS . 'core' . DS . 'bootstrap.php';
+require_once APP_PATH . DS . 'core' . DS . 'bootstrap.php';
 
 /**
  * -----------------------------------------------------

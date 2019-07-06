@@ -29,3 +29,5 @@ DB::table('users')->create(function(DBTableBuilder $table){
     $table->field('username')->varchar();
     $table->field('password')->varchar();
 }); */
+
+echo 'Working';

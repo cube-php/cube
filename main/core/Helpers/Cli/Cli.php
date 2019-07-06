@@ -506,7 +506,7 @@ class Cli
     /**
      * Executes system command logic
      *
-     * @param string $action
+     * @param string|array $action
      * @return self
      */
     private function runSystemCommand($action)
