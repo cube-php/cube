@@ -235,7 +235,7 @@ class App
         define('APP_HELPERS_PATH', MAIN_APP_PATH . DS . 'helpers');
 
         #Providers Path
-        define('APP_PUBLIC_STORAGE_PATH', APP_STORAGE . DS . 'public');
+        define('APP_PUBLIC_STORAGE_PATH', APP_STORAGE . DS . 'storage');
 
         return true;
     }
