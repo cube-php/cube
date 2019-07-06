@@ -10,17 +10,16 @@
  */
 
 return array(
+
+    #Whether or not app caches views
+    'cache' => false,
     
-    /**
-     * Functions
-     */
+    #Functions allowed in views
     'functions' => array(
         'var_dump'
     ),
 
-    /**
-     * Filters
-     */
+    #Filters allowed in view
     'filters' => array(
         'hello' => function ($str) {
             return 'Hello world: ' . $str;
