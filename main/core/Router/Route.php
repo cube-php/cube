@@ -40,7 +40,7 @@ class Route
     /**
      * Route controller
      * 
-     * @var string[]|callable
+     * @var string[]|Closure
      */
     private $_controller = array();
 
@@ -104,7 +104,7 @@ class Route
      * Add specified middlewares to request
      *
      * @param Request $request
-     * @return Request
+     * @return Request|null
      */
     public function engageMiddleware(Request $request)
     {

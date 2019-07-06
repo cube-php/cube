@@ -117,6 +117,10 @@ class RouteCollection
                 #Engage Middlewares
                 $request = $route->engageMiddleware($this->_request);
 
+                if(!$request) {
+                    return true;
+                }
+
                 #Instantiate route controller
                 $route->initController($request, $response);
                 

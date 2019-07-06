@@ -358,6 +358,7 @@ class Request implements RequestInterface
 
         $wares = App::getConfigByFile('middleware');
         $result = $this;
+        $stopped = false;
 
         foreach($middlewares as $middleware) {
 
@@ -369,6 +370,15 @@ class Request implements RequestInterface
             }
 
             $result = call_user_func_array([new $class, 'trigger'], [$result]);
+
+            if($result instanceof Response) {
+                $stopped = true;
+                break;
+            }
+        }
+
+        if($stopped) {
+            return null;
         }
 
         return $result;
