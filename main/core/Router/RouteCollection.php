@@ -112,7 +112,7 @@ class RouteCollection
                 EventManager::dispatchEvent(App::EVENT_ROUTE_MATCH_FOUND, $this->_request);
                 
                 #Get parsed response
-                $response = $route->parseResponse((new Response));
+                $response = $route->parseResponse(Response::getInstance());
 
                 #Engage Middlewares
                 $request = $route->engageMiddleware($this->_request);

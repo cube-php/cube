@@ -120,10 +120,17 @@ class Response implements ResponseInterface
     private $_view;
 
     /**
+     * Response instance
+     *
+     * @var self
+     */
+    private static $_instance;
+
+    /**
      * Response Constructor
      * 
      */
-    public function __construct()
+    private function __construct()
     {
         $this->_header = new Headers;
         $this->_view = new View(VIEW_PATH);
@@ -334,5 +341,25 @@ class Response implements ResponseInterface
 
         echo $rendered_content;
         return $this;
+    }
+
+    /**
+     * Get response interface
+     *
+     * @param boolean $force_new Set if a fresh instance of response is needed
+     * @return self
+     */
+    public static function getInstance($force_new = false)
+    {
+        if($force_new) {
+            return new self();
+        }
+
+        if(static::$_instance) {
+            return static::$_instance;
+        }
+
+        static::$_instance = new self();
+        return static::$_instance;
     }
 }

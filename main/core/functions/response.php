@@ -22,21 +22,25 @@ function redirect($path, $params = [], $is_external = false) {
     return response()->redirect($path, $params, $is_external);
 }
 
- /**
-  * Create new response instance
-  *
-  * @return Response
-  */
-function response() {
-    return (new Response());
+/**
+ * Create a response instance
+ * 
+ * @param boolean $new_instance Set if a new instance of response is needed
+ * @return Response
+ */
+function response($new_instance = false) {
+    return (Response::getInstance($new_instance));
 }
 
 /**
- * Render view
+ * Render a view or compile view to string
  *
- * @param string $tpl
+ * @param string $tpl Template to load
+ * @param array $context View context
+ * @param boolean $run_render Whether to run render compiled view or return as string
+ * @param boolean $new_instance Set if a new instance of response is needed
  * @return Response
  */
-function view($tpl, $context = [], $run_render = true) {
-    return response()->view($tpl, $context, $run_render);
+function view($tpl, $context = [], $run_render = true, $new_instance = false) {
+    return response($new_instance)->view($tpl, $context, $run_render);
 }

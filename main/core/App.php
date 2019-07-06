@@ -340,7 +340,7 @@ class App
         $url  = $this->_request->url()->getUrlWithoutScheme();
         $rdr_url = $secure_scheme . $url;
         
-        return (new Response)
+        return (Response::getInstance())
             ->redirect($rdr_url, [], true);
     }
 
