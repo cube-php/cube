@@ -12,7 +12,7 @@ interface ResponseInterface
 
     public function withStatusCode($code, $reason);
 
-    public function write($string);
+    public function write(...$args);
 
     public function json($data);
 
