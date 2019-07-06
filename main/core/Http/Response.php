@@ -262,12 +262,15 @@ class Response implements ResponseInterface
     /**
      * Write content to response
      * 
-     * @param string $string String to write to response
+     * @param array $data Data to write to response
      * 
      * @return self
      */
-    public function write($string)
+    public function write(...$args)
     {
+
+        $string = implode($args);
+
         #Check if headers have been output
         #Else output headers
         if(!$this->_has_render_headers) {
