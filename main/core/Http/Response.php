@@ -324,8 +324,15 @@ class Response implements ResponseInterface
      * 
      * @return self
      */
-    public function view($path, array $context = [])
+    public function view($path, array $context = [], $run_render = true)
     {
-        echo $this->_view->render($path, $context);
+        $rendered_content = $this->_view->render($path, $context);
+
+        if(!$run_render) {
+            return $rendered_content;
+        }
+
+        echo $rendered_content;
+        return $this;
     }
 }
