@@ -42,12 +42,13 @@ class System
         try {
             Cli::respond('Executing system logic');
             $this->initSystemsUtilities();
-            Cli::respond('System login completed');
+            Cli::respondSuccess('System login completed');
             Cli::respond('Executing custom logic');
             $this->initCustomCommands();
-            Cli::respond('Custom logic completed');
+            Cli::respondSuccess('Custom logic completed');
         } catch (Exception $e) {
-            Cli::respond("Unable to intialize system \n" . $e->getMessage(), true);
+
+            Cli::respondError("Unable to intialize system \n" . $e->getMessage(), true);
         }
             
     }
@@ -82,7 +83,7 @@ class System
     {
         Cli::respond('Dropping table -> ' . $name);
         DB::table($name)->drop();
-        Cli::respond('Table "' . $name . '" dropped successfully');
+        Cli::respondSuccess('Table "' . $name . '" dropped successfully');
     }
 
     /**

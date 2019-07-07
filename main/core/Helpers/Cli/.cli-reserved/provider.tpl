@@ -20,11 +20,12 @@ class {className}
      * Getter
      *
      * @param string $name Field name
+     * @param array $args Arguments
      * @return mixed
      */
-    public function __get($name)
+    public function __call($name, $args)
     {
-        return $this->_data->{$name};
+        return $this->_data->{$name} ?? null;
     }
 
     /**
@@ -36,15 +37,5 @@ class {className}
     public function __set($name, $value)
     {
 
-    }
-
-    /**
-     * Return id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 }
