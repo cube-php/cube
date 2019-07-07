@@ -55,6 +55,20 @@ class Cookie
     }
 
     /**
+     * Get cookie value and remove it
+     *
+     * @param string $name Cookie key
+     * @return mixed
+     */
+    public static function getAndRemove($name)
+    {
+        $data = static::get($name);
+        static::remove($name);
+
+        return $data;
+    }
+
+    /**
      * Remove cookie
      * 
      * @param string $name Cookie name

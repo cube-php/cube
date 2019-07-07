@@ -111,6 +111,20 @@ class Session
     }
 
     /**
+     * Get session value and remove it
+     *
+     * @param string $name Session key name
+     * @return mixed
+     */
+    public static function getAndRemove($name)
+    {
+        $data = static::get($name);
+        static::remove($name);
+
+        return $data;
+    }
+
+    /**
      * Returns session name
      * 
      * @return string
