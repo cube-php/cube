@@ -53,6 +53,10 @@ class Input implements InputInterface
      */
     public function equals($value)
     {
+        if($value instanceof self) {
+            $value = $value->getValue();
+        }
+
         return $this->getValue() == $value;
     }
 

@@ -76,7 +76,7 @@ class InputValidator
      * Callung anonymous methods
      *
      * @param string $name Method name
-     * @param string $args Arguments
+     * @param array $args Arguments
      * @return self
      */
     public function __call($name, $args)
@@ -91,7 +91,7 @@ class InputValidator
         $method_name = $validators[$name];
         $args = array_merge($validator = [$this], $args);
 
-        $validation = call_user_func_array($method_name, $args);
+        call_user_func_array($method_name, $args);
         return $validator;
     }
 
@@ -227,13 +227,17 @@ class InputValidator
     /**
      * Check if input's value is equal to value
      *
-     * @param string|int $value
+     * @param string|int|Input $value
      * @param string|null $msg Custom error message
      * 
      * @return self
      */
     public function equals($value, $msg = null)
     {
+        if($value instanceof Input) {
+            $value = $value->getValue();
+        }
+        
         $msg = static::getMessage('equals', $msg);
 
         if($value != $this->getValue()) {
