@@ -210,6 +210,9 @@ class App
         #App webroot path
         define('APP_WEBROOT_PATH', APP_PATH . DS . 'webroot');
 
+        #App logs path
+        define('APP_LOGS_PATH', APP_PATH . DS . 'logs');
+
         # Configuration directory
         define('CONFIG_PATH', APP_PATH . DS . 'config' . DS);
 
