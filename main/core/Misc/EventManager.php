@@ -56,9 +56,16 @@ class EventManager
 
         $handles = static::$events[$handler];
 
-        foreach($handles as $function)
-        {
-            $function($arg);
+        foreach($handles as $function) {
+            if(is_callable($function)) {
+                $function($arg);
+                continue;
+            }
+
+            if(is_string($function)) {
+                $function::handle($arg);
+                continue;
+            }
         }
     }
 
@@ -79,13 +86,26 @@ class EventManager
      * Add new event listener
      * 
      * @param int|string $handler Event Handler
-     * @param callable $callback Callback function
+     * @param callable|string $callback Callback function
      * 
      * @return void
      */
-    public static function on($handler, callable $callback)
+    public static function on($handler, $callback)
     {
         if(!isset(static::$events[$handler])) static::$events[$handler] = array();
-        static::$events[$handler][] = $callback;
+
+        if(is_callable($callback)) {
+            return static::$events[$handler][] = $callback;
+        }
+
+        if(is_string($callback) && !class_exists($callback)) {
+            throw new InvalidArgumentException("Class \"{$callback}\" does not exist");
+        }
+
+        if(!method_exists($callback, 'handle')) {
+            throw new InvalidArgumentException("Class \"{$callback}\" does not have method \"handle\"");
+        }
+
+        return static::$events[$handler][] = $callback;
     }
 }

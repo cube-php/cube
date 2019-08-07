@@ -9,7 +9,8 @@
             "App\\Providers\\": "app/providers",
             "App\\Exceptions\\": "app/exceptions",
             "App\\Core\\": "main/core",
-            "App\\Middlewares\\": "app/middlewares"
+            "App\\Middlewares\\": "app/middlewares",
+            "App\\Events\\": "app/events"
         }
     },
     "require": {

@@ -222,6 +222,9 @@ class App
         #Controllers Path
         define('APP_CONTROLLERS_PATH', MAIN_APP_PATH . DS . 'controllers');
 
+        #Events Path
+        define('APP_EVENTS_PATH', MAIN_APP_PATH . DS . 'events');
+
         #Models Path
         define('APP_MODELS_PATH', MAIN_APP_PATH . DS . 'models');
 
@@ -257,6 +260,7 @@ class App
         $this->initSystemHelpers();
         $this->initSessions();
         $this->initHelpers();
+        $this->loadEvents();
         $this->initRoutes();
     }
 
@@ -471,6 +475,22 @@ class App
             }
 
             require_once($file_path);
+        }
+    }
+
+    /**
+     * Load/Register Assigned events
+     *
+     * @return void
+     */
+    private function loadEvents()
+    {
+        $events = App::getConfigByFile('events');
+        
+        foreach($events as $handler => $handles) {
+            array_map(function($handle) use ($handler) {
+                EventManager::on($handler, $handle);
+            }, $handles);
         }
     }
 

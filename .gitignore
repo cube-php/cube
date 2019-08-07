@@ -3,3 +3,4 @@ app/controllers/DebugController.php
 flat-db/**
 **/FlatDb
 .idea
+.env

@@ -13,6 +13,7 @@ return array(
     'App\\Models\\' => array($baseDir . '/app/models'),
     'App\\Middlewares\\' => array($baseDir . '/app/middlewares'),
     'App\\Exceptions\\' => array($baseDir . '/app/exceptions'),
+    'App\\Events\\' => array($baseDir . '/app/events'),
     'App\\Core\\' => array($baseDir . '/main/core'),
     'App\\Controllers\\' => array($baseDir . '/app/controllers'),
 );

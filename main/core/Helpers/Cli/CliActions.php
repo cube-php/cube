@@ -38,10 +38,9 @@ class CliActions
         ]);
 
         try {
-            Cli::respond('creating controller: ' . $filename);
             $file = new File($model_path, true, true);
             $file->write($refined_template);
-            Cli::respondSuccess('created controller: ' . $filename);
+            Cli::respond('created controller: ' . $filename);
         }
         catch(FileSystemException $e) {
             Cli::respondError($e->getMessage());
@@ -68,10 +67,9 @@ class CliActions
         ]);
 
         try {
-            Cli::respond('creating exception: ' . $filename);
             $file = new File($exception_path, true, true);
             $file->write($refined_template);
-            Cli::respondSuccess('created exception: ' . $filename);
+            Cli::respond('created exception: ' . $filename);
         }
         catch(FileSystemException $e) {
             Cli::respondError($e->getMessage());
@@ -99,10 +97,9 @@ class CliActions
         $refined_template = strtr($template, ['{fn}' => $name]);
 
         try {
-            Cli::respond('creating helper: ' . $filename);
             $file = new File($exception_path, true, true);
             $file->write($refined_template);
-            Cli::respondSuccess('created helper: ' . $filename);
+            Cli::respond('created helper: ' . $filename);
         }
         catch(FileSystemException $e) {
             Cli::respondError($e->getMessage());
@@ -130,10 +127,9 @@ class CliActions
         ]);
 
         try {
-            Cli::respond('creating middleware: ' . $filename);
             $file = new File($middleware_path, true, true);
             $file->write($refined_template);
-            Cli::respondSuccess('created middleware: ' . $filename);
+            Cli::respond('created middleware: ' . $filename);
         }
         catch(FileSystemException $e) {
             Cli::respondError($e->getMessage());
@@ -161,10 +157,9 @@ class CliActions
         ]);
 
         try {
-            Cli::respond('creating model: ' . $filename);
             $file = new File($model_path, true, true);
             $file->write($refined_template);
-            Cli::respondSuccess('created model: ' . $filename);
+            Cli::respond('created model: ' . $filename);
         }
         catch(FileSystemException $e) {
             Cli::respondError($e->getMessage());
@@ -192,14 +187,43 @@ class CliActions
         ]);
 
         try {
-            Cli::respond('creating provider: ' . $filename);
             $file = new File($model_path, true, true);
             $file->write($refined_template);
-            Cli::respondSuccess('created provider: ' . $filename);
+            Cli::respond('created provider: ' . $filename);
         }
         catch(FileSystemException $e) {
             Cli::respondError($e->getMessage());
             Cli::respond(Cli::COMMAND_PROVIDER . ' failed', true);
+        }
+    }
+
+    public static function buildEvent($options)
+    {
+
+        $name = $options['n'];
+
+        if(!$name) {
+            Cli::respondError('No name specified for event', true);
+        }
+
+        $name = self::getSyntaxedName($name, 'Event');
+
+        $filename = static::addExt($name);
+        $template = static::getReservedTemplate('event');
+        $model_path = APP_EVENTS_PATH . DS . $filename;
+        $refined_template = strtr($template, [
+            '{className}' => static::getClassName($name),
+            '{subNamespace}' => static::getClassNamespace($name)
+        ]);
+
+        try {
+            $file = new File($model_path, true, true);
+            $file->write($refined_template);
+            Cli::respond('created event: ' . $filename);
+        }
+        catch(FileSystemException $e) {
+            Cli::respondError($e->getMessage());
+            Cli::respond(Cli::COMMAND_EVENT . ' failed', true);
         }
     }
 
@@ -339,7 +363,7 @@ class CliActions
 
     private static function getSyntaxedName($name, $syntax)
     {
-        $name = ucfirst(strtolower($name));
+        $name = ucfirst($name);
         $syntax_length = strlen($syntax);
         $raw_name = substr($name, 0, -$syntax_length);
 

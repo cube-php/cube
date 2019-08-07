@@ -14,7 +14,8 @@ class Cli
     const COMMAND_HELPER     = 'make:helper';
     const COMMAND_EXCEPTION  = 'make:exception';
     const COMMAND_MIDDLEWARE = 'make:middleware';
-    const COMMAND_ASSET        = 'make:asset';
+    const COMMAND_EVENT      = 'make:event';
+    const COMMAND_ASSET      = 'make:asset';
     const COMMAND_HELP       = 'help';
     const COMMAND_SYSTEM     = 'system';
     const COMMAND_SERVE      = 'serve';
@@ -124,6 +125,10 @@ class Cli
                 return CliActions::runSystemCommand($args);
                 break;
 
+            case self::COMMAND_EVENT:
+                return CliActions::buildEvent($args);
+                break;
+
             default:
                 return CliActions::buildHelp();
                 break;
@@ -171,7 +176,8 @@ class Cli
             self::COMMAND_ASSET,
             self::COMMAND_HELP,
             self::COMMAND_SYSTEM,
-            self::COMMAND_SERVE
+            self::COMMAND_SERVE,
+            self::COMMAND_EVENT
         );
     }
 
