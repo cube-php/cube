@@ -110,13 +110,14 @@ class Uri implements UriInterface
      */
     public function getUrl($with_scheme = true)
     {
-        $url = $with_scheme ? $this->_scheme : '';
-        $url .= '://' . $this->_host . $this->_path;
+        $url = $with_scheme ? $this->_scheme . '://' : '';
+        $url .= $this->_host;
 
         if(!in_array($this->getPort(), $this->_usual_ports)) {
             $url .= ':' . $this->getPort();
         }
 
+        $url .= $this->_path;
         return $url;
     }
 
@@ -223,15 +224,14 @@ class Uri implements UriInterface
 
         $config = App::getConfigByName('app');
         $directory = $config['directory'];
+        $url_data = (object) parse_url($url);
 
         #Let's get scheme
-        $url_scheme = explode(':', $url)[0];
-        $this->_scheme = $url_scheme;
+        $this->_scheme = $url_data->scheme;
 
         #Let's get host name
-        $url_host_vars = explode($url_scheme . '://', $url)[1];
-        $url_host = explode('/', $url_host_vars)[0];
-        $this->_host = $url_host;
+        $this->_host = $url_data->host;
+
         if($directory) {
             $this->_host .= $directory;
         }
@@ -241,15 +241,10 @@ class Uri implements UriInterface
         $this->_query = $query_string;
 
         #Get port number
-        $url_port = explode(':', $url_host);
-        $this->_port = $url_port[0] ?? null;
+        $this->_port = $url_data->port;
 
         #Get url path
-        $url_path_vars  = explode('/', $url_host_vars);
-        $url_path_chunks = array_slice($url_path_vars, 1);
-        $url_path_join = implode('/', $url_path_chunks);
-        $url_path = '/' . explode('?', $url_path_join)[0];
-        $this->_path = (substr($url_path, -1, 1) === '/') ? $url_path : $url_path . '/';
+        $this->_path = $url_data->path;
         if($directory) {
             $this->_path = preg_replace("#{$directory}#", "", $this->_path);
         }
