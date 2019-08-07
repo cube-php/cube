@@ -241,7 +241,7 @@ class Uri implements UriInterface
         $this->_query = $query_string;
 
         #Get port number
-        $this->_port = $url_data->port;
+        $this->_port = $url_data->port ?? null;
 
         #Get url path
         $this->_path = $url_data->path;
