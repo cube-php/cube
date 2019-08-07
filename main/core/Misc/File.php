@@ -31,20 +31,21 @@ class File
     public function __construct($path, $create_new = false, $throw_exists_exception = false)
     {   
         $this->_path = $path;
+        $exists = file_exists($this->_path);
         
-        if(file_exists($this->_path) && $throw_exists_exception) {
+        if($exists && $throw_exists_exception) {
             throw new FileSystemException
                 ('File at "' . $this->_path . ' already exists"');
         }
         
-        if($create_new) {
+        if(!$exists && $create_new) {
             $dir_vars = explode('/', $path);
             $dir_name_vars = array_slice($dir_vars, 0, count($dir_vars) - 1);
             $dir_name = implode(DS, $dir_name_vars);
             Folder::create($dir_name, '', 0775, true);
         }
 
-        $modes = $create_new ? 'w+' : 'rw';
+        $modes = !$exists && $create_new ? 'w+' : 'a+';
         $file = @fopen($path, $modes);
 
         if(!$file) {
@@ -136,8 +137,7 @@ class File
      * Write content to file
      * 
      * @param string|blob $content Content to write to file
-     * 
-     * @return
+     * @return self
      */
     public function write($content)
     {
@@ -148,7 +148,7 @@ class File
     /**
      * Make path from arguments
      *
-     * @param string ...$args
+     * @param array ...$args
      * @return string
      */
     public static function joinPath(...$args)
