@@ -74,7 +74,6 @@ class RouteCollection
     {
 
         $path_match_found = false;
-        $current_request_method = $this->_request->getMethod();
         $raw_current_url = (string) $this->_request->url()->getPath();
         $current_url = $this->trimPath($raw_current_url);
 
@@ -141,6 +140,7 @@ class RouteCollection
     public function trimPath($path)
     {
         $path = preg_replace('#([\/]{1,})#', '/', $path);
-        return $path;
+        $last_char = substr($path, 1, -1);
+        return $last_char === '/' ? $path : $path . '/';
     }
 }
