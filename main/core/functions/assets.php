@@ -18,7 +18,7 @@ function url($path = '', array $query = [])
         $path = sprintf('/%s', implode('/', $path));
     }
 
-    $repath = $request->url()->getScheme() . '://' . $request->url()->getHost() . $path;
+    $repath = $request->url()->getHostName() . $path;
 
     return $query ?
         $repath . '?' . http_build_query($query) : $repath;

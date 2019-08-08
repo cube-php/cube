@@ -142,6 +142,22 @@ class Uri implements UriInterface
     }
 
     /**
+     * Get the host name
+     *
+     * @return string
+     */
+    public function getHostName()
+    {
+        $url = $this->getScheme() . '://' . $this->getHost();
+
+        if($this->getPort()) {
+            $url .= ':' . $this->getPort();
+        }
+
+        return $url;
+    }
+
+    /**
      * Return url scheme
      * 
      * @return string

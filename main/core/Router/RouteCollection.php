@@ -140,7 +140,7 @@ class RouteCollection
     public function trimPath($path)
     {
         $path = preg_replace('#([\/]{1,})#', '/', $path);
-        $last_char = substr($path, 1, -1);
-        return $last_char === '/' ? $path : $path . '/';
+        $last_char = strlen($path) == 1 ? $path : substr($path, 1, -1);
+        return $last_char == '/' ? $path : $path . '/';
     }
 }
