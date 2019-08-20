@@ -14,17 +14,16 @@ class Headers extends Collection
     public function __construct()
     {
 
-        if(is_callable(headers_list())) {
+        if(!is_callable('headers_list')) {
+            return;
+        }
 
-            $headers_list = headers_list();
+        $headers_list = headers_list();
 
-            foreach($headers_list as $header => $value)
-            {
-                $this->set(
-                    $this->getHeaderName($header),
-                    $this->getHeaderValue($value)
-                );
-            }
+        foreach($headers_list as $value) {
+            $this->set(
+                $this->getHeaderName($value),
+                $this->getHeaderValue($value));
         }
 
         $this->removeAll();
@@ -104,8 +103,7 @@ class Headers extends Collection
         $new_name = array();
         $name_vars = explode('-', $name);
 
-        foreach($name_vars as $name_var)
-        {
+        foreach($name_vars as $name_var) {
             $first_letter = strtoupper(substr($name_var, 0, 1));
             $rest_letters = substr($name_var, 1);
 
