@@ -113,7 +113,7 @@ class Uri implements UriInterface
         $url = $with_scheme ? $this->_scheme . '://' : '';
         $url .= $this->_host;
 
-        if(!in_array($this->getPort(), $this->_usual_ports)) {
+        if($this->getPort() && !in_array($this->getPort(), $this->_usual_ports)) {
             $url .= ':' . $this->getPort();
         }
 
