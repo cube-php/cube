@@ -24,9 +24,6 @@ class DBTableBuilder
     public function __construct(DBTable $table)
     {
         $this->table = $table;
-        
-        $this->field('created_at')->datetime();
-        $this->field('updated_at')->datetime();
     }
 
     /**
@@ -37,5 +34,16 @@ class DBTableBuilder
     public function field($name)
     {
         return new DBSchemaBuilder($this->table, $name);
+    }
+
+    /**
+     * Moved the creation of extra fields to end of action
+     * 
+     * @return void
+     */
+    public function __destruct()
+    {
+        $this->field('created_at')->datetime();
+        $this->field('updated_at')->datetime()->nullable();
     }
 }
