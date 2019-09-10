@@ -103,11 +103,11 @@ class Request implements RequestInterface
     /**
      * Get request body
      *
-     * @param boolean $has_input Set whether body content should be wrapped as an input
      * @param array $fields Fields to retrieve if return content is Input
+     * @param boolean $as_input Set whether body content should be wrapped as an input
      * @return Input[]|mixed
      */
-    public function getBody($has_input = false, $fields = [])
+    public function getBody($fields = [], $as_input = true)
     {
         $contents = file_get_contents('php://input');
 
@@ -115,8 +115,9 @@ class Request implements RequestInterface
             return null;
         }
 
-        if(!$has_input) {
-            return $contents;
+        if(!$as_input) {
+            $decoded_data = json_decode($contents, true);
+            return array_values($decoded_data);
         }
 
         $returns = [];
