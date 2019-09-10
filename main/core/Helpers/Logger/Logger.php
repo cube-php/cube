@@ -8,6 +8,8 @@ use App\Core\Misc\File;
 class Logger implements LoggerInterface
 {
 
+    private $handlers = [];
+
     /**
      * File
      *
@@ -20,6 +22,18 @@ class Logger implements LoggerInterface
         $curdate = date('d_m_Y');
         $filename = File::joinPath(APP_LOGS_PATH, "{$curdate}.log");
         $this->_file = new File($filename, true);
+    }
+
+    /**
+     * Add callback for on log action
+     *
+     * @param callable $func
+     * @return self
+     */
+    public function onLog(callable $func)
+    {
+        $this->handlers[] = $func;
+        return $this;
     }
 
     /**
@@ -44,6 +58,16 @@ class Logger implements LoggerInterface
         $content = $content_prefix . ' ' . $data . PHP_EOL;
 
         $this->_file->write($content);
+        $this->executeHandlers($data);
+        return true;
+    }
+
+    private function executeHandlers($content)
+    {
+        foreach($this->handlers as $handler) {
+            $handler($content);
+        }
+
         return true;
     }
 }
