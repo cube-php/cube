@@ -24,6 +24,9 @@ class DBTableBuilder
     public function __construct(DBTable $table)
     {
         $this->table = $table;
+        
+        $this->field('created_at')->datetime();
+        $this->field('updated_at')->datetime();
     }
 
     /**

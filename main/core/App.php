@@ -234,11 +234,14 @@ class App
         #Middlewares Path
         define('APP_MIDDLEWARES_PATH', MAIN_APP_PATH . DS . 'middlewares');
 
-        #Providers Path
+        #Exceptions Path
         define('APP_EXCEPTIONS_PATH', MAIN_APP_PATH . DS . 'exceptions');
 
-        #Providers Path
+        #Helpers Path
         define('APP_HELPERS_PATH', MAIN_APP_PATH . DS . 'helpers');
+
+        #Migration Path
+        define('APP_MIGRATIONS_PATH', MAIN_APP_PATH . DS . 'migrations');
 
         #Providers Path
         define('APP_PUBLIC_STORAGE_PATH', APP_STORAGE . DS . 'storage');

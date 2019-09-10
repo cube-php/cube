@@ -11,6 +11,7 @@ return array(
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'App\\Providers\\' => array($baseDir . '/app/providers'),
     'App\\Models\\' => array($baseDir . '/app/models'),
+    'App\\Migrations\\' => array($baseDir . '/app/migrations'),
     'App\\Middlewares\\' => array($baseDir . '/app/middlewares'),
     'App\\Exceptions\\' => array($baseDir . '/app/exceptions'),
     'App\\Events\\' => array($baseDir . '/app/events'),

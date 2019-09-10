@@ -25,6 +25,7 @@ class ComposerStaticInita16caad90865e5134ad17e7719ba5398
         array (
             'App\\Providers\\' => 14,
             'App\\Models\\' => 11,
+            'App\\Migrations\\' => 15,
             'App\\Middlewares\\' => 16,
             'App\\Exceptions\\' => 15,
             'App\\Events\\' => 11,
@@ -53,6 +54,10 @@ class ComposerStaticInita16caad90865e5134ad17e7719ba5398
         'App\\Models\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app/models',
+        ),
+        'App\\Migrations\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/migrations',
         ),
         'App\\Middlewares\\' => 
         array (

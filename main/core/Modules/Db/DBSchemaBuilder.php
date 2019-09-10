@@ -287,6 +287,10 @@ class DBSchemaBuilder
      */
     public function primary()
     {
+        if(!$this->type) {
+            $this->int();
+        }
+
         $this->primary = true;
         return $this;
     }
@@ -299,6 +303,18 @@ class DBSchemaBuilder
     public function unsigned()
     {
         $this->attribute = 'unsigned';
+        return $this;
+    }
+
+    /**
+     * Set schema as a boolean
+     *
+     * @param boolean $default
+     * @return self
+     */
+    public function boolean(bool $default = true)
+    {
+        $this->tinyint(1)->default($default);
         return $this;
     }
 

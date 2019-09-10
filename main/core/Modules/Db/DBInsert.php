@@ -29,6 +29,7 @@ class DBInsert extends DBQueryBuilder
      */
     public function entry($params)
     {
+        $params['created_at'] = getnow();
         $this->make($params);
         return $this->finish();
     }

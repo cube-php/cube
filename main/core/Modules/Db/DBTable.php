@@ -129,6 +129,10 @@ class DBTable
      */
     public function drop()
     {
+        if(!$this->exists()) {
+            return;
+        }
+
         DB::statement(
             DBWordConstruct::dropTable($this->name)  
         );

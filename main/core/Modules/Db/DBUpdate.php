@@ -29,6 +29,7 @@ class DBUpdate extends DBQueryBuilder
      */
     public function entry($params)
     {
+        $params['updated_at'] = getnow();
         $this->make($params);
         return $this;
     }

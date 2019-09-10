@@ -2,6 +2,7 @@
 
 namespace App\Core\Helpers\Cli;
 
+use App\Core\App;
 use App\Core\Misc\File;
 use App\Core\Exceptions\FileSystemException;
 use App\Core\Modules\System;
@@ -227,6 +228,36 @@ class CliActions
         }
     }
 
+    public static function buildMigration($options)
+    {
+
+        $name = $main_name = $options['n'];
+
+        if(!$name) {
+            Cli::respondError('No name specified for migration', true);
+        }
+
+        $name = self::getSyntaxedName($name);
+
+        $filename = static::addExt($name);
+        $template = static::getReservedTemplate('migration');
+        $model_path = APP_MIGRATIONS_PATH . DS . $filename;
+        $refined_template = strtr($template, [
+            '{className}' => static::getClassName($name),
+            '{name}' => strtolower($main_name)
+        ]);
+
+        try {
+            $file = new File($model_path, true, true);
+            $file->write($refined_template);
+            Cli::respond('created migration: ' . $filename);
+        }
+        catch(FileSystemException $e) {
+            Cli::respondError($e->getMessage());
+            Cli::respond(Cli::COMMAND_MIGRATION . ' failed', true);
+        }
+    }
+
     public static function serve($options)
     {
         $port = $options['p'] ?? 8888;
@@ -275,6 +306,52 @@ class CliActions
         $raw_args = explode(':', $action);
         $args = array_map('trim', $raw_args);
         return call_user_func_array([$system, $method_name], $args);
+    }
+
+    public static function runSchema($command)
+    {
+        if(App::isProduction()) {
+            return Cli::respondError('Cannot run command in production');
+        }
+
+        $action = array_keys($command)[0] ?? 'r';
+        $namespace = 'App\Migrations\\';
+        $path = APP_MIGRATIONS_PATH;
+
+        $actions = array(
+            'r' =>  'up',
+            'e' => 'empty',
+            'd' => 'down'
+        );
+
+        $files = scandir($path);
+        $dot_files = ['.', '..'];
+
+        $trackable_files = array_diff($files, $dot_files);
+
+        if(!count($trackable_files)) {
+            return Cli::respondError('No migrations to run');
+        }
+
+        foreach($trackable_files as $filename) {
+
+            $filepath = $path . DS . $filename;
+
+            if(is_dir($filepath) || !is_file($filepath)) {
+                continue;
+            }
+
+            $namevars = explode('.', $filename);
+            $name = $namevars[0];
+            $classname = $namespace . $name;
+
+            if(!class_exists($classname)) {
+                continue;
+            }
+
+            call_user_func([$classname, $actions[$action]]);
+            Cli::respondSuccess('Migration completed: ' . $name);
+        }
     }
 
     private function addExt($name)
@@ -361,9 +438,14 @@ class CliActions
         }
     }
 
-    private static function getSyntaxedName($name, $syntax)
+    private static function getSyntaxedName($name, $syntax = '')
     {
         $name = ucfirst($name);
+
+        if(!$syntax) {
+            return $name;
+        }
+
         $syntax_length = strlen($syntax);
         $raw_name = substr($name, 0, -$syntax_length);
 

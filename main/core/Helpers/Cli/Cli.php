@@ -16,9 +16,11 @@ class Cli
     const COMMAND_MIDDLEWARE = 'make:middleware';
     const COMMAND_EVENT      = 'make:event';
     const COMMAND_ASSET      = 'make:asset';
+    const COMMAND_MIGRATION  = 'make:migration';
     const COMMAND_HELP       = 'help';
     const COMMAND_SYSTEM     = 'system';
     const COMMAND_SERVE      = 'serve';
+    const COMMAND_SCHEMA     = 'schema';
 
     const OUTPUT_TEXT        = 'text';
     const OUTPUT_ERROR       = 'error';
@@ -129,6 +131,14 @@ class Cli
                 return CliActions::buildEvent($args);
                 break;
 
+            case self::COMMAND_SCHEMA:
+                return CliActions::runSchema($args);
+                break;
+
+            case self::COMMAND_MIGRATION:
+                return CliActions::buildMigration($args);
+                break;
+
             default:
                 return CliActions::buildHelp();
                 break;
@@ -177,7 +187,9 @@ class Cli
             self::COMMAND_HELP,
             self::COMMAND_SYSTEM,
             self::COMMAND_SERVE,
-            self::COMMAND_EVENT
+            self::COMMAND_EVENT,
+            self::COMMAND_SCHEMA,
+            self::COMMAND_MIGRATION
         );
     }
 
@@ -190,7 +202,9 @@ class Cli
             't:',
             'o:',
             'l',
-            'w'
+            'w',
+            'e',
+            'd'
         ];
 
         return implode('', $commands);
