@@ -186,8 +186,11 @@ class Uri implements UriInterface
         $name_vars_trimmed = array_map('trim', $name_vars);
         $keys = [];
 
-        foreach($name_vars_trimmed as $key) {
-            $keys[] = $this->_parsed_query[$key] ?? $otherwise;
+        foreach($name_vars_trimmed as $index => $key) {
+            $selected_otherwise_value = is_array($otherwise) ?
+                $otherwise[$index] ?? null : $otherwise;
+
+            $keys[] = $this->_parsed_query[$key] ?? $selected_otherwise_value;
         }
 
         return $keys;
