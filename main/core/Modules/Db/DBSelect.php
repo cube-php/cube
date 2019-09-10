@@ -145,6 +145,30 @@ class DBSelect extends DBQueryBuilder
     }
 
     /**
+     * Class name to wrap retrieved item
+     *
+     * @param string $class_name
+     * @return DBQueryBuilder
+     */
+    public function map($class_name)
+    {
+        if(!class_exists($class_name)) {
+            throw new InvalidArgumentException
+                ('Cannot use undefined class "' . $class_name . '" ');
+        }
+
+        $method_name = self::USE_RESERVED_METHOD_NAME;
+
+        if(!method_exists($class_name, $method_name)) {
+            throw new InvalidArgumentException
+                ('Method "' . $method_name . '" is not defined in class "' . $class_name . '"');
+        }
+
+        $this->bundle = $class_name;
+        return $this;
+    }
+
+    /**
      * Order query
      * 
      * @param array $order
@@ -190,27 +214,6 @@ class DBSelect extends DBQueryBuilder
     public function randomize()
     {
         return $this->orderByRaw('RAND()');
-    }
-
-    /**
-     * Raw select statement
-     * 
-     * @param string    $table_name Table to select from
-     * @param string    $statement  Select statement
-     * @param string[]  $params     Statement parameters
-     * 
-     * @return self
-     */
-    public function raw($table_name, $statement, $params = []) {
-
-        $this->joinSql('SELECT', $statement, 'FROM', $table_name);
-
-        if(!count($params)) {
-            return $this;
-        }
-
-        $this->bindParam($params);
-        return $this;
     }
 
     /**
@@ -261,6 +264,16 @@ class DBSelect extends DBQueryBuilder
             return [];
         }
 
-        return $stmt->fetchAll();
+        $fetched_data = $stmt->fetchAll();
+        $wrapper = $this->bundle;
+
+        if($wrapper && is_array($fetched_data)) {
+
+            return array_map(function ($item) use ($wrapper) {
+                return call_user_func_array([$wrapper, DBQueryBuilder::USE_RESERVED_METHOD_NAME], (array) $item);
+            }, $fetched_data);
+        }
+
+
     }
 }
