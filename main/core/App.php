@@ -337,7 +337,7 @@ class App
     private function forceHTTPs($redirect)
     {
         $scheme = strtolower($this->_request->url()->getScheme());
-        $secure_scheme = 'https';
+        $secure_scheme = 'https://';
 
         if($scheme == $secure_scheme) return true;
 
