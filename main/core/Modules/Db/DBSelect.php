@@ -274,6 +274,6 @@ class DBSelect extends DBQueryBuilder
             }, $fetched_data);
         }
 
-
+        return $fetched_data;
     }
 }
