@@ -8,6 +8,7 @@ use App\Core\Modules\Db\DBSelect;
 use App\Core\Modules\Db\DBQueryBuilder;
 use App\Core\Interfaces\ModelInterface;
 use App\Core\Exceptions\ModelException;
+use App\Core\Modules\Db\DBUpdate;
 
 class Model implements ModelInterface
 {
@@ -264,6 +265,42 @@ class Model implements ModelInterface
     public static function query()
     {
         return DB::table(static::$schema);
+    }
+
+    /**
+     * Update table rows
+     *
+     * @param array $fields
+     * @return DBUpdate|DBQueryBuilder
+     */
+    public static function update(array $fields)
+    {
+        return self::query()->update($fields);
+    }
+
+    /**
+     * Update field where there is a matching data or create new entry if $fields does not match
+     *
+     * @param array $fields
+     * @param array $data
+     * @return int
+     */
+    public static function updateOrCreate(array $fields, array $data)
+    {
+        $query = self::update($data);
+
+        array_walk($fields, function ($value, $name) use ($query) {
+            $query->where($name, $value);
+        });
+
+        $rows = $query->fulfil();
+        
+        if(!$rows) {
+           $new_data = array_merge($fields, $data);
+            return self::createEntry($new_data);
+        }
+
+        return $rows;
     }
 
     /**
