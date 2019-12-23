@@ -7,10 +7,10 @@ use App\Core\App;
  * Return full url based on specified path and query parameters
  *
  * @param string|array $path Path to concantenate with URL
- * @param array $query Query string
+ * @param null|array $query Query string
  * @return string
  */
-function url($path = '', array $query = [])
+function url($path = '', ?array $query = null) : string
 {
     $request = new Request();
 
@@ -28,12 +28,14 @@ function url($path = '', array $query = [])
  * Return assets based url
  *
  * @param string $asset_path Asset path
+ * @param bool $should_cache
  * @return string
  */
-function asset($asset_path)
+function asset($asset_path, bool $should_cache = false) : string
 {
     $full_path = array_merge(['assets'], array_wrap($asset_path));
-    return url($full_path);
+    $query = $should_cache ? ['v' => asset_token()] : null;
+    return url($full_path, $query);
 }
 
 /**
@@ -41,7 +43,7 @@ function asset($asset_path)
  * 
  * @return string
  */
-function jscript($name, $no_cache = null)
+function jscript($name, $no_cache = null) : string
 {
     if(is_array($name)) {
 
@@ -54,8 +56,9 @@ function jscript($name, $no_cache = null)
         return $links;
     }
 
-    $anti_cache = ((is_null($no_cache) || $no_cache) && App::isDevelopment()) ? '?time=' . time() : '';
-    return '<script src="' . asset(['js', $name .'.js']) . $anti_cache . '"></script>';
+    $asset = asset(['js', $name . '.js'], true);
+
+    return h('script', ['src' => $asset]);
 }
 
 
@@ -64,7 +67,7 @@ function jscript($name, $no_cache = null)
  * 
  * @return string
  */
-function css($name, $no_cache = null)
+function css($name, $no_cache = null) : string
 {
     if(is_array($name)) {
 
@@ -77,7 +80,18 @@ function css($name, $no_cache = null)
         return $links;
     }
 
-    $anti_cache = ((is_null($no_cache) || $no_cache) && App::isDevelopment()) ? '?time=' . time() : '';
-    return 
-        '<link rel="stylesheet" href="' . asset(['css', $name . '.css']) . $anti_cache . ' "/>';
+    $asset = asset(['css', $name . '.css'], true);
+
+    return h('link', [
+        'rel' => 'stylesheet',
+        'href' => $asset
+    ]);
+}
+
+function asset_token() : string {
+    if(App::isDevelopment()) {
+        return time();
+    }
+
+    return md5(env('ASSET_VERSION'));
 }

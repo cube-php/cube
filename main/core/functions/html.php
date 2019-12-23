@@ -12,7 +12,7 @@
  * @param mixed $innerhtml Element content
  * @return string Generated htmt
  */
-function h($element_name, ?array $attributes = [], $innerhtml) {
+function h($element_name, ?array $attributes = [], $innerhtml = null) {
     $self_closing = array(
         'area',
         'base',
