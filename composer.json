@@ -10,7 +10,8 @@
             "App\\Exceptions\\": "app/exceptions",
             "App\\Core\\": "main/core",
             "App\\Middlewares\\": "app/middlewares",
-            "App\\Events\\": "app/events"
+            "App\\Events\\": "app/events",
+            "App\\Migrations\\": "app/migrations"
         }
     },
     "require": {
