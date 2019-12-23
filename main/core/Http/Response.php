@@ -13,6 +13,13 @@ class Response implements ResponseInterface
 {
 
     /**
+     * View context
+     *
+     * @var array
+     */
+    private $_view_context = [];
+
+    /**
      * Response codes
      * 
      * @var string[]
@@ -146,7 +153,7 @@ class Response implements ResponseInterface
      */
     public function __set($name, $value)
     {
-        ResponseView::assign($name, $value);
+        $this->_view_context[$name] = $value;
     }
 
     /**
@@ -336,7 +343,8 @@ class Response implements ResponseInterface
      */
     public function view($path, array $context = [], $run_render = true)
     {
-        $rendered_content = $this->_view->render($path, $context);
+        $resolved_context = array_merge($this->_view_context, $context);
+        $rendered_content = $this->_view->render($path, $resolved_context);
 
         if(!$run_render) {
             return $rendered_content;
