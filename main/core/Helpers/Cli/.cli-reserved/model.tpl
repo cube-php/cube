@@ -9,8 +9,8 @@ class {className} extends Model
     protected static $schema = '{schema_name}';
 
     protected static $fields = array(
-        '{field1}',
-        '{field2}'
+        'created_at',
+        'updated_at'
     );
 
     protected static $primary_key = '{primary_key_field}';

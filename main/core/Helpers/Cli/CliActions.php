@@ -372,12 +372,22 @@ class CliActions
 
     private function addExt($name)
     {
-        return "{$name}.php";
+        $name_vars = explode('/', $name);
+        $name_vars_capitalized = array_map('ucfirst', $name_vars);
+        $name_vars_count = count($name_vars);
+
+        $main_name = $name_vars[$name_vars_count - 1];
+        $dirs = array_slice($name_vars_capitalized, 0, $name_vars_count - 1);
+
+        $new_dir = array_merge($dirs, [ucfirst($main_name)]);
+        $new_name = implode('/', $new_dir);
+
+        return "{$new_name}.php";
     }
 
     private static function buildAsset($type, $name)
     {
-        $allowed_types = ['css', 'js', 'vue', 'svelte', 'sass'];
+        $allowed_types = ['css', 'js', 'vue', 'svelte', 'sass', 'scss', 'less'];
         $type = strtolower($type);
 
         if(!in_array($type, $allowed_types)) {
@@ -419,12 +429,13 @@ class CliActions
         $vars_count = count($name_vars);
         $main_name = $name_vars[$vars_count - 1];
 
-        return $main_name;
+        return ucfirst($main_name);
     }
 
     private function getClassNamespace($name)
     {
         $name_vars = explode('/', $name);
+        $name_capitalized = array_map('ucfirst', $name_vars);
         $vars_count = count($name_vars);
 
         if($vars_count == 1) {
@@ -433,7 +444,7 @@ class CliActions
 
         echo $vars_count;
 
-        $main_vars = array_slice($name_vars, 0, $vars_count - 1);
+        $main_vars = array_slice($name_capitalized, 0, $vars_count - 1);
         $child_namespace = implode('\\', $main_vars);
 
         return '\\' . $child_namespace;
