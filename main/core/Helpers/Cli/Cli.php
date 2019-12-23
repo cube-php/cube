@@ -20,7 +20,7 @@ class Cli
     const COMMAND_HELP       = 'help';
     const COMMAND_SYSTEM     = 'system';
     const COMMAND_SERVE      = 'serve';
-    const COMMAND_SCHEMA     = 'schema';
+    const COMMAND_SCHEMA     = 'migrate';
 
     const OUTPUT_TEXT        = 'text';
     const OUTPUT_ERROR       = 'error';

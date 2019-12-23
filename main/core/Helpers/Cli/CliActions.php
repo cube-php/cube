@@ -314,7 +314,11 @@ class CliActions
             return Cli::respondError('Cannot run command in production');
         }
 
+        Cli::respond('...');
+
         $action = array_keys($command)[0] ?? 'r';
+        $migration_name = isset($command['n']) ? strtolower($command['n']) . '.php' : null;
+
         $namespace = 'App\Migrations\\';
         $path = APP_MIGRATIONS_PATH;
 
@@ -326,6 +330,7 @@ class CliActions
 
         $files = scandir($path);
         $dot_files = ['.', '..'];
+        $count = 0;
 
         $trackable_files = array_diff($files, $dot_files);
 
@@ -333,11 +338,19 @@ class CliActions
             return Cli::respondError('No migrations to run');
         }
 
+        $action_name = $actions[$action];
+
         foreach($trackable_files as $filename) {
 
             $filepath = $path . DS . $filename;
 
+            $usable_filename = strtolower($filename);
+
             if(is_dir($filepath) || !is_file($filepath)) {
+                continue;
+            }
+
+            if($migration_name && $migration_name != $usable_filename) {
                 continue;
             }
 
@@ -349,9 +362,12 @@ class CliActions
                 continue;
             }
 
-            call_user_func([$classname, $actions[$action]]);
-            Cli::respondSuccess('Migration completed: ' . $name);
+            $count++;
+            call_user_func([$classname, $action_name]);
+            Cli::respondSuccess($action_name . ' -> Migration completed: ' . $name);
         }
+
+        Cli::respond($count . ' migrations completed' . PHP_EOL);
     }
 
     private function addExt($name)
@@ -433,7 +449,7 @@ class CliActions
             return $content;
         }
         catch(FileSystemException $e) {
-            static::respond($e->getMessage());
+            Cli::respondError($e->getMessage());
             die();
         }
     }
