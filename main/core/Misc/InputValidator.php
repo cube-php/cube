@@ -88,8 +88,9 @@ class InputValidator
             throw new InvalidArgumentException('Unassigned validation method "' .$name. '"');
         }
 
+        $validator = $this;
         $method_name = $validators[$name];
-        $args = array_merge($validator = [$this], $args);
+        $args = array_merge([$validator], $args);
 
         call_user_func_array($method_name, $args);
         return $validator;
@@ -104,8 +105,7 @@ class InputValidator
     {
        $vars['input'] = strtolower(self::methodify($this->_id, ' '));
 
-        foreach($vars as $key => $value)
-        {
+        foreach($vars as $key => $value) {
             $replacer = '{'. $key .'}';
             $error = str_replace($replacer, $value, $error);
         }
@@ -125,8 +125,7 @@ class InputValidator
      */
     public static function extend($methods)
     {
-       foreach($methods as $name => $method)
-       {
+       foreach($methods as $name => $method) {
            static::$_custom_validators[static::methodify($name)] = $method;
        }
     }
