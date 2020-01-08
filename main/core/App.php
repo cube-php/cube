@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use Exception;
 use App\Core\Http\Session;
 use App\Core\Http\Request;
 use App\Core\Http\Response;
@@ -71,14 +72,21 @@ class App
      * 
      * @var string
      */
-    const EVENT_APP_ON_DEVELOPMENT = 'onAppDevelopment';
+    const EVENT_APP_ON_DEVELOPMENT  = 'onAppDevelopment';
     
     /**
      * Event when app is in production mode
      * 
      * @var string
      */
-    const EVENT_APP_ON_PRODUCTION = 'onAppProduction';
+    const EVENT_APP_ON_PRODUCTION  = 'onAppProduction';
+
+    /**
+     * Event when app crashes
+     * 
+     * @var string
+     */
+    const EVENT_APP_ON_CRASH       = 'onAppCrash';
 
     /**
      * Loaded configurations
@@ -262,15 +270,26 @@ class App
      */
     public function run()
     {
-        $this->loadConfig();
-        $this->setTimezone();
-        $this->loadComponents();
-        $this->configure();
-        $this->initSystemHelpers();
-        $this->initSessions();
-        $this->initHelpers();
-        $this->loadEvents();
-        $this->initRoutes();
+        try {
+            
+            $this->loadConfig();
+            $this->setTimezone();
+            $this->loadComponents();
+            $this->configure();
+            $this->initSystemHelpers();
+            $this->initSessions();
+            $this->initHelpers();
+            $this->loadEvents();
+            $this->initRoutes();
+
+        } catch (Exception $e) {
+
+            if(self::isDevelopment()) {
+                throw $e;
+            }
+            
+            EventManager::dispatchEvent(self::EVENT_APP_ON_CRASH, $e);
+        }
     }
 
     /**
