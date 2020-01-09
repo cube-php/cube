@@ -314,7 +314,7 @@ class DBSchemaBuilder
      */
     public function boolean(bool $default = true)
     {
-        $this->tinyint(1)->default($default);
+        $this->tinyint(1)->default((int) $default);
         return $this;
     }
 
