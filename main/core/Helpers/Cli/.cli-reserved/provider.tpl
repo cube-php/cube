@@ -4,7 +4,7 @@ namespace App\Providers{subNamespace};
 
 class {className}
 {
-    private $_data;
+    private $_model;
 
     /**
      * {className} constructor
@@ -13,7 +13,7 @@ class {className}
      */
     public function __construct($id)
     {
-        $this->_data = $id;
+        $this->_model = $id;
     }
 
     /**
@@ -25,7 +25,7 @@ class {className}
      */
     public function __call($name, $args)
     {
-        return $this->_data->{$name} ?? null;
+        return $this->_model->{$name} ?? null;
     }
 
     /**
