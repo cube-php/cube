@@ -267,8 +267,8 @@ class Route
         $parse = $this->_parseController();
 
         if($this->_is_callble_controller) {
-            $controller = Closure::bind($this->_controller, new AnonController(), AnonController::class);
-            return call_user_func_array($controller, [$request, $response]);
+            $controller = Closure::bind($this->_controller, new AnonController($request, $response), AnonController::class);
+            return $this->_analyzeControllerResult($controller, $request, $response);
         }
 
         $class = $this->_controller['class_name'];
@@ -281,13 +281,7 @@ class Route
                 ("{$class}::{$method}() on route \"{$this->getPath()}\" is not a valid callable method");
         }
 
-        $result = call_user_func_array([$controller, $method], [$request, $response]);
-
-        if(is_string($result)) {
-            return $response->write($result);
-        }
-
-        return $result;
+        return $this->_analyzeControllerResult([$controller, $method], $request, $response);
     }
 
     /**
@@ -340,6 +334,26 @@ class Route
 
         $this->_middlewares[] = $wares;
         return $this;
+    }
+
+    /**
+     * Analyze route's controller
+     *
+     * @param string|array $controller
+     * @param Request $request
+     * @param Response $response
+     * @return string|Response result
+     */
+    private function _analyzeControllerResult($controller, Request $request, Response $response)
+    {
+        $method = is_array($controller) ? 'call_user_func_array' : 'call_user_func';
+        $result = $method($controller, [$request, $response]);
+
+        if(is_string($result)) {
+            return $response->write($result);
+        }
+
+        return $result;
     }
 
     /**
