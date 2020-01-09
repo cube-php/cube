@@ -2,13 +2,10 @@
 
 namespace App\Core\Http;
 
-use App\Core\App;
-use App\Core\Http\Request;
-use App\Core\Helpers\ResponseView;
 use App\Core\Misc\Components;
 
 abstract class Controller
-{
+{   
     /**
      * Controller constructor
      * 
