@@ -43,6 +43,13 @@ class DBQueryBuilder
      * @var string|null
      */
     protected $bundle = null;
+
+    /**
+     * Field value inidcator
+     *
+     * @var string
+     */
+    protected $_value_prefix = '@';
     
     /**
      * Class to string
@@ -157,6 +164,18 @@ class DBQueryBuilder
     public function getSqlParameters()
     {
         return $this->parameters;
+    }
+
+    /**
+     * Having statement
+     *
+     * @param array ...$args
+     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     */
+    public function having(...$args)
+    {   
+        $args = $this->parseArgs($args);
+        return $this->joinSql(null, 'HAVING', $args->field, $args->operator, $args->value);
     }
 
     /**
@@ -487,7 +506,7 @@ class DBQueryBuilder
         $this->{$key}($field, '!=', null);
         return $this;
     }
-    
+
     /**
      * Where group initiator
      * 
@@ -530,6 +549,12 @@ class DBQueryBuilder
      */
     protected function addParam($value)
     {
+        $is_field = substr($value, 0, 1) == $this->_value_prefix;
+
+        if($is_field) {
+            return substr($value, 1);
+        }
+        
         $this->parameters[] = $value;
         return '?';
     }
@@ -566,6 +591,7 @@ class DBQueryBuilder
     public function joinSql(...$args)
     {
         $this->sql_query .= implode(' ', $args);
+        return $this;
     }
 
     /**
