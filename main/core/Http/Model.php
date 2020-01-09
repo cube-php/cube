@@ -40,12 +40,18 @@ class Model implements ModelInterface
      * @see \App\Core\Db\DBSelect::orderBY() method
      * 
      * @param array $opts
+     * @param array|null $fields Field to select
+     * @param string|null $map Provider class to map to model
      * @return array|null
      */
-    public static function all(?array $order = null, ?array $opts = null, array $fields = [])
+    public static function all(?array $order = null, ?array $opts = null, ?array $fields = [], ?string $map = null)
     {
         $query = static::select($fields)
                     ->orderBy($order);
+
+        if($map) {
+            $query->map($map);
+        }
 
         return $opts ? 
             call_user_func_array([$query, 'fetch'], $opts) : $query->fetchAll();
@@ -309,7 +315,7 @@ class Model implements ModelInterface
      * @param array $fields Fields to override default fields
      * @return DBSelect|DBQueryBuilder
      */
-    public static function select(array $fields = [])
+    public static function select(?array $fields = null)
     {
         return new DBSelect(static::$schema, $fields ?: static::$fields);
     }
