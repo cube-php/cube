@@ -285,7 +285,13 @@ class Uri implements UriInterface
         if(!$query) return $data;
 
         parse_str($query, $data);
-        $this->_parsed_query = $data;
+        $context = array();
+
+        foreach($data as $field => $value) {
+            $context[$field] = htmlspecialchars($value);
+        }
+
+        $this->_parsed_query = $context;
         return $this;
     }
 }
