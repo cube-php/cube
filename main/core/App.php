@@ -364,8 +364,8 @@ class App
      */
     private function forceHTTPs($redirect)
     {
-        $scheme = strtolower($this->_request->url()->getScheme());
-        $secure_scheme = 'https://';
+        $scheme = substr(strtolower($this->_request->url()->getScheme()), 0, 5);
+        $secure_scheme = 'https';
 
         if($scheme == $secure_scheme) return true;
 
@@ -373,7 +373,7 @@ class App
         if(!$redirect) return;
 
         $url  = $this->_request->url()->getUrlWithoutScheme();
-        $rdr_url = $secure_scheme . $url;
+        $rdr_url = $secure_scheme . '://' . $url;
         
         return (Response::getInstance())
             ->redirect($rdr_url, [], true);
