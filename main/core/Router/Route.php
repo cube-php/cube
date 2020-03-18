@@ -21,7 +21,14 @@ class Route
      *
      * @var string
      */
-    private $_view_prefix = '@';
+    const VIEW_PREFIX = '@';
+
+    /**
+     * Prefix to register controller from base controller namespace
+     * 
+     * @var string
+     */
+    const CONTINUOUS_NAMESPACE_PREFIX = '\\';
 
     /**
      * Route method
@@ -169,7 +176,10 @@ class Route
      */
     public function setNamespace($namespace)
     {
-        $this->_controllerNamespace = $namespace;
+        $is_continuous = substr($namespace, 0, 1) === self::CONTINUOUS_NAMESPACE_PREFIX;
+        $this->_controllerNamespace = $is_continuous ?
+            $this->_controllerNamespace . $namespace : $namespace;
+
         return $this;
     }
 
@@ -267,7 +277,7 @@ class Route
         $parse = $this->_parseController();
 
         if($this->_is_callble_controller) {
-            $controller = Closure::bind($this->_controller, new AnonController($request, $response), AnonController::class);
+            $controller = Closure::bind($this->_controller, new AnonController(), AnonController::class);
             return $this->_analyzeControllerResult($controller, $request, $response);
         }
 
@@ -346,8 +356,7 @@ class Route
      */
     private function _analyzeControllerResult($controller, Request $request, Response $response)
     {
-        $method = is_array($controller) ? 'call_user_func_array' : 'call_user_func';
-        $result = $method($controller, [$request, $response]);
+        $result = call_user_func_array($controller, [$request, $response]);
 
         if(is_string($result)) {
             return $response->write($result);
@@ -371,7 +380,7 @@ class Route
 
         $first_value = substr($controller, 0, 1);
 
-        if($first_value != $this->_view_prefix) {
+        if($first_value != self::VIEW_PREFIX) {
             return false;
         }
 
