@@ -40,6 +40,17 @@ final class Env
     }
 
     /**
+     * Check if environment variable exists
+     *
+     * @param string $name
+     * @return boolean
+     */
+    public static function has(string $name): bool
+    {
+        return isset(static::$_vars[strtolower($name)]);
+    }
+
+    /**
      * Load up all environment variables
      * 
      * @return string[]
