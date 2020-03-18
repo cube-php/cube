@@ -65,7 +65,7 @@ class DBQueryBuilder
      * And statement
      *
      * @param args ...$args
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function and(...$args)
     {
@@ -80,7 +80,7 @@ class DBQueryBuilder
      * @param string $field Field name
      * @param array $values
      * 
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function andBetween($field, $values)
     {
@@ -91,7 +91,7 @@ class DBQueryBuilder
      * And exists statement
      * 
      * @param callable $group
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function andExists($group)
     {
@@ -103,7 +103,7 @@ class DBQueryBuilder
      * 
      * @param string $field
      * @param array|callable $group
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function andIn($field, $group)
     {
@@ -115,7 +115,7 @@ class DBQueryBuilder
      *
      * @param string $field
      * @param string $keyword
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function andLike($field, $keyword)
     {
@@ -127,7 +127,7 @@ class DBQueryBuilder
      * 
      * @param string $field Field name
      * @param array|callable $group
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function andNotIn($field, $group)
     {
@@ -138,7 +138,7 @@ class DBQueryBuilder
      * AND not null
      * 
      * @param string $field Field name
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function andNotNull($field)
     {
@@ -149,7 +149,7 @@ class DBQueryBuilder
      * And where statement
      * 
      * @param string[] $args Arguments
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function andWhere(...$args)
     {
@@ -170,7 +170,7 @@ class DBQueryBuilder
      * Having statement
      *
      * @param array ...$args
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function having(...$args)
     {   
@@ -181,7 +181,7 @@ class DBQueryBuilder
     /**
      * Or statement
      * 
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function or(...$args)
     {
@@ -195,7 +195,7 @@ class DBQueryBuilder
      * 
      * @param string $field Field name
      * @param array $values
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function orBetween($field, $values)
     {
@@ -206,7 +206,7 @@ class DBQueryBuilder
      * OR EXISTS statement
      * 
      * @param callable $group
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function orExists($group)
     {
@@ -218,7 +218,7 @@ class DBQueryBuilder
      * 
      * @param string $field
      * @param array|callable $group
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function orIn($field, $group)
     {
@@ -230,7 +230,7 @@ class DBQueryBuilder
      *
      * @param string $field
      * @param string $keyword
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function orLike($field, $keyword)
     {
@@ -242,7 +242,7 @@ class DBQueryBuilder
      * 
      * @param string $field Field name
      * @param array|callable $group
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function orNotIn($field, $group)
     {
@@ -253,7 +253,7 @@ class DBQueryBuilder
      * OR not null
      * 
      * @param string $field Field name
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function orNotNull($field)
     {
@@ -264,7 +264,7 @@ class DBQueryBuilder
      * Or is null
      *
      * @param string $field
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function orNull($field)
     {
@@ -275,7 +275,7 @@ class DBQueryBuilder
      * Or where statement
      * 
      * @param string[] $args Arguments
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function orWhere(...$args)
     {
@@ -286,7 +286,7 @@ class DBQueryBuilder
      * Where statement
      * 
      * @param mixed[] ...$args Where params
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBSelect|DBUpdate|DBDelete
      */
     public function where(...$args)
     {
@@ -305,7 +305,7 @@ class DBQueryBuilder
      * 
      * @param string $field Field name
      * @param array $values
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function whereBetween($field, $values)
     {
@@ -316,7 +316,7 @@ class DBQueryBuilder
      * Where exists statement
      * 
      * @param callable $group
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function whereExists($group)
     {
@@ -328,7 +328,7 @@ class DBQueryBuilder
      * 
      * @param string $field
      * @param array|callable $group
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function whereIn($field, $group)
     {
@@ -340,7 +340,7 @@ class DBQueryBuilder
      *
      * @param string $field
      * @param mixed $keyword
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function whereLike($field, $keyword)
     {
@@ -352,7 +352,7 @@ class DBQueryBuilder
      * 
      * @param string $field Field name
      * @param array|callable $group
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function whereNotIn($field, $group)
     {
@@ -363,7 +363,7 @@ class DBQueryBuilder
      * Where not null
      * 
      * @param string $field Field name
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function whereNotNull($field)
     {
@@ -374,7 +374,7 @@ class DBQueryBuilder
      * Where null
      * 
      * @param string $field
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function whereNull($field)
     {
@@ -387,7 +387,7 @@ class DBQueryBuilder
      * 
      * @param string    $statement Query
      * @param array     $params Parameters
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     public function raw($statement, $params = [])
     {
@@ -402,7 +402,7 @@ class DBQueryBuilder
      * @param string $key Key
      * @param string $field Field
      * @param string $values
-     * @return DBQueryBuilder|DBUpdate|DBSelect|DBDelete
+     * @return DBUpdate|DBSelect|DBDelete
      */
     protected function between($key, $field, $values)
     {

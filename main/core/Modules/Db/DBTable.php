@@ -259,7 +259,7 @@ class DBTable
     /**
      * Select from table
      * 
-     * @return DBSelect|DBQUeryBuilder
+     * @return DBSelect
      */
     public function select(array $fields)
     {

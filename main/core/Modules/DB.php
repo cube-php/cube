@@ -50,7 +50,7 @@ class DB
      * 
      * @param string $table_name
      * 
-     * @return \App\Core\Modules\DB\DBTable
+     * @return DBTable
      */
     public static function table($table_name)
     {
