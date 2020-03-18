@@ -119,7 +119,7 @@ class Model implements ModelInterface
      * @param string|int $primary_key
      * @param array $fields Fields to retrieve
      * 
-     * @return array|null
+     * @return object|null
      */
     public static function findByPrimaryKey($primary_key, array $fields = [])
     {
@@ -133,16 +133,14 @@ class Model implements ModelInterface
      * 
      * @param int|string $primary_key
      * 
-     * @return void
+     * @return int
      */
     public static function findByPrimaryKeyAndRemove($primary_key)
     {
-        $query = DB::table(static::$schema)
+        return DB::table(static::$schema)
                 ->delete()
                 ->where(static::getPrimaryKey(), $primary_key)
                 ->fulfil();
-
-        return $query;
     }
 
     /**
@@ -151,16 +149,14 @@ class Model implements ModelInterface
      * @param string|int $primary_key
      * @param array $update New entry data
      * 
-     * @return void
+     * @return int
      */
     public static function findByPrimaryKeyAndUpdate($primary_key, array $update)
     {
-        $rows = DB::table(static::$schema)
+        return DB::table(static::$schema)
                 ->update($update)
                 ->where(static::getPrimaryKey(), $primary_key)
                 ->fulfil();
-
-        return $rows;
     }
 
     /**

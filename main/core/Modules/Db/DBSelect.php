@@ -64,7 +64,7 @@ class DBSelect extends DBQueryBuilder
     /**
      * Fetch all results
      * 
-     * @return object|null result
+     * @return object[]|null result
      */
     public function fetchAll()
     {

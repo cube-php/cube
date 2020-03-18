@@ -37,7 +37,7 @@ class DBUpdate extends DBQueryBuilder
     /**
      * Query executor
      * 
-     * @return
+     * @return int
      */
     public function fulfil()
     {
