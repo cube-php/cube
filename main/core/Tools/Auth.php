@@ -106,7 +106,8 @@ class Auth
         $selected_model = null;
 
         foreach($config_combination as $combo) {
-            if(in_array($specified_key, $combo['fields'])) {
+            $combo_fields = (array) $combo['fields'];
+            if(in_array($specified_key, $combo_fields)) {
                 $selected_model = $combo;
                 break;
             }
