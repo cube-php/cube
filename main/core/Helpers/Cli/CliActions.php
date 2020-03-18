@@ -86,19 +86,21 @@ class CliActions
 
     public static function buildHelper($options)
     {
-        $name = $options['n'];
+        $raw_name = $options['n'];
 
-        if(!$name) {
+        if(!$raw_name) {
             Cli::respondError('No name specified for helper', true);
         }
 
-        $filename = self::addExt($name);
+        $name = strtolower($raw_name);
+
+        $filename = self::addExt($name, false);
         $template = self::getReservedTemplate('helper');
-        $exception_path = APP_HELPERS_PATH . DS . $filename;
+        $helpers_path = APP_HELPERS_PATH . DS . $filename;
         $refined_template = strtr($template, ['{fn}' => $name]);
 
         try {
-            $file = new File($exception_path, true, true);
+            $file = new File($helpers_path, true, true);
             $file->write($refined_template);
             Cli::respond('created helper: ' . $filename);
         }
@@ -370,7 +372,7 @@ class CliActions
         Cli::respond($count . ' migrations completed' . PHP_EOL);
     }
 
-    private function addExt($name)
+    private function addExt($name, $capitalize = true)
     {
         $name_vars = explode('/', $name);
         $name_vars_capitalized = array_map('ucfirst', $name_vars);
@@ -379,7 +381,8 @@ class CliActions
         $main_name = $name_vars[$name_vars_count - 1];
         $dirs = array_slice($name_vars_capitalized, 0, $name_vars_count - 1);
 
-        $new_dir = array_merge($dirs, [ucfirst($main_name)]);
+        $refined_name = $capitalize ? ucfirst($main_name) : strtolower($main_name);
+        $new_dir = array_merge($dirs, [$refined_name]);
         $new_name = implode('/', $new_dir);
 
         return "{$new_name}.php";
