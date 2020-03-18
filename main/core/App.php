@@ -270,26 +270,37 @@ class App
      */
     public function run()
     {
+        $this->loadConfig();
+        $this->setTimezone();
+
+        if(!self::isProduction()) {
+            $this->boot();
+            return;
+        }
+
         try {
             
-            $this->loadConfig();
-            $this->setTimezone();
-            $this->loadComponents();
-            $this->configure();
-            $this->initSystemHelpers();
-            $this->initSessions();
-            $this->initHelpers();
-            $this->loadEvents();
-            $this->initRoutes();
+            $this->boot();
 
-        } catch (Exception $e) {
-
-            if(self::isDevelopment()) {
-                throw $e;
-            }
-            
+        } catch(Exception $e) {
             EventManager::dispatchEvent(self::EVENT_APP_ON_CRASH, $e);
         }
+    }
+
+    /**
+     * Boot up app
+     *
+     * @return void
+     */
+    private function boot()
+    {
+        $this->loadComponents();
+        $this->configure();
+        $this->initSystemHelpers();
+        $this->initSessions();
+        $this->initHelpers();
+        $this->loadEvents();
+        $this->initRoutes();
     }
 
     /**
