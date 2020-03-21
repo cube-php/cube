@@ -273,7 +273,7 @@ class Model implements ModelInterface
      * Update table rows
      *
      * @param array $fields
-     * @return DBUpdate|DBQueryBuilder
+     * @return DBUpdate
      */
     public static function update(array $fields)
     {
