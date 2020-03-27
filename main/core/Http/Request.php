@@ -111,7 +111,7 @@ class Request implements RequestInterface
     {
         $contents = file_get_contents('php://input');
 
-        if(!$contents) {
+        if(!$contents && !count($fields)) {
             return null;
         }
 

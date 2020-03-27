@@ -4,3 +4,4 @@ flat-db/**
 **/FlatDb
 .idea
 .env
+vendor/**
