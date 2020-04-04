@@ -37,6 +37,15 @@ abstract class Collection implements CollectionInterface
     }
 
     /**
+     * Return number of items in collection
+     *
+     * @return integer
+     */
+    public function count(): int {
+        return count($this->collection);
+    }
+ 
+    /**
      * Remove all items from collection
      * 
      * 
