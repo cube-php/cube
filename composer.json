@@ -1,5 +1,5 @@
 {
-    "name": "Cube Framework",
+    "name": "brainex/php-cube",
     "description": "A minimal PHP Framework for building scalable web applications",
     "version": "0.9.1",
     "autoload": {
