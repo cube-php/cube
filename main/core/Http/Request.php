@@ -60,12 +60,19 @@ class Request implements RequestInterface
     private static $_input;
 
     /**
+     * Request body
+     *
+     * @var mixed
+     */
+    private $_body;
+
+    /**
      * Class constructor
      * 
      */
     public function __construct()
     {
-        //Nothing to do here
+        $this->_body = file_get_contents('php://input');
     }
 
     /**
@@ -103,31 +110,37 @@ class Request implements RequestInterface
     /**
      * Get request body
      *
-     * @param array $fields Fields to retrieve if return content is Input
+     * @param array|string|null $fields Fields to retrieve if return content is Input
      * @param boolean $as_input Set whether body content should be wrapped as an input
      * @return Input[]|mixed
      */
-    public function getBody($fields = [], $as_input = true)
+    public function getBody($fields = null, $as_input = true)
     {
-        $contents = file_get_contents('php://input');
-
-        if(!$contents && !count($fields)) {
+        $body = trim($this->_body);
+        $fields_key = is_array($fields) ? $fields : explode(',', $fields);
+        
+        if(!$body && !count($fields_key)) {
             return null;
         }
 
+        if(!$fields && !count($fields_key)) {
+            return $body;
+        }
+
         if(!$as_input) {
-            $decoded_data = json_decode($contents, true);
+            $decoded_data = json_decode($body, true);
             return array_values($decoded_data);
         }
 
         $returns = [];
-        $fields = is_array($fields) ? $fields : explode(',', $fields);
         $fields = array_map(function ($field) {
             return trim($field);
-        }, $fields);
+        }, $fields_key);
 
-        $data = json_decode($contents, true);
-        $inputs = new Inputs(http_build_query($data) ?? []);
+        $is_json_body = in_array(substr($body, 0, 1), ['{', '[']);
+        $is_json_body ? $data = json_decode($body) : parse_str($body, $data);
+
+        $inputs = new Inputs($data ? http_build_query($data) : '');
 
         if(!count($fields)) {
             return $inputs;
