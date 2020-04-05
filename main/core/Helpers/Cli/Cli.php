@@ -17,6 +17,7 @@ class Cli
     const COMMAND_EVENT      = 'make:event';
     const COMMAND_ASSET      = 'make:asset';
     const COMMAND_MIGRATION  = 'make:migration';
+    const COMMAND_RESOURCE   = 'make:resource';
     const COMMAND_HELP       = 'help';
     const COMMAND_SYSTEM     = 'system';
     const COMMAND_SERVE      = 'serve';
@@ -139,6 +140,12 @@ class Cli
                 return CliActions::buildMigration($args);
                 break;
 
+            case self::COMMAND_RESOURCE:
+                CliActions::buildMigration($args);
+                CliActions::buildModel($args);
+                CliActions::buildProvider($args);
+                break;
+
             default:
                 return CliActions::buildHelp();
                 break;
@@ -189,7 +196,8 @@ class Cli
             self::COMMAND_SERVE,
             self::COMMAND_EVENT,
             self::COMMAND_SCHEMA,
-            self::COMMAND_MIGRATION
+            self::COMMAND_MIGRATION,
+            self::COMMAND_RESOURCE
         );
     }
 

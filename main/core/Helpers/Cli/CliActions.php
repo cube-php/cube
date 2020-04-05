@@ -25,7 +25,7 @@ class CliActions
         $name = $options['n'];
 
         if(!$name) {
-            Cli::respondError('No name specified for middleware', true);
+            Cli::respondError('No name specified for controller', true);
         }
 
         $name = self::getSyntaxedName($name, 'Controller');
