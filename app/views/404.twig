@@ -15,7 +15,7 @@
         Error 404
     </div>
     <div class="cube-version">
-        Route "<b>{{_path}}</b>" not assigned on the "<strong>{{_request_method | upper}}</strong>" request sent.
+        Route "<b>{{request.url().getPath()}}</b>" not registered on the "<strong>{{request.method() | upper}}</strong>" request sent.
     </div>
     <div class="cube-docs">
         v{{env.cube_version}}
