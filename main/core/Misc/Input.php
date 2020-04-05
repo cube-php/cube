@@ -46,6 +46,17 @@ class Input implements InputInterface
     }
 
     /**
+     * Check if input contains key
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function contains(string $key): bool
+    {
+        return $this->matches("/{$key}/i");
+    }
+
+    /**
      * Check if input's value matches specified value
      *
      * @param mixed $value
@@ -53,11 +64,8 @@ class Input implements InputInterface
      */
     public function equals($value)
     {
-        if($value instanceof self) {
-            $value = $value->getValue();
-        }
-
-        return $this->getValue() == $value;
+        $val = $value instanceof self ? $value->getValue() : $value;
+        return $this->getValue() == $val;
     }
 
     /**
@@ -164,11 +172,21 @@ class Input implements InputInterface
     }
 
     /**
+     * Return input's value as boolean
+     *
+     * @return bool
+     */
+    public function toBoolean(): bool
+    {
+        return !!$this->getValue();
+    }
+
+    /**
      * Return input's value as an integer
      *
      * @return int
      */
-    public function toInt()
+    public function toInt(): int
     {
         return (int) $this->getValue();
     }
