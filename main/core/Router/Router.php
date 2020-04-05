@@ -127,39 +127,17 @@ class Router
      * @param array $options Group Options
      * @param callable $fn Callback function
      * 
-     * @return self
+     * @return RouterGroup
      */
-    public function group(...$args)
+    public function group($path)
     {
-        $num_args = func_num_args();
-        $parent = $args[0];
-
-        if($num_args < 2 || $num_args > 3) {
-            throw new InvalidArgumentException('Invalid route arguments');
-        }
-        
-        if($num_args == 2) {
-            $options = [];
-            $fn = $args[1];
-        } else {
-            $options = $args[1];
-
-            if(!is_array($options)) {
-                throw new InvalidArgumentException('Invalid route group options');
-            }
-
-            $fn = $args[2];
-        }
-
-        $namespace = $options['namespace'] ?? null;
-        $cors = $options['cors'] ?? true;
-        $middlewares = $options['use'] ?? null;
-
-        $router = new self($parent, $namespace, $middlewares, $cors, $this);
-
-        if($fn) {
-            $fn($router);
-        }
+        $router = new RouterGroup(
+            $path,
+            $this->_root_namespace,
+            $this->_root_middlewares,
+            true,
+            $this
+        );
 
         return $router;
     }
@@ -236,24 +214,12 @@ class Router
     }
 
     /**
-     * Set route's base path
-     *
-     * @param string|null $path
-     * @return void
-     */
-    private function setPath(?string $path = null)
-    {
-        $parent = $this->_parent;
-        $this->_root_path = $parent ? $parent->getRootPath() . $path : $path;
-    }
-
-    /**
      * Set router's base middlewares
      *
      * @param [type] $middlewares
      * @return void
      */
-    private function setMiddleware($middlewares)
+    protected function setMiddleware($middlewares)
     {
         $parent = $this->_parent;
         $parent_middlewares = $parent ? $parent->getMiddlewares() : null;
@@ -274,7 +240,7 @@ class Router
      * @param string|null $namespace
      * @return void
      */
-    private function setNamespace(?string $namespace = null)
+    protected function setNamespace(?string $namespace = null)
     {
         $parent = $this->_parent;
 
@@ -283,6 +249,18 @@ class Router
         }
 
         $parent_namespace = $parent->getNamespace();
-        $this->_root_namespace = $parent_namespace . $namespace;
+        $this->_root_namespace = $parent_namespace . '\\' . $namespace;
+    }
+
+    /**
+     * Set route's base path
+     *
+     * @param string|null $path
+     * @return void
+     */
+    private function setPath(?string $path = null)
+    {
+        $parent = $this->_parent;
+        $this->_root_path = $parent ? $parent->getRootPath() . $path : $path;
     }
 }

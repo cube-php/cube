@@ -46,6 +46,16 @@ class RouteCollection
     }
 
     /**
+     * Get all routes
+     *
+     * @return array
+     */
+    public static function all()
+    {
+        return self::$_routes;
+    }
+
+    /**
      * Attach new route to collection
      * 
      * @param Route $route Route to attach

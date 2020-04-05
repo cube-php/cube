@@ -6,7 +6,6 @@ use Closure;
 
 use InvalidArgumentException;
 
-use App\Core\Router\RouteCollection;
 use App\Core\Router\RouteParser;
 
 use App\Core\Http\Request;
@@ -21,14 +20,14 @@ class Route
      *
      * @var string
      */
-    const VIEW_PREFIX = '@';
+    private const VIEW_PREFIX = '@';
 
     /**
-     * Prefix to register controller from base controller namespace
+     * Route's Controllers namespace
      * 
      * @var string
      */
-    const CONTINUOUS_NAMESPACE_PREFIX = '\\';
+    private const CONTROLLER_NAMESPACE = 'App\\Controllers';
 
     /**
      * Route method
@@ -52,11 +51,11 @@ class Route
     private $_controller = array();
 
     /**
-     * Controllers namespace
-     * 
+     * Route's name space
+     *
      * @var string
      */
-    private $_controllerNamespace = 'App\\Controllers';
+    private $_namespace = self::CONTROLLER_NAMESPACE;
 
     /**
      * Route attributes
@@ -108,6 +107,36 @@ class Route
     }
 
     /**
+     * Get route as string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return '[' . $this->_method . '] ' . $this->_path . ' ' . $this->getControllerName();
+    }
+
+    /**
+     * Get route controller name
+     *
+     * @return string
+     */
+    public function getControllerName()
+    {
+        $controller = $this->_controller;
+
+        if(is_array($controller)) {
+            return implode('.', $controller);
+        }
+
+        if(is_callable($controller)) {
+            return 'Closure';
+        }
+
+        return $controller;
+    }
+
+    /**
      * Add specified middlewares to request
      *
      * @param Request $request
@@ -116,6 +145,17 @@ class Route
     public function engageMiddleware(Request $request)
     {
         return $request->useMiddleware($this->_middlewares);
+    }
+
+    /**
+     * Set namespace
+     *
+     * @param string $namespace
+     * @return self
+     */
+    public function namespace(string $namespace)
+    {
+        return $this->setNamespace($namespace);
     }
 
     /**
@@ -176,10 +216,7 @@ class Route
      */
     public function setNamespace($namespace)
     {
-        $is_continuous = substr($namespace, 0, 1) === self::CONTINUOUS_NAMESPACE_PREFIX;
-        $this->_controllerNamespace = $is_continuous ?
-            $this->_controllerNamespace . $namespace : $namespace;
-
+        $this->_namespace = $this->_namespace . $namespace;
         return $this;
     }
 
@@ -411,7 +448,7 @@ class Route
                 ('Controller should be passed as "ClassName.methodName"');
         }
 
-        $controller_class_name = $this->_controllerNamespace . '\\' . $controller_vars[0];
+        $controller_class_name = $this->_namespace . '\\' . $controller_vars[0];
         $controller_method_name = $controller_vars[1];
 
         $this->_controller = array(
