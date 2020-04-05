@@ -212,14 +212,8 @@ class App
         #App's routes directory
         define('APP_ROUTES_PATH', MAIN_APP_PATH . DS . 'routes');
 
-        #App's public directory
-        define('APP_PUBLIC_PATH', MAIN_APP_PATH . DS . 'public');
-
-        # Set app view directory
-        define('VIEW_PATH', APP_PUBLIC_PATH . DS . 'views');
-
-        # Set app view component directory
-        define('VIEW_COMPONENTS_PATH', APP_PUBLIC_PATH . DS . 'components');
+        # App view directory
+        define('VIEW_PATH', MAIN_APP_PATH . DS . 'views');
 
         #App webroot path
         define('APP_WEBROOT_PATH', APP_PATH . DS . 'webroot');

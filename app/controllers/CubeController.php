@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Http\Response;
 use App\Core\Http\Request;
 use App\Core\Http\Controller;
+use App\Core\Misc\InputValidator;
 
 class CubeController extends Controller
 {
@@ -17,6 +18,6 @@ class CubeController extends Controller
      */
     public function home(Request $request, Response $response)
     {
-        return $response->view('default.home');
+        return $response->view('home');
     }
 }
