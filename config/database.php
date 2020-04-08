@@ -24,28 +24,28 @@ return array(
      * 
      * @var string
      */
-    'hostname' => '127.0.0.1',
+    'hostname' => '',
 
     /**
      * Database username
      * 
      * @var string
      */
-    'username' => 'root',
+    'username' => '',
 
     /**
      * Database password
      * 
      * @var string
      */
-    'password' => 'nex123',
+    'password' => '',
 
     /**
      * Database table name
      * 
      * @var string
      */
-    'dbname' => 'test',
+    'dbname' => '',
 
     /**
      * Database charset
