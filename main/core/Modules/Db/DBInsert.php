@@ -48,7 +48,7 @@ class DBInsert extends DBQueryBuilder
      * 
      * @param string[] $params Parameters to make query from
      * 
-     * @return 
+     * @return void
      */
     private function make($params)
     {

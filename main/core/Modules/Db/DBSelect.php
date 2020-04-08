@@ -148,7 +148,7 @@ class DBSelect extends DBQueryBuilder
      * Class name to wrap retrieved item
      *
      * @param string $class_name
-     * @return DBQueryBuilder|DBSelect
+     * @return self
      */
     public function map($class_name)
     {

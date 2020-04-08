@@ -5,7 +5,6 @@ namespace App\Core\Http;
 use App\Core\Modules\DB;
 use App\Core\Modules\Db\DBTable;
 use App\Core\Modules\Db\DBSelect;
-use App\Core\Modules\Db\DBQueryBuilder;
 use App\Core\Interfaces\ModelInterface;
 use App\Core\Exceptions\ModelException;
 use App\Core\Modules\Db\DBUpdate;
@@ -309,7 +308,7 @@ class Model implements ModelInterface
      * Run custom queries on model's schema
      *
      * @param array $fields Fields to override default fields
-     * @return DBSelect|DBQueryBuilder
+     * @return DBSelect
      */
     public static function select(?array $fields = null)
     {
