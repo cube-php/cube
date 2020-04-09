@@ -123,13 +123,13 @@ class Router
     /**
      * Add a new route group
      * 
-     * @param string $parent Parent path
+     * @param string|null $parent Parent path
      * @param array $options Group Options
      * @param callable $fn Callback function
      * 
      * @return RouterGroup
      */
-    public function group($path)
+    public function group(?string $path = null)
     {
         $router = new RouterGroup(
             $path,
@@ -249,7 +249,7 @@ class Router
         }
 
         $parent_namespace = $parent->getNamespace();
-        $this->_root_namespace = $parent_namespace . '\\' . $namespace;
+        $this->_root_namespace = $parent_namespace . $namespace;
     }
 
     /**

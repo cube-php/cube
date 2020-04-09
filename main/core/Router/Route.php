@@ -27,7 +27,7 @@ class Route
      * 
      * @var string
      */
-    private const CONTROLLER_NAMESPACE = 'App\\Controllers';
+    private const CONTROLLER_NAMESPACE = 'App\\Controllers\\';
 
     /**
      * Route method
@@ -216,7 +216,7 @@ class Route
      */
     public function setNamespace($namespace)
     {
-        $this->_namespace = $this->_namespace . $namespace;
+        $this->_namespace = $this->_namespace . $namespace . '\\';
         return $this;
     }
 
@@ -448,7 +448,7 @@ class Route
                 ('Controller should be passed as "ClassName.methodName"');
         }
 
-        $controller_class_name = $this->_namespace . '\\' . $controller_vars[0];
+        $controller_class_name = $this->_namespace . $controller_vars[0];
         $controller_method_name = $controller_vars[1];
 
         $this->_controller = array(
