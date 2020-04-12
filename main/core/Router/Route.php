@@ -25,9 +25,16 @@ class Route
     /**
      * Route's Controllers namespace
      * 
+     * @var array
+     */
+    private const CONTROLLER_NAMESPACE = ['App', 'Controllers'];
+
+    /**
+     * Route's 
+     * 
      * @var string
      */
-    private const CONTROLLER_NAMESPACE = 'App\\Controllers\\';
+    private const NAMESPACE_SEPARATOR = '\\';
 
     /**
      * Route method
@@ -53,7 +60,7 @@ class Route
     /**
      * Route's name space
      *
-     * @var string
+     * @var array
      */
     private $_namespace = self::CONTROLLER_NAMESPACE;
 
@@ -211,12 +218,19 @@ class Route
     /**
      * Set route namespace
      *
-     * @param string $namespace
+     * @param array|string $namespace
      * @return self
      */
     public function setNamespace($namespace)
     {
-        $this->_namespace = $this->_namespace . $namespace . '\\';
+        if(is_string($namespace)) {
+            $this->_namespace[] = $namespace;
+        }
+
+        if(is_array($namespace)) {
+            $this->_namespace = array_merge($this->_namespace, $namespace);
+        }
+
         return $this;
     }
 
@@ -448,7 +462,8 @@ class Route
                 ('Controller should be passed as "ClassName.methodName"');
         }
 
-        $controller_class_name = $this->_namespace . $controller_vars[0];
+        $namespace = implode(self::NAMESPACE_SEPARATOR, $this->_namespace);
+        $controller_class_name = $namespace . self::NAMESPACE_SEPARATOR . $controller_vars[0];
         $controller_method_name = $controller_vars[1];
 
         $this->_controller = array(
