@@ -26,9 +26,9 @@ class Router
     /**
      * Namespace
      *
-     * @var string|null
+     * @var array
      */
-    private $_root_namespace = null;
+    private $_root_namespace = [];
 
     /**
      * Parent route
@@ -42,13 +42,15 @@ class Router
      *
      * @param string $parent_path
      */
-    public function __construct($path = null, $namespace = null, $middlewares = null, bool $cors = true, ?self $parent = null)
+    public function __construct($path = null, bool $cors = true, ?self $parent = null)
     {
         $this->_parent = $parent;
-
         $this->setPath($path);
-        $this->setMiddleware($middlewares);
-        $this->setNamespace($namespace);
+
+        if($parent) {
+            $this->setNamespace();
+            $this->setMiddleware();
+        }
     }
 
     /**
@@ -64,9 +66,9 @@ class Router
     /**
      * Get this router's namespace
      *
-     * @return string
+     * @return array
      */
-    public function getNamespace(): ?string
+    public function getNamespace(): ?array
     {
         return $this->_root_namespace;
     }
@@ -133,8 +135,6 @@ class Router
     {
         $router = new RouterGroup(
             $path,
-            $this->_root_namespace,
-            $this->_root_middlewares,
             true,
             $this
         );
@@ -219,18 +219,25 @@ class Router
      * @param [type] $middlewares
      * @return void
      */
-    protected function setMiddleware($middlewares)
+    protected function setMiddleware(?string $middlewares = null)
     {
         $parent = $this->_parent;
         $parent_middlewares = $parent ? $parent->getMiddlewares() : null;
 
-        if(!$parent_middlewares) {
-            return $this->_root_middlewares = $middlewares;
+        if(!$parent_middlewares && !$middlewares) {
+            return;
         }
 
-        $context = is_array($parent_middlewares) ? $parent_middlewares : [$parent_middlewares];
-        $scope = is_array($middlewares) ? $middlewares : [$middlewares];
+        $context =  $parent_middlewares 
+            ? is_array($parent_middlewares)
+                ? $parent_middlewares : [$parent_middlewares]
+            : [];
 
+        if(!$middlewares) {
+            return $this->_root_middlewares = $context;
+        }
+        
+        $scope = is_array($middlewares) ? $middlewares : [$middlewares];
         $this->_root_middlewares = array_merge($context, $scope);
     }
 
@@ -248,8 +255,13 @@ class Router
             return;
         }
 
-        $parent_namespace = $parent->getNamespace();
-        $this->_root_namespace = $parent_namespace . $namespace;
+        $parent_namespace = $parent ? $parent->getNamespace() : array();
+
+        if($namespace) {
+            $parent_namespace[] = $namespace;
+        }
+
+        $this->_root_namespace = $parent_namespace;
     }
 
     /**
