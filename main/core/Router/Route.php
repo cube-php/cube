@@ -69,7 +69,7 @@ class Route
      * 
      * @var string[]
      */
-    private $_attributes = array();
+    private $_attributes = [];
 
     /**
      * Set if the controller is a callable

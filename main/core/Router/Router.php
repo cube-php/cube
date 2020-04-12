@@ -225,10 +225,13 @@ class Router
         $parent_middlewares = $parent ? $parent->getMiddlewares() : null;
 
         if(!$parent_middlewares && !$middlewares) {
-            return $this->_root_middlewares = $middlewares;
+            return;
         }
 
-        $context = is_array($parent_middlewares) ? $parent_middlewares : [$parent_middlewares];
+        $context =  $parent_middlewares 
+            ? is_array($parent_middlewares)
+                ? $parent_middlewares : [$parent_middlewares]
+            : [];
 
         if(!$middlewares) {
             return $this->_root_middlewares = $context;
@@ -252,7 +255,7 @@ class Router
             return;
         }
 
-        $parent_namespace = $parent ? $parent->getNamespace() : [];
+        $parent_namespace = $parent ? $parent->getNamespace() : array();
 
         if($namespace) {
             $parent_namespace[] = $namespace;
