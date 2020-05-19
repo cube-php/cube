@@ -20,11 +20,12 @@ class Cookie
      * @param string $name Cookie name
      * @param string $value Cookie value
      * @param float|int $expires Cookie duration
+     * @param string $path
      * 
      * @return void
      */
-    public static function set($name, $value, $expires = (7*24*60*60)) {
-        setcookie($name, $value, (time() + $expires));
+    public static function set($name, $value, $expires = (7*24*60*60), $path = '/') {
+        setcookie($name, $value, (time() + $expires), $path);
         return true;
     }
 
@@ -77,6 +78,6 @@ class Cookie
      */
     public static function remove($name)
     {
-        setcookie($name, null, time() - 300);
+        self::set($name, null, time() - 300);
     }
 }
