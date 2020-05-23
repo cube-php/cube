@@ -11,9 +11,10 @@ class {className} implements MiddlewareInterface
     * Trigger middleware event
     *
     * @param Request $request
+    * @param array|null $args
     * @return mixed
     */
-    public function trigger(Request $request)
+    public function trigger(Request $request, ?array $args = null)
     {   
         return $request;
     }
