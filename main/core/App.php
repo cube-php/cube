@@ -282,18 +282,28 @@ class App
     }
 
     /**
+     * Load up app core components without initializing routes
+     *
+     * @return void
+     */
+    public function init(): void
+    {
+        $this->loadComponents();
+        $this->initSystemHelpers();
+        $this->initSessions();
+        $this->initHelpers();
+        $this->loadEvents();
+    }
+
+    /**
      * Boot up app
      *
      * @return void
      */
     private function boot()
     {
-        $this->loadComponents();
         $this->configure();
-        $this->initSystemHelpers();
-        $this->initSessions();
-        $this->initHelpers();
-        $this->loadEvents();
+        $this->init();
         $this->initRoutes();
     }
 
