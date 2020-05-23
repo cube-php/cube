@@ -147,7 +147,7 @@ class App
     public static function getConfigByFile($name)
     {
         if(isset(static::$config[self::INSTANCE_CONFIGURATIONS][$name])) {
-            return static:: $config[self::INSTANCE_CONFIGURATIONS][$name];
+            return static::$config[self::INSTANCE_CONFIGURATIONS][$name];
         }
 
         $path = CONFIG_PATH . DS . $name . '.php';

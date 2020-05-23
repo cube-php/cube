@@ -17,6 +17,9 @@ use App\Core\App;
 
 class Request implements RequestInterface
 {
+
+    const MIDDLEWARE_ARGS_DELIMETER = ':';
+
     /**
      * Request parameters
      * 
@@ -65,6 +68,13 @@ class Request implements RequestInterface
      * @var mixed
      */
     private $_body;
+
+    /**
+     * All resolved middlewares
+     *
+     * @var array|null
+     */
+    private static $_resolved_middlewares = null;
 
     /**
      * Class constructor
@@ -370,20 +380,24 @@ class Request implements RequestInterface
             return $this;
         }
 
-        $wares = App::getConfigByFile('middleware');
+        $wares = $this->getMiddlewareResolved();
         $result = $this;
         $stopped = false;
 
         foreach($middlewares as $middleware) {
 
-            $class = $wares[$middleware] ?? null;
+            $vars = explode(':', $middleware);
+
+            $key = $vars[0];
+            $args = $vars[1] ?? null;
+            $class = $wares[$key] ?? null;
 
             if(!$class) {
-                throw new \InvalidArgumentException
-                    ('Middleware "'.$middleware.'" is not assigned');
+                throw new InvalidArgumentException ('Middleware "'.$key.'" is not assigned');
             }
 
-            $result = call_user_func_array([new $class, 'trigger'], [$result]);
+            $args_value = $args ? explode(',', $args) : null;
+            $result = call_user_func_array([new $class, 'trigger'], [$result, $args_value]);
 
             if($result instanceof Response) {
                 $stopped = true;
@@ -396,5 +410,32 @@ class Request implements RequestInterface
         }
 
         return $result;
+    }
+
+    /**
+     * Get resolved middlewares
+     *
+     * @return array
+     */
+    protected function getMiddlewareResolved()
+    {
+        if(static::$_resolved_middlewares) {
+            return static::$_resolved_middlewares;
+        }
+
+        $wares = App::getConfigByFile('middleware');
+        
+        if(!$wares) {
+            return false;
+        }
+
+        array_walk($wares, function ($class, $key) {
+            if(strpos($key, self::MIDDLEWARE_ARGS_DELIMETER)) {
+                throw new InvalidArgumentException('Middleware keys must not contain ' . self::MIDDLEWARE_ARGS_DELIMETER);
+            }
+        });
+
+        static::$_resolved_middlewares = $wares;
+        return $wares;
     }
 }
