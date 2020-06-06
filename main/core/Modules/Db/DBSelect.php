@@ -42,7 +42,7 @@ class DBSelect extends DBQueryBuilder
      * @param int $offset
      * @param int $limit
      * 
-     * @return object|null results
+     * @return object[]|null results
      */
     public function fetch($offset, $limit = null)
     {
