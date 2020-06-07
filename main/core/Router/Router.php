@@ -216,10 +216,10 @@ class Router
     /**
      * Set router's base middlewares
      *
-     * @param [type] $middlewares
+     * @param string|array $middlewares
      * @return void
      */
-    protected function setMiddleware(?string $middlewares = null)
+    protected function setMiddleware($middlewares = null)
     {
         $parent = $this->_parent;
         $parent_middlewares = $parent ? $parent->getMiddlewares() : null;
@@ -228,10 +228,8 @@ class Router
             return;
         }
 
-        $context =  $parent_middlewares 
-            ? is_array($parent_middlewares)
-                ? $parent_middlewares : [$parent_middlewares]
-            : [];
+        $middlewares_list = $parent_middlewares ? $parent_middlewares : [];
+        $context = is_array($middlewares_list) ? $middlewares_list : [$middlewares_list];
 
         if(!$middlewares) {
             return $this->_root_middlewares = $context;
