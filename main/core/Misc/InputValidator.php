@@ -154,7 +154,7 @@ class InputValidator
     /**
      * Return the first error
      *
-     * @return void
+     * @return string
      */
     public static function getFirstError()
     {
