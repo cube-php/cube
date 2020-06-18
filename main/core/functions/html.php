@@ -46,7 +46,7 @@ function h($element_name, ?array $attributes = [], $innerhtml = null) {
     $joined_attr = implode(' ', $attrs);
     $element .= $joined_attr;
 
-    if(in_array($element, $self_closing)) {
+    if(in_array($element_name, $self_closing)) {
         return $element .= '/>';
     }
 
