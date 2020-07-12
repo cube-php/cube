@@ -100,7 +100,7 @@ class Model implements ModelInterface
      * @param mixed $value Field value
      * @param mixed $fields Fields to retrieve
      * 
-     * @return array|null
+     * @return object|null
      */
     public static function findBy($field, $value, array $fields = [])
     {
