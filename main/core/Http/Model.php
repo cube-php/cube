@@ -8,6 +8,7 @@ use App\Core\Modules\Db\DBSelect;
 use App\Core\Interfaces\ModelInterface;
 use App\Core\Exceptions\ModelException;
 use App\Core\Modules\Db\DBUpdate;
+use App\Core\Modules\Db\DBDelete;
 
 class Model implements ModelInterface
 {
@@ -43,7 +44,7 @@ class Model implements ModelInterface
      * @param string|null $map Provider class to map to model
      * @return array|null
      */
-    public static function all(?array $order = null, ?array $opts = null, ?array $fields = [], ?string $map = null)
+    public static function all(?array $order = null, ?array $opts = null, ?array $fields = null, ?string $map = null)
     {
         $query = static::select($fields)
                     ->orderBy($order);
@@ -66,6 +67,16 @@ class Model implements ModelInterface
     public static function createEntry(array $entry)
     {
         return DB::table(static::$schema)->insert($entry);
+    }
+
+    /**
+     * Delete from schema
+     *
+     * @return DBDelete
+     */
+    public static function delete(): DBDelete
+    {
+        return DB::table(static::$schema)->delete();
     }
 
     /**
@@ -263,7 +274,7 @@ class Model implements ModelInterface
      *
      * @return DBTable
      */
-    public static function query()
+    public static function query(): DBTable
     {
         return DB::table(static::$schema);
     }
@@ -310,7 +321,7 @@ class Model implements ModelInterface
      * @param array $fields Fields to override default fields
      * @return DBSelect
      */
-    public static function select(?array $fields = null)
+    public static function select(?array $fields = null): DBSelect
     {
         return new DBSelect(static::$schema, $fields ?: static::$fields);
     }
