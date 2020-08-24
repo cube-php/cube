@@ -2,10 +2,15 @@
 
 namespace App\Core\Interfaces;
 
+use App\Core\Modules\Db\DBDelete;
+use App\Core\Modules\Db\DBSelect;
+use App\Core\Modules\Db\DBTable;
+
 interface ModelInterface
 {
-    public static function all(array $order = [], array $opts = []);
+    public static function all(?array $order = null, ?array $opts = null, ?array $fields = null, ?string $map = null);
     public static function createEntry(array $entry);
+    public static function delete(): DBDelete;
     public static function findAllBy($field, $value, $order = null, $params = null);
     public static function findBy($field, $value, array $fields = []);
     public static function findByPrimaryKey($primary_key, array $fields = []);
@@ -16,7 +21,7 @@ interface ModelInterface
     public static function getCountQuery();
     public static function getFirst($field = null, array $fields = []);
     public static function getLast($field = null, array $fields = []);
-    public static function query();
-    public static function select(array $fields = []);
+    public static function query(): DBTable;
+    public static function select(?array $fields = null): DBSelect;
     public static function search($field, $keyword, $limit = null, $offset = null, array $fields = []);
 }
