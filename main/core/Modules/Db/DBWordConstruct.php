@@ -19,6 +19,19 @@ class DBWordConstruct
     }
 
     /**
+     * Alter table and add index
+     *
+     * @param string $table_name Table name
+     * @param string $index_name Index name
+     * @param string $field_name Field name
+     * @return string
+     */
+    public static function alterTableAddIndex($table_name, $index_name, $field_name)
+    {
+        return concat('ALTER TABLE ', $table_name, ' ADD INDEX ', $index_name, ' (', $field_name, ')');
+    }
+
+    /**
      * Create alter remove table field
      * 
      * @param string $table_name Table name
@@ -54,6 +67,18 @@ class DBWordConstruct
     public static function describe($table_name)
     {
         return 'DESCRIBE ' . $table_name;
+    }
+
+    /**
+     * Drop index
+     *
+     * @param string $table_name Table name
+     * @param string $index_name Index name
+     * @return string
+     */
+    public static function dropIndex($table_name, $index_name)
+    {
+        return concat('DROP INDEX ', ' ', $index_name, ' ON ', $table_name);
     }
 
     /**

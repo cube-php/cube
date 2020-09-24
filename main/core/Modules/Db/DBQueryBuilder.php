@@ -584,6 +584,19 @@ class DBQueryBuilder
     }
 
     /**
+     * Prepend
+     *
+     * @param array ...$args
+     * @return self
+     */
+    public function prependSql(...$args)
+    {
+        $old_query = $this->sql_query;
+        $this->sql_query = implode(' ', $args) . $old_query;
+        return $this;
+    }
+
+    /**
      * Merge query
      * 
      * @return void

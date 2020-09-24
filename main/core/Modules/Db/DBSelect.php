@@ -37,6 +37,17 @@ class DBSelect extends DBQueryBuilder
     }
 
     /**
+     * Explain query
+     *
+     * @return object
+     */
+    public function explain()
+    {
+        $this->prependSql('EXPLAIN', null);
+        return $this->fetchOne(1);
+    }
+
+    /**
      * Fetch content
      * 
      * @param int $offset
