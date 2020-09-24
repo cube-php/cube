@@ -43,6 +43,18 @@ class DBTable
     }
 
     /**
+     * Add index to table
+     *
+     * @param string $index_name
+     * @param string $field_name
+     * @return PDOStatement
+     */
+    public function addIndex($index_name, $field_name)
+    {
+        return DB::statement(DBWordConstruct::alterTableAddIndex($this->name, $index_name, $field_name));
+    }
+
+    /**
      * Add new field to table
      * 
      * @param string $structure Structure from \App\Core\Modules\DB\DBSchemaBuilder
@@ -115,9 +127,7 @@ class DBTable
      */
     public function describe()
     {
-        $stmt = DB::statement(
-            DBWordConstruct::describe($this->name)
-        );
+        $stmt = DB::statement(DBWordConstruct::describe($this->name));
         return $stmt->fetchAll();
     }
 
@@ -132,9 +142,18 @@ class DBTable
             return;
         }
 
-        DB::statement(
-            DBWordConstruct::dropTable($this->name)  
-        );
+        DB::statement(DBWordConstruct::dropTable($this->name));
+    }
+
+    /**
+     * Drop index
+     *
+     * @param string $index_name
+     * @return PDOStatement
+     */
+    public function dropIndex($index_name)
+    {
+        return DB::statement(DBWordConstruct::dropIndex($this->name, $index_name));
     }
 
     /**
