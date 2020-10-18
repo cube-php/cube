@@ -77,7 +77,7 @@ class Input implements InputInterface
     public function equalsIgnoreCase($value)
     {
         $input_value = strtolower($this->getValue());
-        $value = strtolower($this->getValue());
+        $value = strtolower($value);
 
         return $input_value == $value;
     }
