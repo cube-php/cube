@@ -413,6 +413,10 @@ class Route
             return $response->write($result);
         }
 
+        if(is_array($result)) {
+            return $response->json($result);
+        }
+
         return $result;
     }
 
