@@ -4,4 +4,6 @@ flat-db/**
 **/FlatDb
 .idea
 .env
-vendor/**
+vendor
+**/.DS_Store
+error_log

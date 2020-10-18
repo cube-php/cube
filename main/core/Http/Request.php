@@ -122,12 +122,14 @@ class Request implements RequestInterface
      *
      * @param array|string|null $fields Fields to retrieve if return content is Input
      * @param boolean $as_input Set whether body content should be wrapped as an input
-     * @return Input[]|mixed
+     * @return Input[]|string
      */
     public function getBody($fields = null, $as_input = true)
     {
         $body = trim($this->_body);
-        $fields_key = is_array($fields) ? $fields : explode(',', $fields);
+        $fields_key = is_array($fields) 
+                        ? $fields
+                        : ($fields ? explode(',', $fields) : []);
         
         if(!$body && !count($fields_key)) {
             return null;
@@ -277,7 +279,7 @@ class Request implements RequestInterface
         
         if(count($names) == 1) {
             $raw_value = $this->inputs()->get($name);
-            $input = is_array($raw_value) ? $raw_value : ($raw_value->value() ?? $defaults);
+            $input = is_array($raw_value) ? $raw_value : ($raw_value->getValue() ?? $defaults);
             return new Input($input, $name);
         }
 
@@ -289,7 +291,7 @@ class Request implements RequestInterface
         foreach($names as $index => $rname) {
             $default = $single_default ? $defaults : $defaults_vars[$index];
             $raw_value = $this->inputs()->get($rname);
-            $input = is_array($raw_value) ? $raw_value : ($raw_value->value() ?? $defaults);
+            $input = is_array($raw_value) ? $raw_value : ($raw_value->getValue() ?? $defaults);
             $inputs[] = new Input($input, $rname);
         }
 
