@@ -2,28 +2,19 @@
 
 namespace App\Core\Helpers;
 
-use Twig_Function;
-use Twig_Filter;
-use Twig_Environment;
-use Twig_Loader_Filesystem;
-
-use App\Core\Exceptions\ViewException;
 use App\Core\Http\Env;
 use App\Core\App;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class View
 {
     /**
-     * Views base path
-     *
-     * @var string
-     */
-    private $_base_path = '';
-
-    /**
      * Twig
      *
-     * @var Twig_Environment
+     * @var Environment
      */
     private $_twig;
 
@@ -68,7 +59,7 @@ class View
      */
     public function engageFilters(array $filters) {
         foreach ($filters as $filter => $closure) {
-            $fn = new Twig_Filter($filter, $closure, array(
+            $fn = new TwigFilter($filter, $closure, array(
                 'is_safe' => array('html')
             ));
 
@@ -84,7 +75,7 @@ class View
      */
     public function engageFunctions(array $functions) {
         foreach ($functions as $function) {
-            $fn = new Twig_Function($function, $function, array(
+            $fn = new TwigFunction($function, $function, array(
                 'is_safe' => array('html')
             ));
 
@@ -100,7 +91,7 @@ class View
      */
     public function setBasePath(string $path)
     {
-        $loader = new Twig_Loader_Filesystem($path);
+        $loader = new FilesystemLoader($path);
 
         $view_options = array(
             'strict_variables' => App::isProduction(),
@@ -110,7 +101,7 @@ class View
             $view_options['cache'] = VIEW_PATH . DS . '.cache';
         }
 
-        $this->_twig = new Twig_Environment($loader, $view_options);
+        $this->_twig = new Environment($loader, $view_options);
         $this->_twig->addGlobal('env', Env::all());
         $this->engageFunctions($this->_system_functions);
 
