@@ -1,6 +1,5 @@
 <?php
 
-use App\Core\Http\Controller;
 use App\Core\Http\Response;
 
 /**

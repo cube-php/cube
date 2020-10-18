@@ -2,12 +2,12 @@
 
 namespace App\Core\Router;
 
+use App\Core\App;
 use Closure;
 
 use InvalidArgumentException;
 
 use App\Core\Router\RouteParser;
-
 use App\Core\Http\Request;
 use App\Core\Http\Response;
 use App\Core\Http\AnonController;
@@ -318,6 +318,12 @@ class Route
      */
     public function initController(Request $request, Response $response)
     {
+
+        $embed_request = App::getConfigByFile('view')['embed_request'] ?? false;
+        if($embed_request) {
+            $response->req = $request;
+        }
+
         #Check if route is registered with a view
         $view_file_path = $this->_isReturnView();
         if($view_file_path) {
@@ -411,6 +417,10 @@ class Route
 
         if(is_string($result)) {
             return $response->write($result);
+        }
+
+        if(is_array($result)) {
+            return $response->json($result);
         }
 
         return $result;

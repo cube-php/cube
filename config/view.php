@@ -13,6 +13,9 @@ return array(
 
     #Whether or not app caches views
     'cache' => false,
+
+    #Make App\Core\Http\Request accessible from view via _req
+    'embed_request' => false,
     
     #Functions allowed in views
     'functions' => array(

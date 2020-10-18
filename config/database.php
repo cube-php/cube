@@ -7,6 +7,8 @@
  * Set all database settings
  */
 
+use App\Core\Http\Env;
+
 return array(
 
     /**
@@ -14,7 +16,7 @@ return array(
      * 
      * @var string
      */
-    'driver' => 'mysql',
+    'driver' => Env::get('db_driver'),
 
     /**
      * Database host name
@@ -24,33 +26,40 @@ return array(
      * 
      * @var string
      */
-    'hostname' => '',
+    'hostname' => Env::get('db_hostname'),
 
     /**
      * Database username
      * 
      * @var string
      */
-    'username' => '',
+    'username' => Env::get('db_username'),
 
     /**
      * Database password
      * 
      * @var string
      */
-    'password' => '',
+    'password' => Env::get('db_password'),
 
     /**
      * Database table name
      * 
      * @var string
      */
-    'dbname' => '',
+    'dbname' => Env::get('db_name'),
+
+    /**
+     * Database port
+     * 
+     * @var int
+     */
+    'port' => Env::get('db_port'),
 
     /**
      * Database charset
      * 
      * @var string
      */
-    'charset' => 'utf-8'
+    'charset' => Env::get('db_charset')
 );

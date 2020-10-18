@@ -11,6 +11,72 @@ use App\Core\Http\Session;
 
 class Response implements ResponseInterface
 {
+    public const HTTP_CONTINUE = 100;
+    public const HTTP_SWITCHING_PROTOCOLS = 101;
+    public const HTTP_PROCESSING = 102;
+
+    public const HTTP_OK = 200;
+    public const HTTP_CREATED = 201;
+    public const HTTP_ACCEPTED = 202;
+    public const HTTP_NON_AUTHORATIVE_INFORMATION = 203;
+    public const HTTP_NO_CONTENT = 204;
+    public const HTTP_RESET_CONTENT = 205;
+    public const HTTP_PARTIAL_CONTENT = 206;
+    public const HTTP_MULTI_STATUS = 207;
+    public const HTTP_ALREADY_REPORTED = 208;
+    public const HTTP_IM_USED = 226;
+
+    public const HTTP_MULTIPLE_CHOICES = 300;
+    public const HTTP_MOVED_PERMANENTLY = 301;
+    public const HTTP_FOUND = 302;
+    public const HTTP_SEE_OTHER = 303;
+    public const HTTP_NOT_MODIFIED = 304;
+    public const HTTP_USE_PROXY = 305;
+    public const HTTP_SWITCH_PROXY = 306;
+    public const HTTP_TEMPORARY_REDIRECT = 307;
+    public const HTTP_PERMANENT_REDIRECT = 308;
+
+    public const HTTP_BAD_REQUEST = 400;
+    public const HTTP_UNATHORIZED = 401;
+    public const HTTP_PAYMENT_REQUIRED = 402;
+    public const HTTP_FORBIDDEN = 403;
+    public const HTTP_NOT_FOUND = 404;
+    public const HTTP_METHOD_NOT_ALLOWED = 405;
+    public const HTTP_NOT_ACCEPTABLE = 406;
+    public const HTTP_PROXY_AUTHENTICATION_REQUIRED = 407;
+    public const HTTP_REQUEST_TIMEOUT = 408;
+    public const HTTP_CONFLICT = 409;
+    public const HTTP_GONE = 410;
+    public const HTTP_LENGTH_REQUIRED = 411;
+    public const HTTP_PRECONDITION_FAILED = 412;
+    public const HTTP_PAYLOAD_TOO_LARGE = 413;
+    public const HTTP_URI_TOO_LONG = 414;
+    public const HTTP_UNSUPPORTED_MEDIA_TYPE = 415;
+    public const HTTP_RANGE_NOT_SATISFIABLE = 416;
+    public const HTTP_EXPECTATION_FAILED = 417;
+    public const HTTP_IM_A_TEAPOT = 418;
+    public const HTTP_MISDIRECTED_REQUEST = 421;
+    public const HTTP_UNPORCESSABLE_ENTITY = 422;
+    public const HTTP_LOCKED = 423;
+    public const HTTP_FAILED_DEPENDENCY = 424;
+    public const HTTP_UPGRADE_REQUIRED = 426;
+    public const HTTP_PRECONDITION_REQUIRED = 428;
+    public const HTTP_TOO_MANY_REQUESTS = 429;
+    public const HTTP_REQUEST_HEADER_FIELDS_TOO_LARGE = 431;
+    public const HTTP_UNAVAILABLE_FOR_LEGAL_REASONS = 451;
+    
+    public const HTTP_INTERNAL_SERVER_ERROR = 500;
+    public const HTTP_NOT_IMPLEMENTED = 501;
+    public const HTTP_BAD_GATEWAY = 502;
+    public const HTTP_SERVICE_UNAVAILABLE = 503;
+    public const HTTP_GATEWAY_TIMEOUT = 504;
+    public const HTTP_VERSION_NOT_SUPPORTED = 505;
+    public const HTTP_VARIANT_ALSO_NEGOTIATES = 506;
+    public const HTTP_INSUFFICIENT_STORAGE = 507;
+    public const HTTP_LOOP_DETECTED = 508;
+    public const HTTP_NOT_EXTENDED = 510;
+    public const HTTP_NETWORK_AUTHENTICATION_REQUIRED = 511;
+
 
     /**
      * View context
@@ -27,75 +93,75 @@ class Response implements ResponseInterface
     private static $response_codes = array(
 
         //1xx Informational responses
-        100 => 'Continue',
-        101 => 'Switching Protocols',
-        102 => 'Processing',
+        self::HTTP_CONTINUE => 'Continue',
+        self::HTTP_SWITCHING_PROTOCOLS => 'Switching Protocols',
+        self::HTTP_PROCESSING => 'Processing',
 
         //2xx Success
-        200 => 'OK',
-        201 => 'Created',
-        202 => 'Accepted',
-        203 => 'Non-Authorative Information',
-        204 => 'No Content',
-        205 => 'Reset Content',
-        206 => 'Partial Content',
-        207 => 'Multi Status',
-        208 => 'Already Reported',
-        226 => 'IM Used',
+        self::HTTP_OK => 'OK',
+        self::HTTP_CREATED => 'Created',
+        self::HTTP_ACCEPTED => 'Accepted',
+        self::HTTP_NON_AUTHORATIVE_INFORMATION => 'Non-Authorative Information',
+        self::HTTP_NO_CONTENT => 'No Content',
+        self::HTTP_RESET_CONTENT => 'Reset Content',
+        self::HTTP_PARTIAL_CONTENT => 'Partial Content',
+        self::HTTP_MULTI_STATUS => 'Multi Status',
+        self::HTTP_ALREADY_REPORTED => 'Already Reported',
+        self::HTTP_IM_USED => 'IM Used',
 
         //3xx Redirection
-        300 => 'Multiple Choices',
-        301 => 'Moved permanently',
-        302 => 'Found',
-        303 => 'See Other',
-        304 => 'Not Modified',
-        305 => 'Use Proxy',
-        306 => 'Switch Proxy',
-        307 => 'Temporary Redirect',
-        308 => 'Permanent Redirect',
+        self::HTTP_MULTIPLE_CHOICES => 'Multiple Choices',
+        self::HTTP_MOVED_PERMANENTLY => 'Moved permanently',
+        self::HTTP_FOUND => 'Found',
+        self::HTTP_SEE_OTHER => 'See Other',
+        self::HTTP_NOT_MODIFIED => 'Not Modified',
+        self::HTTP_USE_PROXY => 'Use Proxy',
+        self::HTTP_SWITCH_PROXY => 'Switch Proxy',
+        self::HTTP_TEMPORARY_REDIRECT => 'Temporary Redirect',
+        self::HTTP_PERMANENT_REDIRECT => 'Permanent Redirect',
 
         //4xx Client errors
-        400 => 'Bad Request',
-        401 => 'Unauthorized',
-        402 => 'Payment Required',
-        403 => 'Forbidden',
-        404 => 'Not Found',
-        405 => 'Method Not Allowed',
-        406 => 'Not Acceptable',
-        407 => 'Proxy Authentication Required',
-        408 => 'Request Timeout',
-        409 => 'Conflict',
-        410 => 'Gone',
-        411 => 'Length Required',
-        412 => 'Precondition Failed',
-        413 => 'Payload Too Large',
-        414 => 'URI Too Long',
-        415 => 'Unsupported Media Type',
-        416 => 'Range Not Satisfiable',
-        417 => 'Expectation Failed',
-        418 => 'I\'m a teapot',
-        421 => 'Misdirected Request',
-        422 => 'Unprocessable Entity',
-        423 => 'Locked',
-        424 => 'Failed Dependency',
-        426 => 'Upgrade Required',
-        428 => 'Precondition Required',
-        429 => 'Too Many Requests',
-        431 => 'Request Header Fields Too Large',
-        451 => 'Unavailable For Legal Reasons',
+        self::HTTP_BAD_REQUEST => 'Bad Request',
+        self::HTTP_UNATHORIZED => 'Unauthorized',
+        self::HTTP_PAYMENT_REQUIRED => 'Payment Required',
+        self::HTTP_FORBIDDEN => 'Forbidden',
+        self::HTTP_NOT_FOUND => 'Not Found',
+        self::HTTP_METHOD_NOT_ALLOWED => 'Method Not Allowed',
+        self::HTTP_NOT_ACCEPTABLE => 'Not Acceptable',
+        self::HTTP_PROXY_AUTHENTICATION_REQUIRED => 'Proxy Authentication Required',
+        self::HTTP_REQUEST_TIMEOUT => 'Request Timeout',
+        self::HTTP_CONFLICT => 'Conflict',
+        self::HTTP_GONE => 'Gone',
+        self::HTTP_LENGTH_REQUIRED => 'Length Required',
+        self::HTTP_PRECONDITION_FAILED => 'Precondition Failed',
+        self::HTTP_PAYLOAD_TOO_LARGE => 'Payload Too Large',
+        self::HTTP_URI_TOO_LONG => 'URI Too Long',
+        self::HTTP_UNSUPPORTED_MEDIA_TYPE => 'Unsupported Media Type',
+        self::HTTP_RANGE_NOT_SATISFIABLE => 'Range Not Satisfiable',
+        self::HTTP_EXPECTATION_FAILED => 'Expectation Failed',
+        self::HTTP_IM_A_TEAPOT => 'I\'m a teapot',
+        self::HTTP_MISDIRECTED_REQUEST => 'Misdirected Request',
+        self::HTTP_UNPORCESSABLE_ENTITY => 'Unprocessable Entity',
+        self::HTTP_LOCKED => 'Locked',
+        self::HTTP_FAILED_DEPENDENCY => 'Failed Dependency',
+        self::HTTP_UPGRADE_REQUIRED => 'Upgrade Required',
+        self::HTTP_PRECONDITION_REQUIRED => 'Precondition Required',
+        self::HTTP_TOO_MANY_REQUESTS => 'Too Many Requests',
+        self::HTTP_REQUEST_HEADER_FIELDS_TOO_LARGE => 'Request Header Fields Too Large',
+        self::HTTP_UNAVAILABLE_FOR_LEGAL_REASONS => 'Unavailable For Legal Reasons',
 
         //5xx Server Error
-        500 => 'Internal Server Error',
-        501 => 'Not Implemented',
-        502 => 'Bad Gateway',
-        503 => 'Service Unavailable',
-        504 => 'Gateway Timeout',
-        505 => 'HTTP Version Not Supported',
-        506 => 'Variant Also Negotiates',
-        507 => 'Insufficient Storage',
-        508 => 'Loop Detected',
-        510 => 'Not Extended',
-        511 => 'Network Authentication Required'
+        self::HTTP_INTERNAL_SERVER_ERROR => 'Internal Server Error',
+        self::HTTP_NOT_IMPLEMENTED => 'Not Implemented',
+        self::HTTP_BAD_GATEWAY => 'Bad Gateway',
+        self::HTTP_SERVICE_UNAVAILABLE => 'Service Unavailable',
+        self::HTTP_GATEWAY_TIMEOUT => 'Gateway Timeout',
+        self::HTTP_VERSION_NOT_SUPPORTED => 'HTTP Version Not Supported',
+        self::HTTP_VARIANT_ALSO_NEGOTIATES => 'Variant Also Negotiates',
+        self::HTTP_INSUFFICIENT_STORAGE => 'Insufficient Storage',
+        self::HTTP_LOOP_DETECTED => 'Loop Detected',
+        self::HTTP_NOT_EXTENDED => 'Not Extended',
+        self::HTTP_NETWORK_AUTHENTICATION_REQUIRED => 'Network Authentication Required'
      );
 
     /**
@@ -295,11 +361,18 @@ class Response implements ResponseInterface
      * Write json encoded string to response body
      * 
      * @param string
+     * @param int|null $status_code
+     * 
+     * @return self
      */
-    public function json($data) {
+    public function json($data, ?int $status_code = null) {
 
         $this->withHeader('Content-Type', 'application/json');
         $data = json_encode($data);
+
+        if($status_code) {
+            $this->withStatusCode($status_code);
+        }
 
         return $this->write($data);
     }

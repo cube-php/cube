@@ -10,6 +10,7 @@
  */
 
 use App\Core\App;
+use App\Core\Http\Env;
 
 return array(
 
@@ -22,7 +23,9 @@ return array(
      * Switch to App::APP_MODE_PRODUCTION
      * When live, errors will be hidden
      */
-    'app_mode' => App::APP_MODE_DEVELOPMENT,
+    'app_mode' => (strtolower(Env::get('app_mode')) === 'production')
+                    ? App::APP_MODE_PRODUCTION
+                    : App::APP_MODE_DEVELOPMENT,
 
     /**
      * Default timezone for your app
