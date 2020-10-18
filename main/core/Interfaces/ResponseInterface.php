@@ -10,11 +10,11 @@ interface ResponseInterface
 
     public function withoutHeader($name);
 
-    public function withStatusCode($code, $reason);
+    public function withStatusCode($code, $reason = '');
 
     public function write(...$args);
 
-    public function json($data);
+    public function json($data, ?int $status_code = null);
 
     public function redirect($path, array $query_params = [], $external_location = false);
 
