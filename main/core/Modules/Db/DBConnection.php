@@ -56,8 +56,14 @@ class DBConnection
         
         $dbname = $config['dbname'] ?? '';
         $charset = $config['charset'] ?? '';
+        $port = $config['port'] ?? '';
 
-        $dsn = "{$driver}:host={$hostname};dbname={$dbname}";
+        $dsn = "{$driver}:host={$hostname};dbname={$dbname};charset={$charset}";
+
+        if($port) {
+            $dsn .= ";port={$port}";
+        }
+
         $opts = array(
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
@@ -69,7 +75,7 @@ class DBConnection
             static::$_connected = true;
 
         } catch (PDOException $e) {
-            throw new DBException('Unable to establish database connection', 500);
+            throw new DBException('Unable to establish database connection. Error: "' . $e->getMessage() . '"', 500);
         }
     }
 
