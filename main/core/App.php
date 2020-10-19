@@ -153,7 +153,7 @@ class App
         $path = CONFIG_PATH . DS . $name . '.php';
         $config = require_once $path;
         
-        static::$config[$name] = $config;
+        static::$config[self::INSTANCE_CONFIGURATIONS][$name] = $config;
         return $config;
     }
 
@@ -264,7 +264,7 @@ class App
      */
     public function run()
     {
-        $this->loadConfig();
+        $this->init();
         $this->setTimezone();
 
         if(!self::isProduction()) {
@@ -273,7 +273,7 @@ class App
         }
 
         try {
-            
+            $this->initSessions();
             $this->boot();
 
         } catch(Exception $e) {
@@ -288,11 +288,12 @@ class App
      */
     public function init(): void
     {
-        $this->loadComponents();
         $this->initSystemHelpers();
-        $this->initSessions();
+        $this->loadConfig();
+        $this->loadComponents();
         $this->initHelpers();
         $this->loadEvents();
+        $this->configure();
     }
 
     /**
@@ -302,8 +303,7 @@ class App
      */
     private function boot()
     {
-        $this->configure();
-        $this->init();
+        $this->configureHttps();
         $this->initRoutes();
     }
 
@@ -360,25 +360,22 @@ class App
 
         #If configuration, kill the app
         if(!$config) {
-            static::kill('Unable to load app configuration file');
+            self::kill('Unable to load app configuration file');
         }
 
         #Check app mode
         $this->appModeChecker($config['app_mode'] ?? null);
-
-        #Check for https
-        $this->forceHTTPs($config['force_https'] ?? null);
     }
 
     /**
-     * Force HTTPs request
+     * Configure force HTTPs
      * 
-     * @param bool $redirect
      * 
      * @return void;
      */
-    private function forceHTTPs($redirect)
+    private function configureHttps()
     {
+        $redirect = static::getConfigByName('app')['force_https'] ?? false;
         $scheme = substr(strtolower($this->_request->url()->getScheme()), 0, 5);
         $secure_scheme = 'https';
 
@@ -436,7 +433,7 @@ class App
      */
     private function initSystemHelpers()
     {
-        $this->loadDirFiles(__DIR__ . DS . 'functions');
+        $this->loadDirFiles(__DIR__ . DS . 'functions', false);
     }
 
     /**
@@ -446,7 +443,7 @@ class App
      *  
      * @return void
      */
-    private function kill($reason)
+    private static function kill($reason)
     {
         die((string) $reason);
     }
@@ -489,20 +486,19 @@ class App
      * @param boolean $save_to_instance Save included file to app's config instances
      * @return void
      */
-    private function loadDirFiles($dir_path, $save_to_instance = 'config')
+    private function loadDirFiles($dir_path, bool $save_to_instance = true)
     {
-
         #Oh dots
         $dots = array('.', '..');
 
         $raw_filelist = scandir($dir_path);
         $files = array_diff($raw_filelist, $dots);
         
-        #No configuration files
-        if(!count($files)) return null;
+        if(!count($files)) {
+            return null;
+        }
 
-        foreach($files as $file)
-        {
+        foreach($files as $file) {
             $file_path = $dir_path . DS . $file;
             $name_vars = explode('.', $file);
             $extension = strtolower($ext = array_slice($name_vars, -1)[0]);
@@ -513,7 +509,7 @@ class App
             }
 
             if($save_to_instance) {
-                static::$config[$save_to_instance][$name] = require_once($file_path);
+                self::$config[self::INSTANCE_CONFIGURATIONS][$name] = require_once($file_path);
                 continue;
             }
 
@@ -544,7 +540,7 @@ class App
      */
     private function setTimezone() : void
     {
-        $timezone = static::getConfigByName('app')['time_zone'] ?? null;
+        $timezone = self::getConfigByName('app')['time_zone'] ?? null;
 
         if(!$timezone) {
             throw new AppException('Set App Timezone');
