@@ -182,6 +182,16 @@ class Input implements InputInterface
     }
 
     /**
+     * Return input type casted to float
+     *
+     * @return float
+     */
+    public function toFloat(): float
+    {
+        return (float) $this->getValue();
+    }
+
+    /**
      * Return input's value as an integer
      *
      * @return int
