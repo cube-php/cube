@@ -20,6 +20,13 @@ class Model implements ModelInterface
     protected static $schema;
 
     /**
+     * Model provider
+     *
+     * @var string|null
+     */
+    protected static $provider = null;
+
+    /**
      * Selectable fields from specified $schema
      * 
      * @var array
@@ -318,12 +325,20 @@ class Model implements ModelInterface
     /**
      * Run custom queries on model's schema
      *
-     * @param array $fields Fields to override default fields
+     * @param array|string $fields Fields to override default fields
      * @return DBSelect
      */
-    public static function select(?array $fields = null): DBSelect
+    public static function select($fields = null): DBSelect
     {
-        return new DBSelect(static::$schema, $fields ?: static::$fields);
+        $field_list = is_array($fields) ? $fields : [$fields];
+        $select = new DBSelect(
+            static::$schema,
+            $fields ? $field_list :
+            static::$fields,
+            static::$provider
+        );
+
+        return $select;
     }
 
     /**
