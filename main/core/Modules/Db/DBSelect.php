@@ -8,29 +8,27 @@ use App\Core\Modules\DB;
 use App\Core\Modules\Db\DBQueryBuilder;
 
 class DBSelect extends DBQueryBuilder
-{       
+{   
     /**
-     * Fields to select
-     * 
-     * @var string[]
+     * Provider class name
+     *
+     * @var string|null
      */
-    private $fields = array();
-
-    /**
-     * Table name
-     * 
-     * @var string
-     */
-    private $table_name;
+    public $provider_class = null;
 
     /**
      * Constructor
      * 
-     * @param string    $table_name
-     * @param array     $fields
+     * @param string $table_name
+     * @param array $fields
+     * @param string|null $provider_class
      */
-    public function __construct($table_name = '', $fields = [])
+    public function __construct($table_name = '', $fields = [], ?string $provider_class = null)
     {
+        if($provider_class) {
+            $this->provider_class = $provider_class;
+        }
+
         if($table_name) {
             $this->joinSql('SELECT', implode(', ', $fields), 'FROM', $table_name);
         }
@@ -158,11 +156,12 @@ class DBSelect extends DBQueryBuilder
     /**
      * Class name to wrap retrieved item
      *
-     * @param string $class_name
      * @return self
      */
-    public function map($class_name)
+    public function map()
     {
+        $class_name = $this->provider_class;
+
         if(!class_exists($class_name)) {
             throw new InvalidArgumentException
                 ('Cannot use undefined class "' . $class_name . '" ');

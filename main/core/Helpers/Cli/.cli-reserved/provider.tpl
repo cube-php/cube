@@ -38,4 +38,14 @@ class {className}
     {
 
     }
+
+    /**
+    * Model mapper
+    *
+    * @return self
+    */
+    public static function map($id): self
+    {
+        return new self($id);
+    }
 }
