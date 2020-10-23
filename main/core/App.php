@@ -266,6 +266,7 @@ class App
     {
         $this->init();
         $this->setTimezone();
+        $this->initSessions();
 
         if(!self::isProduction()) {
             $this->boot();
@@ -273,7 +274,6 @@ class App
         }
 
         try {
-            $this->initSessions();
             $this->boot();
 
         } catch(Exception $e) {
