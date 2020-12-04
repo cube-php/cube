@@ -1,7 +1,9 @@
 {
     "name": "brainex/php-cube",
-    "description": "A minimal PHP Framework for building scalable web applications",
+    "description": "A minimal PHP Framework for building simple and scalable web applications",
+    "type": "project",
     "version": "0.9.5",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "App\\Controllers\\": "app/controllers",
