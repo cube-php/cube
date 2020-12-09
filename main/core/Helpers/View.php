@@ -4,6 +4,7 @@ namespace App\Core\Helpers;
 
 use App\Core\Http\Env;
 use App\Core\App;
+use App\Core\Misc\EventManager;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
@@ -11,6 +12,8 @@ use Twig\TwigFunction;
 
 class View
 {
+    const EVENT_LOADED = 'viewLoaded';
+
     /**
      * Twig
      *
@@ -49,6 +52,14 @@ class View
     {
         $this->_config = App::getConfigByName('view');
         $this->setBasePath($path);
+    }
+
+    /**
+     * Class destructor
+     */
+    public function __destruct()
+    {
+        EventManager::dispatchEvent(self::EVENT_LOADED);
     }
 
     /**
