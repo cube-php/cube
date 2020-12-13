@@ -1,0 +1,13 @@
+{
+    "name": "cube-php/cube",
+    "description": "A minimal php framework to build scalable php web apps",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Damilola Ezekiel",
+            "email": "damilola@cubephp.xyz"
+        }
+    ],
+    "require": {}
+}
