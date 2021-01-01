@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Http;
+namespace Cube\Http;
 
-use App\Core\Misc\File;
+use Cube\Misc\File;
 
 final class Env
 {

@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Core\Http\Response;
-use App\Core\Http\Request;
-use App\Core\Http\Controller;
+use Cube\Http\Response;
+use Cube\Http\Request;
+use Cube\Http\Controller;
 
 class CubeController extends Controller
 {

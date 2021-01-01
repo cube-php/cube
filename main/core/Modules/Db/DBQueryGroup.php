@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Modules\Db;
+namespace Cube\Modules\Db;
 
-use App\Core\Modules\Db\DBQueryBuilder;
+use Cube\Modules\Db\DBQueryBuilder;
 
 class DBQueryGroup extends DBQueryBuilder
 {

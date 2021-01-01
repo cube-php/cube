@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Interfaces;
+namespace Cube\Interfaces;
 
-use App\Core\Modules\Db\DBDelete;
-use App\Core\Modules\Db\DBSelect;
-use App\Core\Modules\Db\DBTable;
+use Cube\Modules\Db\DBDelete;
+use Cube\Modules\Db\DBSelect;
+use Cube\Modules\Db\DBTable;
 
 interface ModelInterface
 {

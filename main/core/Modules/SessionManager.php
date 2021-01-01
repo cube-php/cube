@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Core\Modules;
+namespace Cube\Modules;
 
-use App\Core\Modules\DB;
-use App\Core\Modules\Db\DBConnection;
+use Cube\Modules\DB;
+use Cube\Modules\Db\DBConnection;
 
 class SessionManager
 {

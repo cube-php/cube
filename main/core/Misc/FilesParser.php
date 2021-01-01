@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Misc;
+namespace Cube\Misc;
 
-use App\Core\Http\UploadedFile;
+use Cube\Http\UploadedFile;
 
 class FilesParser
 {
@@ -158,7 +158,7 @@ class FilesParser
     /**
      * Add the UploadedFile Class to files
      * 
-     * @return App\Core\Http\UploadedFile[]
+     * @return Cube\Http\UploadedFile[]
      */
     public function parse2index()
     {

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Http;
+namespace Cube\Http;
 
 use InvalidArgumentException;
-use App\Core\App;
-use App\Core\Interfaces\UriInterface;
+use Cube\App;
+use Cube\Interfaces\UriInterface;
 
 class Uri implements UriInterface
 {

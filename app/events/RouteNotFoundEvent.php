@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Core\Http\Request;
+use Cube\Http\Request;
 
 class RouteNotFoundEvent
 {

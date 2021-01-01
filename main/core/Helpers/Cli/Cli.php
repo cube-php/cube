@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Helpers\Cli;
+namespace Cube\Helpers\Cli;
 
 class Cli
 {

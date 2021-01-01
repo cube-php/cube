@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Misc;
+namespace Cube\Misc;
 
-use App\Core\Misc\Folder;
+use Cube\Misc\Folder;
 
-use App\Core\Exceptions\FileSystemException;
+use Cube\Exceptions\FileSystemException;
 
 class Storage
 {

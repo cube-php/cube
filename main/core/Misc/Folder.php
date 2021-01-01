@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Misc;
+namespace Cube\Misc;
 
-use App\Core\Exceptions\FileSystemException;
+use Cube\Exceptions\FileSystemException;
 
 class Folder
 {

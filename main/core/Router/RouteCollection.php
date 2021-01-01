@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Core\Router;
+namespace Cube\Router;
 
-use App\Core\App;
+use Cube\App;
 
-use App\Core\Router\Route;
+use Cube\Router\Route;
 
-use App\Core\Http\Request;
+use Cube\Http\Request;
 
-use App\Core\Http\Response;
+use Cube\Http\Response;
 
-use App\Core\Misc\EventManager;
+use Cube\Misc\EventManager;
 
 class RouteCollection
 {

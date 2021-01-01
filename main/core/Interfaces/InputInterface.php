@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Interfaces;
+namespace Cube\Interfaces;
 
 interface InputInterface
 {

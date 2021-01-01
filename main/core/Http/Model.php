@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Core\Http;
+namespace Cube\Http;
 
-use App\Core\Modules\DB;
-use App\Core\Modules\Db\DBTable;
-use App\Core\Modules\Db\DBSelect;
-use App\Core\Interfaces\ModelInterface;
-use App\Core\Exceptions\ModelException;
-use App\Core\Modules\Db\DBUpdate;
-use App\Core\Modules\Db\DBDelete;
+use Cube\Modules\DB;
+use Cube\Modules\Db\DBTable;
+use Cube\Modules\Db\DBSelect;
+use Cube\Interfaces\ModelInterface;
+use Cube\Exceptions\ModelException;
+use Cube\Modules\Db\DBUpdate;
+use Cube\Modules\Db\DBDelete;
 
 class Model implements ModelInterface
 {
@@ -116,7 +116,7 @@ class Model implements ModelInterface
      * Return all results from schema
      *
      * @param array $order Order methods
-     * @see \App\Core\Db\DBSelect::orderBY() method
+     * @see \Cube\Db\DBSelect::orderBY() method
      * 
      * @param array $opts
      * @param array|null $fields Field to select

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Interfaces;
+namespace Cube\Interfaces;
 
-use App\Core\Http\Request;
+use Cube\Http\Request;
 
-use App\Core\Http\Response;
+use Cube\Http\Response;
 
 interface MiddlewareInterface
 {

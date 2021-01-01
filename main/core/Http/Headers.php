@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Http;
+namespace Cube\Http;
 
-use App\Core\Misc\Collection;
+use Cube\Misc\Collection;
 
 class Headers extends Collection
 {

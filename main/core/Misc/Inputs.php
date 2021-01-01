@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Core\Misc;
+namespace Cube\Misc;
 
-use App\Core\Misc\Collection;
-use App\Core\Misc\Input;
+use Cube\Misc\Collection;
+use Cube\Misc\Input;
 
 class Inputs extends Collection
 {
@@ -25,7 +25,7 @@ class Inputs extends Collection
      * 
      * @param string $key Key to return
      * 
-     * @return \App\Core\Misc\Input
+     * @return \Cube\Misc\Input
      */
     public function get($key)
     {

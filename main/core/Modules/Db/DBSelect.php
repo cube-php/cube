@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Core\Modules\Db;
+namespace Cube\Modules\Db;
 
-use App\Core\Exceptions\ModelException;
-use App\Core\Interfaces\ModelInterface;
+use Cube\Exceptions\ModelException;
+use Cube\Interfaces\ModelInterface;
 use InvalidArgumentException;
 
-use App\Core\Modules\DB;
-use App\Core\Modules\Db\DBQueryBuilder;
+use Cube\Modules\DB;
+use Cube\Modules\Db\DBQueryBuilder;
 use ReflectionClass;
 
 class DBSelect extends DBQueryBuilder

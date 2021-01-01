@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Core\Router;
+namespace Cube\Router;
 
-use App\Core\App;
+use Cube\App;
 use Closure;
 
 use InvalidArgumentException;
 
-use App\Core\Router\RouteParser;
-use App\Core\Http\Request;
-use App\Core\Http\Response;
-use App\Core\Http\AnonController;
+use Cube\Router\RouteParser;
+use Cube\Http\Request;
+use Cube\Http\Response;
+use Cube\Http\AnonController;
 
 class Route
 {

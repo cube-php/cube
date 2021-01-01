@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Core\Modules\Db;
+namespace Cube\Modules\Db;
 
 use PDO;
 use PDOStatement;
 use PDOException;
 
-use App\Core\App;
-use App\Core\Exceptions\DBException;
+use Cube\App;
+use Cube\Exceptions\DBException;
 
 class DBConnection
 {

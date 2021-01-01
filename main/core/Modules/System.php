@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Core\Modules;
+namespace Cube\Modules;
 
 use Exception;
-use App\Core\Tools\Auth;
-use App\Core\Helpers\Cli\Cli;
-use App\Core\Modules\SessionManager;
+use Cube\Tools\Auth;
+use Cube\Helpers\Cli\Cli;
+use Cube\Modules\SessionManager;
 
 class System
 {

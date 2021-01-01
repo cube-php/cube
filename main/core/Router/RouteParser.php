@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Core\Router;
+namespace Cube\Router;
 
 use InvalidArgumentException;
 
-use App\Core\Router\Route;
-use App\Core\Router\RouteCollection;
+use Cube\Router\Route;
+use Cube\Router\RouteCollection;
 
 class RouteParser
 {

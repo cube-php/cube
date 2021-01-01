@@ -12,6 +12,6 @@
  * And should not contain very complex and time taking commands
  */
 
-use App\Core\App;
-use App\Core\Http\Request;
-use App\Core\Misc\EventManager;
+use Cube\App;
+use Cube\Http\Request;
+use Cube\Misc\EventManager;

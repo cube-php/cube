@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Misc;
+namespace Cube\Misc;
 
 use InvalidArgumentException;
-use App\Core\Misc\InputValidator;
-use App\Core\Interfaces\InputInterface;
+use Cube\Misc\InputValidator;
+use Cube\Interfaces\InputInterface;
 
 class Input implements InputInterface
 {

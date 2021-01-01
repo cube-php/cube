@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Core\Modules\Db;
+namespace Cube\Modules\Db;
 
-use App\Core\Modules\Db\DBTable;
-use App\Core\Modules\Db\DBSchemaBuilder;
+use Cube\Modules\Db\DBTable;
+use Cube\Modules\Db\DBSchemaBuilder;
 
 class DBTableBuilder
 {

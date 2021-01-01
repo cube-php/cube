@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Core\Http\Model;
+use Cube\Http\Model;
 
 class DemoModel extends Model
 {

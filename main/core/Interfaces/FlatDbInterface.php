@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Interfaces;
+namespace Cube\Interfaces;
 
-use App\Core\Modules\FlatDb\FlatDbTable;
+use Cube\Modules\FlatDb\FlatDbTable;
 
 interface FlatDbInterface
 {

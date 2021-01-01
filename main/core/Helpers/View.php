@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Helpers;
+namespace Cube\Helpers;
 
-use App\Core\Http\Env;
-use App\Core\App;
-use App\Core\Misc\EventManager;
+use Cube\Http\Env;
+use Cube\App;
+use Cube\Misc\EventManager;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;

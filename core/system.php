@@ -21,8 +21,8 @@
  */
 
 /*
-use App\Core\Modules\DB;
-use App\Core\Modules\Db\DBTableBuilder;
+use Cube\Modules\DB;
+use Cube\Modules\Db\DBTableBuilder;
 
 DB::table('users')->create(function(DBTableBuilder $table){
     $table->field('id')->int()->increment();

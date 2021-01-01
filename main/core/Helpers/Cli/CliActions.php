@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Core\Helpers\Cli;
+namespace Cube\Helpers\Cli;
 
-use App\Core\App;
-use App\Core\Misc\File;
-use App\Core\Exceptions\FileSystemException;
-use App\Core\Modules\System;
+use Cube\App;
+use Cube\Misc\File;
+use Cube\Exceptions\FileSystemException;
+use Cube\Modules\System;
 
 class CliActions
 {

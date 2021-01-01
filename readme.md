@@ -58,7 +58,7 @@ Defining routes is very easy. Routes are defined in ```app/core/routes.php``` fi
 
 ```php
 #Use the router class
-use App\Core\Router\Router;
+use Cube\Router\Router;
 
 #Instance of router
 $router = new Router();

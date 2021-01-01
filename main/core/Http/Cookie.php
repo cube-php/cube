@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Http;
+namespace Cube\Http;
 
 use InvalidArgumentException;
 
