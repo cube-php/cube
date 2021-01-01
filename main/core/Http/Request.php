@@ -182,11 +182,7 @@ class Request implements RequestInterface
      */
     public function getHeaders()
     {
-        if(static::$_headers) {
-            return static::$_headers;
-        }
-
-        static::$_headers = new Headers();
+        static::$_headers ??= new Headers();
         return static::$_headers;
     }
 
@@ -197,11 +193,7 @@ class Request implements RequestInterface
      */
     public function getServer()
     {
-        if(static::$_server) {
-            return static::$_server;
-        }
-
-        static::$_server = new Server();
+        static::$_server ??= new Server();
         return static::$_server;
     }
 
