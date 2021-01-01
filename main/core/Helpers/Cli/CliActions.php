@@ -320,6 +320,10 @@ class CliActions
 
         $action_name = $actions[$action];
 
+        if(in_array($action, ['d', 'e']) && !$migration_name) {
+            return Cli::respondError('Migration name not specified');
+        }
+
         foreach($trackable_files as $filename) {
 
             $filepath = $path . DS . $filename;
