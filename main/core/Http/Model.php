@@ -41,6 +41,78 @@ class Model implements ModelInterface
     protected static $primary_key;
 
     /**
+     * Model data
+     *
+     * @var object
+     */
+    private $_data;
+
+    /**
+     * Model updates
+     *
+     * @var array
+     */
+    private $_updates = array();
+
+    /**
+     * Model constructor
+     *
+     * @param object $id
+     */
+    public function __construct(object $data)
+    {
+        $this->_data = $data;
+    }
+
+    /**
+     * Getter
+     *
+     * @param [type] $name
+     * @return void
+     */
+    public function __get($name)
+    {
+        return $this->_data->{$name} ?? null;
+    }
+
+    /**
+     * Add an update
+     *
+     * @param string $name
+     * @param mixed $value
+     */
+    public function __set($name, $value)
+    {
+        $this->_updates[$name] = $value;
+    }
+
+    /**
+     * Save updates
+     *
+     * @return bool
+     */
+    public function save(): bool
+    {
+        $key = self::getPrimaryKey();
+        $saved = !!static::update($this->_updates)
+                    ->where($key, $this->{$key})
+                    ->fulfil();
+
+                            
+        if($saved) {
+            $old_data = (array) $this->_data;
+            array_walk($this->_updates, function ($value, $field) use(&$old_data) {
+                $old_data[$field] = $value;
+            });
+
+            $this->_data = (object) $old_data;
+        }
+
+        $this->_updates = [];
+        return $saved;
+    }
+
+    /**
      * Return all results from schema
      *
      * @param array $order Order methods
@@ -55,10 +127,6 @@ class Model implements ModelInterface
     {
         $query = static::select($fields)
                     ->orderBy($order);
-
-        if($map) {
-            $query->map($map);
-        }
 
         return $opts ? 
             call_user_func_array([$query, 'fetch'], $opts) : $query->fetchAll();
@@ -136,7 +204,7 @@ class Model implements ModelInterface
      * @param string|int $primary_key
      * @param array $fields Fields to retrieve
      * 
-     * @return object|null
+     * @return self
      */
     public static function findByPrimaryKey($primary_key, array $fields = [])
     {
@@ -174,6 +242,17 @@ class Model implements ModelInterface
                 ->update($update)
                 ->where(static::getPrimaryKey(), $primary_key)
                 ->fulfil();
+    }
+
+    /**
+     * Fetch
+     *
+     * @param integer $count
+     * @return self[]
+     */
+    public static function fetch(int $count)
+    {
+        return static::select()->fetch($count);
     }
 
     /**
@@ -335,7 +414,7 @@ class Model implements ModelInterface
             static::$schema,
             $fields ? $field_list :
             static::$fields,
-            static::$provider
+            get_called_class()
         );
 
         return $select;

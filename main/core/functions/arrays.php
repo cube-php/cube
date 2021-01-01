@@ -90,9 +90,9 @@ if(!function_exists('every')) {
     function every(iterable $arr, callable $func): array {
         $result = [];
 
-        foreach($arr as $index => $value) {
-            $result[] = $func($value, $index);
-        }
+        array_walk($arr, function($value, $index) use (&$result, $func) {
+            $result[$index] = $func($value, $index);
+        });
 
         return $result;
     }
