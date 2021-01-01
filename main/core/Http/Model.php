@@ -93,9 +93,23 @@ class Model implements ModelInterface
      */
     public function save(): bool
     {
-        return !!static::update($this->_updates)
-                    ->where(self::$primary_key, $this->id)
+        $key = self::getPrimaryKey();
+        $saved = !!static::update($this->_updates)
+                    ->where($key, $this->{$key})
                     ->fulfil();
+
+                            
+        if($saved) {
+            $old_data = (array) $this->_data;
+            array_walk($this->_updates, function ($value, $field) use(&$old_data) {
+                $old_data[$field] = $value;
+            });
+
+            $this->_data = (object) $old_data;
+        }
+
+        $this->_updates = [];
+        return $saved;
     }
 
     /**
@@ -190,7 +204,7 @@ class Model implements ModelInterface
      * @param string|int $primary_key
      * @param array $fields Fields to retrieve
      * 
-     * @return object|null
+     * @return self
      */
     public static function findByPrimaryKey($primary_key, array $fields = [])
     {
