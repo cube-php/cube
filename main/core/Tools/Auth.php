@@ -8,8 +8,6 @@ use InvalidArgumentException;
 use Cube\App;
 use Cube\Modules\DB;
 
-use Cube\Http\Request;
-use Cube\Http\Response;
 use Cube\Http\Session;
 use Cube\Http\Cookie;
 
@@ -21,7 +19,7 @@ class Auth
 {
 
     const EVENT_ON_AUTHENTICATED = 'authenticated';
-    const EVENT_ON_LOGGED_OUT    = 'loggedout'; 
+    const EVENT_ON_LOGGED_OUT    = 'loggedout';
 
     /**
      * Authentication configuration
@@ -60,7 +58,7 @@ class Auth
      * 
      * @return object|boolean
      */
-    public static function attempt($combination, $remember = false)
+    public static function attempt($field, $secret, $remember = false)
     {
         #Load the auth configuaration
         $config = static::getConfig();
@@ -68,68 +66,47 @@ class Auth
         $hash_method = $config['hash_method'] ?? 'password_verify';
         $primary_key = $config['primary_key'] ?? null;
         $schema = $config['schema'] ?? null;
-        $config_combination = $config['combination'];
+        $config_combination = (array) $config['combination'];
 
         if(!$schema) {
             throw new AuthException('Auth schema field is undefined');
         }
 
-        #Get the number of assigned fields
-        $args_count = count($combination);
+        $auth_fields = $config_combination['fields'] ?? null;
 
-        if($args_count !== 2) {
-            throw new InvalidArgumentException
-                ('Auth::attempt() should contain an array of two fields, the ID and Password only, ' . $args_count . ' found');
+        if(!$auth_fields) {
+            throw new AuthException('Authentication fields not specified');
         }
 
-        $keys = array_keys($combination);
-        $secret_key_field = 'secret_key';
+        $auth_field_name = null;
+        $default_field_name = null;
 
-        $specified_key = $keys[0];
-        $specified_secret_key = $combination['secret_key'] ?? '';
-        $specified_field_value = $combination[$specified_key];
-
-        if(!isset($combination['secret_key'])) {
-            throw new AuthException('Secret Key field is not specified');
-        }
-
-        #Check if the secret key field exist,
-        #Throw an AuthException if an error occured
-        if(!array_key_exists($secret_key_field, $combination)) {
-            throw new AuthException('No secret key field found');
-        }
-
-        #Get the value of secret key and remove it from field
-        $secret_key = $combination[$secret_key_field];
-        unset($combination[$secret_key_field]);
-        
-        $selected_model = null;
-
-        foreach($config_combination as $combo) {
-            $combo_fields = (array) $combo['fields'];
-            if(in_array($specified_key, $combo_fields)) {
-                $selected_model = $combo;
+        foreach($auth_fields as $field_name => $fn) {
+            if($fn && $fn($field)) {
+                $auth_field_name = $field_name;
                 break;
+            }
+
+            if(!$fn) {
+                $default_field_name = $field_name;
+                continue;
             }
         }
 
-        if(!$selected_model) {
-            throw new AuthException('Authentication model "'. $specified_key .'" not found');
-        }
-
-        $secret_key_model_name = $selected_model['secret_key'];
+        $auth_field_name = $auth_field_name ?: $default_field_name;
+        $secret_key_name = $config_combination['secret_key'];
 
         $query = DB::table($schema)
-                    ->select([$primary_key, $secret_key_model_name])
-                    ->where($specified_key, $specified_field_value)
+                    ->select([$primary_key, $secret_key_name])
+                    ->where($auth_field_name, $field)
                     ->fetchOne();
 
         if(!$query) {
-            throw new AuthException('Account not found for ' . $specified_field_value);
+            throw new AuthException('Account not found for ' . $field .  ' using ' . $auth_field_name);
         }
 
-        $raw_server_secret = $query->{$secret_key_model_name};
-        $secret_is_valid = $hash_method($secret_key, $raw_server_secret);
+        $raw_server_secret = $query->{$secret_key_name};
+        $secret_is_valid = $hash_method($secret, $raw_server_secret);
 
         if(!$secret_is_valid) {
             throw new AuthException('Invalid account credentials');
@@ -169,7 +146,7 @@ class Auth
 
         $model_class = new ReflectionClass($model);
 
-        if(!$model_class->implementsInterface('Cube\Interfaces\ModelInterface')) {
+        if(!$model_class->implementsInterface(ModelInterface::class)) {
             throw new InvalidArgumentException('Auth config instance not specified');
         }
 
@@ -218,31 +195,42 @@ class Auth
 
         #Check for authenticated session
         $auth_id = Session::get(static::$_auth_name);
-        $instance = static::getConfig('instance');
+        $instance = static::getConfig('model');
+
+        if(!$instance) {
+            throw new AuthException('Model not specified');
+        }
+
+        $instance_reflector = new ReflectionClass($instance);
+        $model_inteface = ModelInterface::class;
+
+        if(!$instance_reflector->implementsInterface($model_inteface)) {
+            throw new AuthException($instance . ' does not implement ' . $model_inteface);
+        }
 
         if($auth_id) {
-            static::$_auth_user = new $instance($auth_id);
+            static::$_auth_user = $instance::findByPrimaryKey($auth_id);
             return static::$_auth_user;
         }
 
         #Check for user auto log cookie
         $cookie_token = Cookie::get(static::$_auth_name);
 
-        if($cookie_token) {
-            $user_id = static::validateAuthCookieToken($cookie_token);
-
-            if(!$user_id) {
-                static::logout();
-                return false;
-            }
-
-            static::$_auth_user = new $instance($user_id);
-            #update cookie
-            static::setUserCookieToken($user_id);
-            return static::$_auth_user;
+        if(!$cookie_token) {
+            return null;
         }
 
-        return false;
+        $user_id = static::validateAuthCookieToken($cookie_token);
+
+        if(!$user_id) {
+            static::logout();
+            return false;
+        }
+
+        static::$_auth_user = $instance::findByPrimaryKey($auth_id);
+        #update cookie
+        static::setUserCookieToken($user_id);
+        return static::$_auth_user;
     }
 
     /**
