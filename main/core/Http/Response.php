@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Core\Http;
+namespace Cube\Http;
 
 use InvalidArgumentException;
-use App\Core\Interfaces\ResponseInterface;
-use App\Core\Helpers\View;
+use Cube\Interfaces\ResponseInterface;
+use Cube\Helpers\View;
 
-use App\Core\Http\Headers;
-use App\Core\Http\Session;
+use Cube\Http\Headers;
+use Cube\Http\Session;
 
 class Response implements ResponseInterface
 {
@@ -167,7 +167,7 @@ class Response implements ResponseInterface
     /**
      * Headers
      * 
-     * @var \App\Core\Http\Headers;
+     * @var \Cube\Http\Headers;
      */
     private $_header;
 

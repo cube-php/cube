@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Core\Http;
+namespace Cube\Http;
 
 use InvalidArgumentException;
-use App\Core\Interfaces\RequestInterface;
+use Cube\Interfaces\RequestInterface;
 
-use App\Core\Http\Server;
-use App\Core\Http\Headers;
-use App\Core\Http\Session;
-use App\Core\Http\Uri;
+use Cube\Http\Server;
+use Cube\Http\Headers;
+use Cube\Http\Session;
+use Cube\Http\Uri;
 
-use App\Core\Misc\FilesParser;
-use App\Core\Misc\Inputs;
-use App\Core\Misc\Input;
-use App\Core\App;
+use Cube\Misc\FilesParser;
+use Cube\Misc\Inputs;
+use Cube\Misc\Input;
+use Cube\App;
 
 class Request implements RequestInterface
 {
@@ -351,7 +351,7 @@ class Request implements RequestInterface
     /**
      * Get this request url
      * 
-     * @return \App\Core\Http\Uri
+     * @return \Cube\Http\Uri
      */
     public function url()
     {

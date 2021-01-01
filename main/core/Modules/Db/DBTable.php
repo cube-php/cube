@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Core\Modules\Db;
+namespace Cube\Modules\Db;
 
 use InvalidArgumentException;
 
-use App\Core\Modules\DB;
+use Cube\Modules\DB;
 
-use App\Core\Modules\Db\DBDelete;
-use App\Core\Modules\Db\DBInsert;
-use App\Core\Modules\Db\DBReplace;
-use App\Core\Modules\Db\DBSelect;
-use App\Core\Modules\Db\DBUpdate;
-use App\Core\Modules\Db\DBSchemaBuilder;
-use App\Core\Modules\Db\DBTableBuilder;
-use App\Core\Modules\Db\DBWordConstruct;
+use Cube\Modules\Db\DBDelete;
+use Cube\Modules\Db\DBInsert;
+use Cube\Modules\Db\DBReplace;
+use Cube\Modules\Db\DBSelect;
+use Cube\Modules\Db\DBUpdate;
+use Cube\Modules\Db\DBSchemaBuilder;
+use Cube\Modules\Db\DBTableBuilder;
+use Cube\Modules\Db\DBWordConstruct;
 
 class DBTable
 {
@@ -57,7 +57,7 @@ class DBTable
     /**
      * Add new field to table
      * 
-     * @param string $structure Structure from \App\Core\Modules\DB\DBSchemaBuilder
+     * @param string $structure Structure from \Cube\Modules\DB\DBSchemaBuilder
      * 
      * @return void
      */

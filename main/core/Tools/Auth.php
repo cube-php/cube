@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Core\Tools;
+namespace Cube\Tools;
 
 use ReflectionClass;
 use InvalidArgumentException;
 
-use App\Core\App;
-use App\Core\Modules\DB;
+use Cube\App;
+use Cube\Modules\DB;
 
-use App\Core\Http\Request;
-use App\Core\Http\Response;
-use App\Core\Http\Session;
-use App\Core\Http\Cookie;
+use Cube\Http\Request;
+use Cube\Http\Response;
+use Cube\Http\Session;
+use Cube\Http\Cookie;
 
-use App\Core\Misc\EventManager;
-use App\Core\Exceptions\AuthException;
-use App\Core\Interfaces\ModelInterface;
+use Cube\Misc\EventManager;
+use Cube\Exceptions\AuthException;
+use Cube\Interfaces\ModelInterface;
 
 class Auth
 {
@@ -169,7 +169,7 @@ class Auth
 
         $model_class = new ReflectionClass($model);
 
-        if(!$model_class->implementsInterface('App\Core\Interfaces\ModelInterface')) {
+        if(!$model_class->implementsInterface('Cube\Interfaces\ModelInterface')) {
             throw new InvalidArgumentException('Auth config instance not specified');
         }
 

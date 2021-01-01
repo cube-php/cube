@@ -2,9 +2,9 @@
 
 namespace App\Migrations;
 
-use App\Core\Interfaces\MigrationInterface;
-use App\Core\Modules\DB;
-use App\Core\Modules\Db\DBTableBuilder;
+use Cube\Interfaces\MigrationInterface;
+use Cube\Modules\DB;
+use Cube\Modules\Db\DBTableBuilder;
 
 class {className} implements MigrationInterface
 {

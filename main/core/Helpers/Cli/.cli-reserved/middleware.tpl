@@ -2,8 +2,8 @@
 
 namespace App\Middlewares{subNamespace};
 
-use App\Core\Http\Request;
-use App\Core\Interfaces\MiddlewareInterface;
+use Cube\Http\Request;
+use Cube\Interfaces\MiddlewareInterface;
 
 class {className} implements MiddlewareInterface
 {

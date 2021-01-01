@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Core\Modules\Db;
+namespace Cube\Modules\Db;
 
 use InvalidArgumentException;
 
-use App\Core\Modules\Db\DBOrWhere;
-use App\Core\Modules\Db\DBQueryGroup;
+use Cube\Modules\Db\DBOrWhere;
+use Cube\Modules\Db\DBQueryGroup;
 
-use App\Core\Modules\Db\DBSelect;
-use App\Core\Modules\Db\DBUpdate;
-use App\Core\Modules\Db\DBDelete;
+use Cube\Modules\Db\DBSelect;
+use Cube\Modules\Db\DBUpdate;
+use Cube\Modules\Db\DBDelete;
 
 class DBQueryBuilder
 {

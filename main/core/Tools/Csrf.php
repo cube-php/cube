@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Tools;
+namespace Cube\Tools;
 
-use App\Core\Http\Response;
-use App\Core\Http\Request;
-use App\Core\Http\Session;
+use Cube\Http\Response;
+use Cube\Http\Request;
+use Cube\Http\Session;
 
 class Csrf
 {

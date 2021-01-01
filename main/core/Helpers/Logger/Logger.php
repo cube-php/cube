@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Core\Helpers\Logger;
+namespace Cube\Helpers\Logger;
 
-use App\Core\Interfaces\LoggerInterface;
-use App\Core\Misc\File;
+use Cube\Interfaces\LoggerInterface;
+use Cube\Misc\File;
 
 class Logger implements LoggerInterface
 {

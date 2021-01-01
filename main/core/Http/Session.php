@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Http;
+namespace Cube\Http;
 
-use App\Core\Http\Cookie;
-use App\Core\Misc\Collection;
-use App\Core\Modules\SessionManager;
+use Cube\Http\Cookie;
+use Cube\Misc\Collection;
+use Cube\Modules\SessionManager;
 
 class Session
 {

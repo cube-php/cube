@@ -1,6 +1,6 @@
 <?php
 
-use App\Core\Http\Response;
+use Cube\Http\Response;
 
 /**
  * Http functions here

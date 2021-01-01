@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Router;
+namespace Cube\Router;
 
 class RouterGroup extends Router
 {

@@ -2,9 +2,9 @@
 
 namespace App\Middlewares;
 
-use App\Core\Tools\Csrf;
-use App\Core\Http\Request;
-use App\Core\Interfaces\MiddlewareInterface;
+use Cube\Tools\Csrf;
+use Cube\Http\Request;
+use Cube\Interfaces\MiddlewareInterface;
 
 class CsrfMiddleware implements MiddlewareInterface
 {

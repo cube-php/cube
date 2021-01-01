@@ -9,8 +9,8 @@
  * Except, Of course you know what you're doing
  */
 
-use App\Core\App;
-use App\Core\Http\Env;
+use Cube\App;
+use Cube\Http\Env;
 
 return array(
 

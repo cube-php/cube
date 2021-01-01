@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Misc;
+namespace Cube\Misc;
 
 use Closure;
 use InvalidArgumentException;

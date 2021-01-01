@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Misc;
+namespace Cube\Misc;
 
-use App\Core\Exceptions\ComponentsException;
+use Cube\Exceptions\ComponentsException;
 
 final class Components
 {

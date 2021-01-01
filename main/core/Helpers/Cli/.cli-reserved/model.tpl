@@ -2,7 +2,7 @@
 
 namespace App\Models{subNamespace};
 
-use App\Core\Http\Model;
+use Cube\Http\Model;
 
 class {className} extends Model
 {

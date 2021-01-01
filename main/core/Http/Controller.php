@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Http;
+namespace Cube\Http;
 
-use App\Core\Misc\Components;
+use Cube\Misc\Components;
 
 abstract class Controller
 {   

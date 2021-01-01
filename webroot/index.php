@@ -16,7 +16,7 @@ require_once '..' . DS . 'vendor' . DS . 'autoload.php';
  * Register all app directories
  * ------------------------------------------------------
  */
-App\Core\App::registerPath();
+Cube\App::registerPath();
 
 /**
  * -----------------------------------------------------
@@ -31,7 +31,7 @@ require_once APP_PATH . DS . 'core' . DS . 'bootstrap.php';
  * ----------------------------------------------------
  * Create an instance of app
  */
-$app = new App\Core\App;
+$app = new Cube\App;
 
 /**
  * ------------------------------------------------------

@@ -1,7 +1,7 @@
 <?php
 
-use App\Core\Http\Request;
-use App\Core\App;
+use Cube\Http\Request;
+use Cube\App;
 
 /**
  * Return full url based on specified path and query parameters

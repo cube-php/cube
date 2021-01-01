@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Misc;
+namespace Cube\Misc;
 
 use InvalidArgumentException;
 
-use App\Core\Interfaces\CollectionInterface;
+use Cube\Interfaces\CollectionInterface;
 
 abstract class Collection implements CollectionInterface
 {

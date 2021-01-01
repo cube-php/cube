@@ -1,6 +1,6 @@
 <?php
 
-use App\Core\Tools\Csrf;
+use Cube\Tools\Csrf;
 
 /**
  * Create csrf form input

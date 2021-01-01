@@ -6,7 +6,7 @@
  * ======================================
  */
 
-use App\Core\Http\Env;
+use Cube\Http\Env;
 
 /**
  * Retrieve environment variable

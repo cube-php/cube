@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Core\Modules\Db;
+namespace Cube\Modules\Db;
 
-use App\Core\Modules\DB;
-use App\Core\Modules\Db\DbQueryBuilder;
+use Cube\Modules\DB;
+use Cube\Modules\Db\DbQueryBuilder;
 
 class DBDelete extends DBQueryBuilder
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Http;
+namespace Cube\Http;
 
 use InvalidArgumentException;
-use App\Core\Misc\Storage;
-use App\Core\Interfaces\UploadedFileInterface;
+use Cube\Misc\Storage;
+use Cube\Interfaces\UploadedFileInterface;
 
 class UploadedFile implements UploadedFileInterface
 {

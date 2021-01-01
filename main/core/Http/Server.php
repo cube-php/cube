@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Http;
+namespace Cube\Http;
 
-use App\Core\Misc\Collection;
+use Cube\Misc\Collection;
 
-use App\Core\Interfaces\ServerInterface;
+use Cube\Interfaces\ServerInterface;
 
 class Server extends Collection implements ServerInterface
 {

@@ -1,5 +1,5 @@
 <?php
-use App\Core\App;
+use Cube\App;
 use App\Events\AppCrashEvent;
 use App\Events\RouteNotFoundEvent;
 

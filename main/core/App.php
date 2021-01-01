@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Core;
+namespace Cube;
 
 use Exception;
-use App\Core\Http\Session;
-use App\Core\Http\Request;
-use App\Core\Http\Response;
+use Cube\Http\Session;
+use Cube\Http\Request;
+use Cube\Http\Response;
 
-use App\Core\Router\RouteCollection;
+use Cube\Router\RouteCollection;
 
-use App\Core\Misc\EventManager;
-use App\Core\Misc\Components;
-use App\Core\Exceptions\AppException;
+use Cube\Misc\EventManager;
+use Cube\Misc\Components;
+use Cube\Exceptions\AppException;
 
 class App
 {
@@ -98,7 +98,7 @@ class App
     /**
      * Request
      * 
-     * @var \App\Core\Http\Request
+     * @var \Cube\Http\Request
      */
     private $_request;
 
@@ -210,7 +210,7 @@ class App
         define('MAIN_APP_PATH', APP_PATH . DS . 'app');
 
         #App's routes directory
-        define('APP_ROUTES_PATH', MAIN_APP_PATH . DS . 'routes');
+        define('APP_ROUTES_PATH', APP_PATH . DS . 'routes');
 
         # App view directory
         define('VIEW_PATH', MAIN_APP_PATH . DS . 'views');
@@ -228,28 +228,28 @@ class App
         define('APP_STORAGE', APP_PATH . DS . 'webroot' .  DS . 'assets');
 
         #Controllers Path
-        define('APP_CONTROLLERS_PATH', MAIN_APP_PATH . DS . 'controllers');
+        define('APP_CONTROLLERS_PATH', MAIN_APP_PATH . DS . 'Controllers');
 
         #Events Path
-        define('APP_EVENTS_PATH', MAIN_APP_PATH . DS . 'events');
+        define('APP_EVENTS_PATH', MAIN_APP_PATH . DS . 'Events');
 
         #Models Path
-        define('APP_MODELS_PATH', MAIN_APP_PATH . DS . 'models');
+        define('APP_MODELS_PATH', MAIN_APP_PATH . DS . 'Models');
 
         #Providers Path
-        define('APP_PROVIDERS_PATH', MAIN_APP_PATH . DS . 'providers');
+        define('APP_PROVIDERS_PATH', MAIN_APP_PATH . DS . 'Providers');
 
         #Middlewares Path
-        define('APP_MIDDLEWARES_PATH', MAIN_APP_PATH . DS . 'middlewares');
+        define('APP_MIDDLEWARES_PATH', MAIN_APP_PATH . DS . 'Middlewares');
 
         #Exceptions Path
-        define('APP_EXCEPTIONS_PATH', MAIN_APP_PATH . DS . 'exceptions');
+        define('APP_EXCEPTIONS_PATH', MAIN_APP_PATH . DS . 'Exceptions');
 
         #Helpers Path
         define('APP_HELPERS_PATH', MAIN_APP_PATH . DS . 'helpers');
 
         #Migration Path
-        define('APP_MIGRATIONS_PATH', MAIN_APP_PATH . DS . 'migrations');
+        define('APP_MIGRATIONS_PATH', MAIN_APP_PATH . DS . 'Migrations');
 
         #Providers Path
         define('APP_PUBLIC_STORAGE_PATH', APP_STORAGE . DS . 'storage');

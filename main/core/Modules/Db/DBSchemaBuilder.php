@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Core\Modules\Db;
+namespace Cube\Modules\Db;
 
 use InvalidArgumentException;
 
-use App\Core\Modules\DB;
-use App\Core\Modules\Db\DBTable;
+use Cube\Modules\DB;
+use Cube\Modules\Db\DBTable;
 
 class DBSchemaBuilder
 {
@@ -83,7 +83,7 @@ class DBSchemaBuilder
     /**
      * Table
      * 
-     * @var \App\Core\Modules\DB\DBTable
+     * @var \Cube\Modules\DB\DBTable
      */
     private $table;
 

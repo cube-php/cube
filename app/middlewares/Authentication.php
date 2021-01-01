@@ -2,10 +2,10 @@
 
 namespace App\Middlewares;
 
-use App\Core\Http\Request;
-use App\Core\Interfaces\MiddlewareInterface;
+use Cube\Http\Request;
+use Cube\Interfaces\MiddlewareInterface;
 
-use App\Core\Tools\Auth;
+use Cube\Tools\Auth;
 
 class Authentication implements MiddlewareInterface
 {

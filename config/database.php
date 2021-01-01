@@ -7,7 +7,7 @@
  * Set all database settings
  */
 
-use App\Core\Http\Env;
+use Cube\Http\Env;
 
 return array(
 

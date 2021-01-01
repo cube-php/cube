@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Core\Modules\Db;
+namespace Cube\Modules\Db;
 
 use InvalidArgumentException;
 
-use App\Core\Modules\DB;
-use App\Core\Modules\Db\DBQueryBuilder;
+use Cube\Modules\DB;
+use Cube\Modules\Db\DBQueryBuilder;
 
 class DBReplace extends DBQueryBuilder
 {

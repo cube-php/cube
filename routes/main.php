@@ -1,7 +1,7 @@
 <?php
 
 #Use the router module
-use App\Core\Router\Router;
+use Cube\Router\Router;
 
 #Create instance of router
 $router = new Router();

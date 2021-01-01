@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Core\Modules\Db;
+namespace Cube\Modules\Db;
 
-use App\Core\Modules\DB;
-use App\Core\Modules\Db\DBQueryBuilder;
+use Cube\Modules\DB;
+use Cube\Modules\Db\DBQueryBuilder;
 
 class DBInsert extends DBQueryBuilder
 {
