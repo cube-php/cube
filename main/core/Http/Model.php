@@ -41,6 +41,64 @@ class Model implements ModelInterface
     protected static $primary_key;
 
     /**
+     * Model data
+     *
+     * @var object
+     */
+    private $_data;
+
+    /**
+     * Model updates
+     *
+     * @var array
+     */
+    private $_updates = array();
+
+    /**
+     * Model constructor
+     *
+     * @param object $id
+     */
+    public function __construct(object $data)
+    {
+        $this->_data = $data;
+    }
+
+    /**
+     * Getter
+     *
+     * @param [type] $name
+     * @return void
+     */
+    public function __get($name)
+    {
+        return $this->_data->{$name} ?? null;
+    }
+
+    /**
+     * Add an update
+     *
+     * @param string $name
+     * @param mixed $value
+     */
+    public function __set($name, $value)
+    {
+        $this->_updates[$name] = $value;
+    }
+
+    /**
+     * Save updates
+     *
+     * @return bool
+     */
+    public function save(): bool
+    {
+        return !!static::update($this->_updates)
+                    ->where(self::$primary_key, $this->id)
+                    ->fulfil();
+    }
+
+    /**
      * Return all results from schema
      *
      * @param array $order Order methods
@@ -55,10 +113,6 @@ class Model implements ModelInterface
     {
         $query = static::select($fields)
                     ->orderBy($order);
-
-        if($map) {
-            $query->map($map);
-        }
 
         return $opts ? 
             call_user_func_array([$query, 'fetch'], $opts) : $query->fetchAll();
@@ -174,6 +228,17 @@ class Model implements ModelInterface
                 ->update($update)
                 ->where(static::getPrimaryKey(), $primary_key)
                 ->fulfil();
+    }
+
+    /**
+     * Fetch
+     *
+     * @param integer $count
+     * @return self[]
+     */
+    public static function fetch(int $count)
+    {
+        return static::select()->fetch($count);
     }
 
     /**
@@ -335,7 +400,7 @@ class Model implements ModelInterface
             static::$schema,
             $fields ? $field_list :
             static::$fields,
-            static::$provider
+            get_called_class()
         );
 
         return $select;

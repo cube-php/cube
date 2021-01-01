@@ -2,10 +2,6 @@
 
 namespace App\Core\Helpers\Cli;
 
-use App\Core\Misc\File;
-use App\Core\Modules\System;
-use App\Core\Exceptions\FileSystemException;
-
 class Cli
 {
     const COMMAND_MODEL      = 'make:model';
@@ -26,6 +22,7 @@ class Cli
     const OUTPUT_TEXT        = 'text';
     const OUTPUT_ERROR       = 'error';
     const OUTPUT_SUCCESS     = 'success';
+    const OUTPUT_WARNING     = 'warning';
 
     public function __construct()
     {
@@ -181,6 +178,11 @@ class Cli
         return self::respond('** ' . $msg . ' **', $kill, self::OUTPUT_SUCCESS);
     }
 
+    public static function respondWarning($msg, $kill = false)
+    {
+        return self::respond('!! ' . $msg . ' !!', $kill, self::OUTPUT_WARNING);
+    }
+
     private static function longOpts()
     {
         return array(
@@ -224,6 +226,7 @@ class Cli
             self::OUTPUT_ERROR => ['bg_color' => 41, 'text_color' => '1;37;'],
             self::OUTPUT_SUCCESS => ['bg_color' => 40, 'text_color' => '0;32;'],
             //self::OUTPUT_TEXT => ['bg_color' => 40, 'text_color' => '1;37;']
+            self::OUTPUT_WARNING => ['bg_color' => 39, 'text_color' => '1;31;']
         );
 
         $selected = $colors[$type] ?? null;

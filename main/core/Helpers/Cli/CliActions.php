@@ -174,30 +174,7 @@ class CliActions
     {
 
         $name = $options['n'];
-
-        if(!$name) {
-            Cli::respondError('No name specified for provider', true);
-        }
-
-        $name = self::getSyntaxedName($name, 'Provider');
-
-        $filename = static::addExt($name);
-        $template = static::getReservedTemplate('provider');
-        $model_path = APP_PROVIDERS_PATH . DS . $filename;
-        $refined_template = strtr($template, [
-            '{className}' => static::getClassName($name),
-            '{subNamespace}' => static::getClassNamespace($name)
-        ]);
-
-        try {
-            $file = new File($model_path, true, true);
-            $file->write($refined_template);
-            Cli::respond('created provider: ' . $filename);
-        }
-        catch(FileSystemException $e) {
-            Cli::respondError($e->getMessage());
-            Cli::respond(Cli::COMMAND_PROVIDER . ' failed', true);
-        }
+        Cli::respondWarning('Do not use providers');
     }
 
     public static function buildEvent($options)
@@ -372,7 +349,7 @@ class CliActions
         Cli::respond($count . ' migrations completed' . PHP_EOL);
     }
 
-    private function addExt($name, $capitalize = true)
+    private static function addExt($name, $capitalize = true)
     {
         $name_vars = explode('/', $name);
         $name_vars_capitalized = array_map('ucfirst', $name_vars);
@@ -426,7 +403,7 @@ class CliActions
         return true;
     }
 
-    private function getClassName($name)
+    private static function getClassName($name)
     {
         $name_vars = explode('/', $name);
         $vars_count = count($name_vars);
@@ -435,7 +412,7 @@ class CliActions
         return ucfirst($main_name);
     }
 
-    private function getClassNamespace($name)
+    private static function getClassNamespace($name)
     {
         $name_vars = explode('/', $name);
         $name_capitalized = array_map('ucfirst', $name_vars);

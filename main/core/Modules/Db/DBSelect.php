@@ -2,32 +2,33 @@
 
 namespace App\Core\Modules\Db;
 
+use App\Core\Exceptions\ModelException;
+use App\Core\Interfaces\ModelInterface;
 use InvalidArgumentException;
 
 use App\Core\Modules\DB;
 use App\Core\Modules\Db\DBQueryBuilder;
+use ReflectionClass;
 
 class DBSelect extends DBQueryBuilder
 {   
     /**
-     * Provider class name
+     * Model class name
      *
      * @var string|null
      */
-    public $provider_class = null;
+    public $model = null;
 
     /**
      * Constructor
      * 
      * @param string $table_name
      * @param array $fields
-     * @param string|null $provider_class
+     * @param string|null $model
      */
-    public function __construct($table_name = '', $fields = [], ?string $provider_class = null)
+    public function __construct($table_name = '', $fields = [], ?string $model = null)
     {
-        if($provider_class) {
-            $this->provider_class = $provider_class;
-        }
+        $this->model = $model;
 
         if($table_name) {
             $this->joinSql('SELECT', implode(', ', $fields), 'FROM', $table_name);
@@ -154,31 +155,6 @@ class DBSelect extends DBQueryBuilder
     }
 
     /**
-     * Class name to wrap retrieved item
-     *
-     * @return self
-     */
-    public function map()
-    {
-        $class_name = $this->provider_class;
-
-        if(!class_exists($class_name)) {
-            throw new InvalidArgumentException
-                ('Cannot use undefined class "' . $class_name . '" ');
-        }
-
-        $method_name = self::USE_RESERVED_METHOD_NAME;
-
-        if(!method_exists($class_name, $method_name)) {
-            throw new InvalidArgumentException
-                ('Method "' . $method_name . '" is not defined in class "' . $class_name . '"');
-        }
-
-        $this->bundle = $class_name;
-        return $this;
-    }
-
-    /**
      * Order query
      * 
      * @param array $order
@@ -265,6 +241,7 @@ class DBSelect extends DBQueryBuilder
      */
     private function get()
     {
+        $this->wrapModel();
         $sql = $this->getSqlQuery();
         $params = $this->getSqlParameters();
 
@@ -280,10 +257,34 @@ class DBSelect extends DBQueryBuilder
         if($wrapper && is_array($fetched_data)) {
 
             return array_map(function ($item) use ($wrapper) {
-                return call_user_func_array([$wrapper, DBQueryBuilder::USE_RESERVED_METHOD_NAME], (array) $item);
+                return new $wrapper($item);
             }, $fetched_data);
         }
 
         return $fetched_data;
+    }
+
+    /**
+     * Class name to wrap retrieved item
+     *
+     * @return self
+     */
+    private function wrapModel()
+    {   
+        $class_name = $this->model;
+
+        if(!class_exists($class_name)) {
+            throw new InvalidArgumentException
+                ('Cannot use undefined class "' . $class_name . '" ');
+        }
+
+        $reflector = new ReflectionClass($this->model);
+
+        if(!in_array(ModelInterface::class, $reflector->getInterfaceNames())) {
+            throw new ModelException('Invalid model');
+        }
+
+        $this->bundle = $class_name;
+        return $this;
     }
 }

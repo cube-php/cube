@@ -13,9 +13,6 @@ use App\Core\Modules\Db\DBDelete;
 
 class DBQueryBuilder
 {
-
-    const USE_RESERVED_METHOD_NAME = 'map';
-
     /**
      * Sql query
      * 
