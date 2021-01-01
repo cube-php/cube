@@ -143,7 +143,7 @@ class CliActions
     public static function buildModel($options)
     {
 
-        $name = $options['n'];
+        $table_name = $name = $options['n'];
 
         if(!$name) {
             Cli::respondError('No name specified for model', true);
@@ -155,6 +155,7 @@ class CliActions
         $template = self::getReservedTemplate('model');
         $model_path = APP_MODELS_PATH . DS . $filename;
         $refined_template = strtr($template, [
+            '{tableName}' => $table_name,
             '{className}' => self::getClassName($name),
             '{subNamespace}' => self::getClassNamespace($name)
         ]);

@@ -6,11 +6,9 @@ use App\Core\Http\Model;
 
 class {className} extends Model
 {
-    protected static $schema = '{schema_name}';
+    protected static $schema = '{tableName}';
     
-    protected static $primary_key = '{primary_key_field}';
-
-    protected static $provider = null;
+    protected static $primary_key = 'id';
 
     protected static $fields = array(
         'created_at',
