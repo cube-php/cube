@@ -272,6 +272,10 @@ class DBSelect extends DBQueryBuilder
     private function wrapModel()
     {   
         $class_name = $this->model;
+        
+        if(!$class_name) {
+            return;
+        }
 
         if(!class_exists($class_name)) {
             throw new InvalidArgumentException

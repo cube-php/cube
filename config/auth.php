@@ -2,18 +2,19 @@
 
 return array(
 
-    'schema' => 'schema_name',
+    'schema' => 'users',
 
-    'primary_key' => 'primary_key',
+    'primary_key' => 'id',
 
     'hash_method' => 'password_verify',
 
-    'instance' => 'App\\Providers\\AccountsProvider',
+    'model' => 'App\\Models\\UsersModel',
     
     'combination' => array(
-        array(
-            'secret_key' => 'password',
-            'fields' => ['username', 'email']
+        'secret_key' => 'password',
+        'fields' => array(
+            'username' => null,
+            //'email' => 'is_email'
         )
     )
 );
