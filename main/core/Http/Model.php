@@ -67,12 +67,23 @@ class Model implements ModelInterface
     /**
      * Getter
      *
-     * @param [type] $name
-     * @return void
+     * @param string $name
+     * @return mixed
      */
     public function __get($name)
     {
         return $this->_data->{$name} ?? null;
+    }
+
+    /**
+     * Check if property is set
+     *
+     * @param string $name
+     * @return boolean
+     */
+    public function __isset($name): bool
+    {
+        return isset($this->_data->{$name});
     }
 
     /**
