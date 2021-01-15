@@ -209,7 +209,7 @@ class Auth
         }
 
         if($auth_id) {
-            static::$_auth_user = $instance::findByPrimaryKey($auth_id);
+            static::$_auth_user = $instance::find($auth_id);
             return static::$_auth_user;
         }
 
@@ -227,7 +227,7 @@ class Auth
             return false;
         }
 
-        static::$_auth_user = $instance::findByPrimaryKey($auth_id);
+        static::$_auth_user = $instance::find($auth_id);
         #update cookie
         static::setUserCookieToken($user_id);
         return static::$_auth_user;
@@ -238,7 +238,7 @@ class Auth
      * 
      * @param string|null $field
      * 
-     * @return string[]
+     * @return array|object|null
      */
     private static function getConfig($field = null)
     {

@@ -11,6 +11,7 @@ use Cube\Router\RouteParser;
 use Cube\Http\Request;
 use Cube\Http\Response;
 use Cube\Http\AnonController;
+use Cube\Http\Model;
 
 class Route
 {
@@ -331,7 +332,7 @@ class Route
         }
 
         #Parse controller
-        $parse = $this->_parseController();
+        $this->_parseController();
 
         if($this->_is_callble_controller) {
             $controller = Closure::bind($this->_controller, new AnonController(), AnonController::class);
@@ -415,6 +416,14 @@ class Route
     {
         $result = call_user_func_array($controller, [$request, $response]);
 
+        if($result instanceof Response) {
+            return $result;
+        }
+
+        if($result instanceof Model) {
+            return $response->json($result->data());
+        }
+
         if(is_string($result)) {
             return $response->write($result);
         }
@@ -422,8 +431,6 @@ class Route
         if(is_array($result)) {
             return $response->json($result);
         }
-
-        return $result;
     }
 
     /**

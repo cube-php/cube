@@ -6,12 +6,14 @@ use Cube\Modules\DB;
 use Cube\Modules\Db\DBTable;
 use Cube\Modules\Db\DBSelect;
 use Cube\Interfaces\ModelInterface;
-use Cube\Exceptions\ModelException;
 use Cube\Modules\Db\DBUpdate;
 use Cube\Modules\Db\DBDelete;
+use InvalidArgumentException;
+use ReflectionClass;
 
 class Model implements ModelInterface
 {
+
     /**
      * Model database table name
      * 
@@ -38,7 +40,7 @@ class Model implements ModelInterface
      * 
      * @var string
      */
-    protected static $primary_key;
+    protected static $primary_key = 'id';
 
     /**
      * Model data
@@ -53,6 +55,13 @@ class Model implements ModelInterface
      * @var array
      */
     private $_updates = array();
+
+    /**
+     * Relations
+     *
+     * @var array
+     */
+    private $_relations = array();
 
     /**
      * Model constructor
@@ -72,7 +81,15 @@ class Model implements ModelInterface
      */
     public function __get($name)
     {
-        return $this->_data->{$name} ?? null;
+        if(isset($this->_data->{$name})) {
+            return $this->_data->{$name};
+        }
+
+        if(method_exists($this, $name)) {
+            return $this->$name();
+        }
+
+        return null;
     }
 
     /**
@@ -124,19 +141,84 @@ class Model implements ModelInterface
     }
 
     /**
+     * Relation
+     *
+     * @param string $model
+     * @param string $field
+     * @param string|null $name
+     * @return ModelInterface|null
+     */
+    public function relation(string $model, string $field, ?string $name = null)
+    {
+        $class = new ReflectionClass($model);
+
+        if(!$class->implementsInterface(ModelInterface::class)) {
+            throw new InvalidArgumentException('Invalid model class');
+        }
+
+        $field_name = $name ?: $field;
+
+        if(isset($this->_relations[$field_name])) {
+            return $this->_relations[$field_name];
+        }
+
+        $result = $name ? $model::findBy($name, $this->{$field}) : $model::find($field, $this->{$field});
+        
+        $this->_relations[$field_name] = $result;
+        return $result;
+    }
+
+    /**
+     * Relations
+     *
+     * @param string $model
+     * @param string $field
+     * @param string|null $name
+     * @return array
+     */
+    public function relations(string $model, string $field, ?string $name = null)
+    {
+        $class = new ReflectionClass($model);
+        
+        if(!$class->implementsInterface(ModelInterface::class)) {
+            throw new InvalidArgumentException('Invalid model class');
+        }
+
+        $field_name = $name ?: $field;
+
+        if(isset($this->_relations[$field_name])) {
+            return $this->_relations[$field_name];
+        }
+
+        $result = $model::findAllBy($field_name, $this->{$field});
+
+        $this->_relations[$field_name] = $result;
+        return $result;
+    }
+
+    /**
+     * Model content
+     *
+     * @return object
+     */
+    public function data(): object
+    {
+        return $this->_data;
+    }
+
+    /**
      * Return all results from schema
      *
      * @param array $order Order methods
      * @see \Cube\Db\DBSelect::orderBY() method
      * 
      * @param array $opts
-     * @param array|null $fields Field to select
-     * @param string|null $map Provider class to map to model
+     * 
      * @return array|null
      */
-    public static function all(?array $order = null, ?array $opts = null, ?array $fields = null, ?string $map = null)
+    public static function all(?array $order = null, ?array $opts = null)
     {
-        $query = static::select($fields)
+        $query = static::select()
                     ->orderBy($order);
 
         return $opts ? 
@@ -166,20 +248,33 @@ class Model implements ModelInterface
     }
 
     /**
+     * Fetch data using passed primary key value
+     * 
+     * @param string|int $primary_key
+     * @param array $fields Fields to retrieve
+     * 
+     * @return $this
+     */
+    public static function find($primary_key)
+    {
+        return static::select()
+                ->where(static::getPrimaryKey(), $primary_key)
+                ->fetchOne();
+    }
+
+    /**
      * Fetch all data using passed field value
      *
      * @param string $field Field name
      * @param mixed $value Field value
      * @param array|null $order Order methods
      * @param array|null $params Parameters
-     * @param array $fields Fields to retrieve
+     * 
      * @return array
      */
-    public static function findAllBy($field, $value, $order = null, $params = null, array $fields = [])
+    public static function findAllBy($field, $value, $order = null, $params = null)
     {
-        static::checkField($field);
-
-        $query = static::select($fields)
+        $query = static::select()
                  ->where($field, $value)
                  ->orderBy($order);
 
@@ -195,16 +290,12 @@ class Model implements ModelInterface
      * 
      * @param string $field Field name
      * @param mixed $value Field value
-     * @param mixed $fields Fields to retrieve
      * 
-     * @return object|null
+     * @return $this|null
      */
-    public static function findBy($field, $value, array $fields = [])
+    public static function findBy($field, $value)
     {
-
-        static::checkField($field);
-
-        return static::select($fields)
+        return static::select()
                 ->where($field, $value)
                 ->fetchOne();
     }
@@ -212,16 +303,14 @@ class Model implements ModelInterface
     /**
      * Fetch data using passed primary key value
      * 
+     * @deprecated v0.9.8
      * @param string|int $primary_key
-     * @param array $fields Fields to retrieve
      * 
-     * @return self
+     * @return $this
      */
-    public static function findByPrimaryKey($primary_key, array $fields = [])
+    public static function findByPrimaryKey($primary_key)
     {
-        return static::select($fields)
-                ->where(static::getPrimaryKey(), $primary_key)
-                ->fetchOne();
+        return self::find($primary_key);
     }
 
     /**
@@ -289,7 +378,6 @@ class Model implements ModelInterface
      */
     public static function getCountBy($field, $value)
     {
-        static::checkField($field);
         $key = static::getPrimaryKey();
 
         return DB::table(static::$schema)
@@ -316,15 +404,12 @@ class Model implements ModelInterface
      * Or primary key if field is not specified
      *
      * @param string|null $field
-     * @param array $fields Fields to retrieve
+     * 
      * @return object|null
      */
-    public static function getFirst($field = null, array $fields = [])
+    public static function getFirst($field = null)
     {
-
-        static::checkField($field);
-
-        return static::select($fields)
+        return static::select()
                 ->getFirst(($field ?? static::getPrimaryKey()));
     }
 
@@ -333,14 +418,12 @@ class Model implements ModelInterface
      * Or primary key if field is not specified
      *
      * @param string|null $field
-     * @param array $fields
+     * 
      * @return object|null
      */
-    public static function getLast($field = null, array $fields = [])
+    public static function getLast($field = null)
     {
-        static::checkField($field);
-
-        return static::select($fields)
+        return static::select()
                 ->getLast(($field ?? static::getPrimaryKey()));
     }
 
@@ -362,7 +445,6 @@ class Model implements ModelInterface
      */
     public static function getSumByField(string $field)
     {
-        static::checkField($field);
         return DB::table(static::$schema)->sum($field);
     }
 
@@ -415,16 +497,13 @@ class Model implements ModelInterface
     /**
      * Run custom queries on model's schema
      *
-     * @param array|string $fields Fields to override default fields
      * @return DBSelect
      */
-    public static function select($fields = null): DBSelect
+    public static function select(): DBSelect
     {
-        $field_list = is_array($fields) ? $fields : [$fields];
         $select = new DBSelect(
             static::$schema,
-            $fields ? $field_list :
-            static::$fields,
+            self::fields(),
             get_called_class()
         );
 
@@ -437,15 +516,12 @@ class Model implements ModelInterface
      * @param string $field Field to search
      * @param int|null $offset Offset
      * @param int|null $limit Limit
-     * @param array $fields Fields to retrieve
+     * 
      * @return object[]|null
      */
-    public static function search($field, $keyword, $limit = null, $offset = null, array $fields = [])
+    public static function search($field, $keyword, $limit = null, $offset = null)
     {
-
-        static::checkField($field);
-
-        $query = static::select($fields)
+        $query = static::select()
                 ->whereLike($field, $keyword);
 
         if(!$limit) {
@@ -457,33 +533,32 @@ class Model implements ModelInterface
     }
 
     /**
-     * Check field if it's declared
+     * Sum query
      *
-     * @param string $field Field name
-     * @return bool
-     * @throws ModelException
+     * @param string $field
+     * @return DBSelect
      */
-    private static function checkField(string $field)
+    public static function sum(string $field)
     {
-
-        if(!in_array($field, static::$fields)) {
-            throw new ModelException('Trying to access undeclared field "'. $field .'"');
-        }
-
-        return true;
+        return self::select("${field} sum");
     }
 
     /**
      * Parse fields to readable
      * 
-     * @return string
+     * @return array
      */
     private static function fields()
     {
         $fields = static::$fields;
+        $primary_key = static::$primary_key;
 
-        if(!count($fields)) return '*';
+        $rows = [$primary_key, ...$fields];
 
-        return implode(', ', $fields);
+        if(!count($rows)) {
+            return ['*'];
+        }
+
+        return $rows;
     }
 }
