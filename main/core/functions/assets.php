@@ -2,6 +2,36 @@
 
 use Cube\Http\Request;
 use Cube\App;
+use Cube\Router\RouteCollection;
+
+/**
+ * Get route's path from it's name
+ *
+ * @param string $name
+ * @param array|null $params
+ * @return string|null
+ */
+function route(string $name, ?array $params = null) {
+    $route = RouteCollection::getRouteFromName($name);
+
+    if(!$route) {
+        return null;
+    }
+
+    $path = $route->getPath();
+
+    if(!$params) {
+        return $path;
+    }
+
+    $new_params = []; 
+
+    array_walk($params, function ($value, $name) use (&$new_params) {
+        $new_params['{'. $name .'}'] = $value;
+    });
+
+    return strtr($path, $new_params);
+}
 
 /**
  * Return full url based on specified path and query parameters

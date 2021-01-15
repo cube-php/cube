@@ -21,7 +21,7 @@ class Route
      *
      * @var string
      */
-    private const VIEW_PREFIX = '@';
+    public const VIEW_PREFIX = '@';
 
     /**
      * Route's Controllers namespace
@@ -43,6 +43,13 @@ class Route
      * @var string[]
      */
     private $_method = array();
+
+    /**
+     * Route's name
+     *
+     * @var string
+     */
+    private $_name;
 
     /**
      * Route path
@@ -360,6 +367,29 @@ class Route
     public function getPath()
     {
         return $this->_path;
+    }
+
+    /**
+     * Route's name
+     *
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->_name;
+    }
+
+    /**
+     * Set routes name
+     *
+     * @param string $name
+     * @return self
+     */
+    public function name(string $name): self
+    {
+        $this->_name = $name;
+        RouteCollection::bindNamedRoute($this);
+        return $this;
     }
 
     /**

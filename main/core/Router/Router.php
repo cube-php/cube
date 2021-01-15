@@ -183,10 +183,9 @@ class Router
             throw new InvalidArgumentException('Router::map() $method should be an array');
         }
 
-        foreach($methods as $method)
-        {
+        array_walk($methods, function ($method) use ($path, $controller) {
             $this->on($method, $path, $controller);
-        }
+        });
     }
 
     /**
@@ -211,6 +210,18 @@ class Router
         if($root_namespace) $route->setNamespace($root_namespace);
 
         return RouteCollection::attachRoute($route);
+    }
+
+    /**
+     * View
+     *
+     * @param string $path
+     * @param string $template
+     * @return Route
+     */
+    public function view($path, $template): Route
+    {
+        return $this->any($path, Route::VIEW_PREFIX . $template);
     }
 
     /**
