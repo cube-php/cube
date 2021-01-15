@@ -40,7 +40,8 @@ class View
         'url',
         'asset',
         'csrf_token',
-        'csrf_form'
+        'csrf_form',
+        'route'
     );
 
     /**

@@ -5,11 +5,8 @@ namespace Cube\Router;
 use Cube\App;
 
 use Cube\Router\Route;
-
 use Cube\Http\Request;
-
 use Cube\Http\Response;
-
 use Cube\Misc\EventManager;
 
 class RouteCollection
@@ -18,9 +15,16 @@ class RouteCollection
     /**
      * Routes collection
      * 
-     * @var \Route[]
+     * @var Route[]
      */
     private static $_routes = array();
+
+    /**
+     * Named routes
+     *
+     * @var Route[]
+     */
+    private static $_name_routes = array();
 
     /**
      * Routes on request method
@@ -43,36 +47,6 @@ class RouteCollection
     public function __construct()
     {
         $this->_request = new Request();
-    }
-
-    /**
-     * Get all routes
-     *
-     * @return array
-     */
-    public static function all()
-    {
-        return self::$_routes;
-    }
-
-    /**
-     * Attach new route to collection
-     * 
-     * @param Route $route Route to attach
-     */
-    public static function attachRoute(Route $route)
-    {
-        #Attach route to all routes
-        static::$_routes[] = $route;
-
-        $request = new Request();
-
-        #attach on request method
-        if($route->getMethod() && $request->getMethod() !== $route->getMethod()) {
-            return $route;
-        }
-        static::$_attached_routes[] = $route;
-        return $route;
     }
 
     /**
@@ -152,5 +126,57 @@ class RouteCollection
         $path = preg_replace('#([\/]{1,})#', '/', $path);
         $last_char = strlen($path) == 1 ? $path : substr($path, -1, 1);
         return $last_char == '/' ? $path : $path . '/';
+    }
+
+    /**
+     * Get all routes
+     *
+     * @return array
+     */
+    public static function all()
+    {
+        return self::$_routes;
+    }
+
+    /**
+     * Get route from name
+     *
+     * @param string $name
+     * @return Route|null
+     */
+    public static function getRouteFromName(string $name): ?Route
+    {
+        return self::$_name_routes[$name] ?? null;
+    }
+
+    /**
+     * Attach new route to collection
+     * 
+     * @param Route $route Route to attach
+     */
+    public static function attachRoute(Route $route)
+    {
+        #Attach route to all routes
+        static::$_routes[] = $route;
+
+        $request = new Request();
+
+        #attach on request method
+        if($route->getMethod() && $request->getMethod() !== $route->getMethod()) {
+            return $route;
+        }
+        static::$_attached_routes[] = $route;
+        return $route;
+    }
+
+    /**
+     * Bind a named route
+     *
+     * @param Route $route
+     * @return void
+     */
+    public static function bindNamedRoute(Route $route)
+    {
+        self::$_name_routes[$route->getName()] = $route;
     }
 }
