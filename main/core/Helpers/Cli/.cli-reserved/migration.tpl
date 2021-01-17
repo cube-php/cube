@@ -19,7 +19,7 @@ class {className} implements MigrationInterface
     {
         DB::table(self::NAME)
             ->create(function (DBTableBuilder $table) {
-                
+                $table->field('id')->int()->increment();
             });
     }
 
