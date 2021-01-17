@@ -385,13 +385,32 @@ class Response implements ResponseInterface
      * @param bool $external_location Set whether the path redirecting to is an external path
      * @return self
      */
-    public function redirect($path, array $query_params = [], $external_location = false)
+    public function redirect($path, ?array $query_params = null, $external_location = false)
     {
         $redirect_location = $external_location ? $path : url($path, $query_params);
         return $this
             ->withStatusCode(301)
             ->withHeader('location', $redirect_location)
             ->write(null);
+    }
+
+    /**
+     * Response redirect using route name
+     *
+     * @param string $route_name
+     * @param array|null $params
+     * @param array|null $query
+     * @return Response
+     */
+    public function route(string $route_name, ?array $params = null, ?array $query = null)
+    {
+        $path = route($route_name, $params);
+
+        if(!$path) {
+            throw new InvalidArgumentException('Route with name "' . $route_name . '" is not assigned');
+        }
+
+        return $this->redirect($path, $query);
     }
 
     /**
