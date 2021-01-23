@@ -156,13 +156,13 @@ class Model implements ModelInterface
             throw new InvalidArgumentException('Invalid model class');
         }
 
-        $field_name = $name ?: $field;
+        $field_name = $name ?: self::$primary_key;
 
         if(isset($this->_relations[$field_name])) {
             return $this->_relations[$field_name];
         }
 
-        $result = $name ? $model::findBy($name, $this->{$field}) : $model::find($field, $this->{$field});
+        $result = $name ? $model::findBy($field_name, $this->{$field}) : $model::find($this->{$field});
         
         $this->_relations[$field_name] = $result;
         return $result;
@@ -184,7 +184,7 @@ class Model implements ModelInterface
             throw new InvalidArgumentException('Invalid model class');
         }
 
-        $field_name = $name ?: $field;
+        $field_name = $name ?: self::$primary_key;
 
         if(isset($this->_relations[$field_name])) {
             return $this->_relations[$field_name];
