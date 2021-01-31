@@ -6,15 +6,14 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Cube\\": "main/core",
             "App\\": "app/"
         },
         "files": [
-            "main/core/utils/bootstrap.php"
+            "core/bootstrap.php"
         ]
     },
     "require": {
-        "twig/twig": "^2.5"
+        "brainex/php-cube-core": "^0.0.1"
     },
     "scripts": {
         "post-create-project-cmd": [
