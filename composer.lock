@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65317fecb194f6a240116a94d68c5d40",
+    "content-hash": "72d395f82c32a0de9a510d660e369ff0",
     "packages": [
         {
             "name": "brainex/php-cube-core",
             "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/brainex/php-cube-core.git",
+                "reference": "1c05d59d3e2425b1894f48fd4f6f4ab40a3f473c"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../brainex/php-cube-core",
-                "reference": "c1a3aaa8b242bb6540e5b22a4f9d7200757f9f1c"
+                "type": "zip",
+                "url": "https://bitbucket.org/brainex/php-cube-core/get/1c05d59d3e2425b1894f48fd4f6f4ab40a3f473c.zip",
+                "reference": "1c05d59d3e2425b1894f48fd4f6f4ab40a3f473c",
+                "shasum": ""
             },
             "require": {
                 "twig/twig": "^3.2"
@@ -26,6 +32,7 @@
                     "src/utils/bootstrap.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -36,10 +43,11 @@
                 }
             ],
             "description": "PHP Cube core utilities",
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
+            "homepage": "https://bitbucket.org/brainex/php-cube-core",
+            "support": {
+                "source": "https://bitbucket.org/brainex/php-cube-core/src/1c05d59d3e2425b1894f48fd4f6f4ab40a3f473c/?at=v0.0.1"
+            },
+            "time": "2021-01-31T18:24:50+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -280,9 +288,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "brainex/php-cube-core": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

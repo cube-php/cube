@@ -13,17 +13,8 @@
         ]
     },
     "require": {
-        "brainex/php-cube-core": "@dev"
+        "brainex/php-cube-core": "^0.0.1"
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../brainex/php-cube-core",
-            "options": {
-                "symlink": true
-            }
-        }
-    ],
     "scripts": {
         "post-create-project-cmd": [
             "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
