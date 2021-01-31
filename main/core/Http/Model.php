@@ -540,7 +540,8 @@ class Model implements ModelInterface
      */
     public static function sum(string $field)
     {
-        return self::select("${field} sum");
+        return self::query()
+                ->select(["SUM(${field}) total"]);
     }
 
     /**
