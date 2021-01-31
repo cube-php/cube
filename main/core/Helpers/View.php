@@ -106,7 +106,7 @@ class View
         $loader = new FilesystemLoader($path);
 
         $view_options = array(
-            'strict_variables' => App::isProduction(),
+            'strict_variables' => App::isDevelopment(),
         );
 
         if(isset($this->_config['cache']) && $this->_config['cache']) {
