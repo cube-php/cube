@@ -100,7 +100,7 @@ class Model implements ModelInterface
      */
     public function __isset($name): bool
     {
-        return isset($this->_data->{$name});
+        return property_exists($this->_data, $name);
     }
 
     /**
@@ -540,7 +540,8 @@ class Model implements ModelInterface
      */
     public static function sum(string $field)
     {
-        return self::select("${field} sum");
+        return self::query()
+                ->select(["SUM(${field}) total"]);
     }
 
     /**
