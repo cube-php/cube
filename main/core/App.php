@@ -15,9 +15,7 @@ use Cube\Exceptions\AppException;
 
 class App
 {
-
     const INSTANCE_CONFIGURATIONS = 'config';
-    const INSTANCE_HELPERS        = 'helpers';
     const INSTANCE_ROUTES         = 'routers';
 
     /**
@@ -288,10 +286,8 @@ class App
      */
     public function init(): void
     {
-        $this->initSystemHelpers();
         $this->loadConfig();
         $this->loadComponents();
-        $this->initHelpers();
         $this->loadEvents();
         $this->configure();
     }
@@ -392,16 +388,6 @@ class App
     }
 
     /**
-     * Init  Helpers
-     * 
-     * @return void
-     */
-    private function initHelpers()
-    {
-        $this->loadDirFiles(MAIN_APP_PATH . DS . 'helpers', false);
-    }
-
-    /**
      * Make the app listen to routes
      * 
      * @return void
@@ -424,16 +410,6 @@ class App
     private function initSessions()
     {
         return Session::createInstance();
-    }
-
-    /**
-     * Initialize system assigned helpers
-     * 
-     * @return void
-     */
-    private function initSystemHelpers()
-    {
-        $this->loadDirFiles(__DIR__ . DS . 'functions', false);
     }
 
     /**
