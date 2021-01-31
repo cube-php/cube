@@ -11,7 +11,3 @@
  * To ensure faster load times of the app, every logic here should be simple
  * And should not contain very complex and time taking commands
  */
-
-use Cube\App;
-use Cube\Http\Request;
-use Cube\Misc\EventManager;

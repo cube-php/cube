@@ -3,12 +3,10 @@
 
 require_once './vendor/autoload.php';
 
-use Cube\App;
 use Cube\Helpers\Cli\Cli;
 
-#Register system paths
-App::registerPath();
+$app = require_once __DIR__ . '/core/app.php';
 
 #Listen for command line tools
-$cli = new Cli();
+$cli = new Cli($app);
 $cli->listen();

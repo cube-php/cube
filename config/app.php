@@ -9,9 +9,6 @@
  * Except, Of course you know what you're doing
  */
 
-use Cube\App;
-use Cube\Http\Env;
-
 return array(
 
     /**
@@ -23,16 +20,14 @@ return array(
      * Switch to App::APP_MODE_PRODUCTION
      * When live, errors will be hidden
      */
-    'app_mode' => (strtolower(Env::get('app_mode')) === 'production')
-                    ? App::APP_MODE_PRODUCTION
-                    : App::APP_MODE_DEVELOPMENT,
+    'app_mode' => env('APP_ENV'),
 
     /**
      * Default timezone for your app
      * 
      * 
      */
-    'time_zone' => 'Africa/Lagos',
+    'timezone' => 'Africa/Lagos',
 
     /**
      * Force HTTPs connection

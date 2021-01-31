@@ -1,6 +1,7 @@
 <?php
 
-define('DS', DIRECTORY_SEPARATOR);
+use Cube\App\App;
+use Cube\Misc\Components;
 
 /**
  * ----------------------------------------------------
@@ -9,22 +10,15 @@ define('DS', DIRECTORY_SEPARATOR);
  * Use composer autoload to load dependecies
  * and autoload components
  */
-require_once '..' . DS . 'vendor' . DS . 'autoload.php';
-
-/**
- * -----------------------------------------------------
- * Use app bootstraper
- * -----------------------------------------------------
- */
-require_once APP_PATH . DS . 'core' . DS . 'bootstrap.php';
+require_once '../vendor/autoload.php';
 
 /**
  * -----------------------------------------------------
  * Let's start the app.
  * ----------------------------------------------------
- * Create an instance of app
+ * Retrieve App Instance
  */
-$app = new Cube\App;
+$app = require_once __DIR__ . '/../core/app.php';
 
 /**
  * ------------------------------------------------------
@@ -32,4 +26,5 @@ $app = new Cube\App;
  * ------------------------------------------------------
  * Fire the app!
  */
+
 $app->run();
