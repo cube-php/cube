@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72d395f82c32a0de9a510d660e369ff0",
+    "content-hash": "522269f096469bbf05ab1520c4adbdf0",
     "packages": [
         {
             "name": "brainex/php-cube-core",
-            "version": "0.0.1",
+            "version": "0.0.2",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/brainex/php-cube-core.git",
-                "reference": "1c05d59d3e2425b1894f48fd4f6f4ab40a3f473c"
+                "reference": "613f1d6efb3d1aeda7ca816189ae79da94d7a5ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/brainex/php-cube-core/get/1c05d59d3e2425b1894f48fd4f6f4ab40a3f473c.zip",
-                "reference": "1c05d59d3e2425b1894f48fd4f6f4ab40a3f473c",
+                "url": "https://bitbucket.org/brainex/php-cube-core/get/613f1d6efb3d1aeda7ca816189ae79da94d7a5ba.zip",
+                "reference": "613f1d6efb3d1aeda7ca816189ae79da94d7a5ba",
                 "shasum": ""
             },
             "require": {
@@ -45,9 +45,9 @@
             "description": "PHP Cube core utilities",
             "homepage": "https://bitbucket.org/brainex/php-cube-core",
             "support": {
-                "source": "https://bitbucket.org/brainex/php-cube-core/src/1c05d59d3e2425b1894f48fd4f6f4ab40a3f473c/?at=v0.0.1"
+                "source": "https://bitbucket.org/brainex/php-cube-core/src/613f1d6efb3d1aeda7ca816189ae79da94d7a5ba/?at=v0.0.2"
             },
-            "time": "2021-01-31T18:24:50+00:00"
+            "time": "2021-02-01T13:45:37+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",

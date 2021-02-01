@@ -2,7 +2,7 @@
     "name": "brainex/php-cube",
     "description": "A minimal PHP Framework for building simple and scalable web applications",
     "type": "project",
-    "version": "0.9.11",
+    "version": "0.9.12",
     "license": "MIT",
     "autoload": {
         "psr-4": {
@@ -13,7 +13,7 @@
         ]
     },
     "require": {
-        "brainex/php-cube-core": "^0.0.1"
+        "brainex/php-cube-core": "^0.0.2"
     },
     "scripts": {
         "post-create-project-cmd": [
