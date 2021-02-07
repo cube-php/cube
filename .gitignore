@@ -6,3 +6,5 @@ flat-db/**
 vendor
 **/.DS_Store
 error_log
+logs
+node_modules
