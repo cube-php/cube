@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "99a96ce45fd0c540f5f7964b689b830b",
+    "content-hash": "8860319cc9a5a6ea637e2b9c8c170d95",
     "packages": [
         {
             "name": "brainex/php-cube-core",
-            "version": "0.0.3",
+            "version": "0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/brainex/php-cube-core.git",
-                "reference": "fb03a38160b7cd20c5d6963ba6f35d10f834ce0f"
+                "reference": "2d08ff3c62f6d5b9177410f4b6bda1de0ca627af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/brainex/php-cube-core/get/fb03a38160b7cd20c5d6963ba6f35d10f834ce0f.zip",
-                "reference": "fb03a38160b7cd20c5d6963ba6f35d10f834ce0f",
+                "url": "https://bitbucket.org/brainex/php-cube-core/get/2d08ff3c62f6d5b9177410f4b6bda1de0ca627af.zip",
+                "reference": "2d08ff3c62f6d5b9177410f4b6bda1de0ca627af",
                 "shasum": ""
             },
             "require": {
@@ -47,9 +47,9 @@
             "description": "PHP Cube core utilities",
             "homepage": "https://bitbucket.org/brainex/php-cube-core",
             "support": {
-                "source": "https://bitbucket.org/brainex/php-cube-core/src/fb03a38160b7cd20c5d6963ba6f35d10f834ce0f/?at=v0.0.3"
+                "source": "https://bitbucket.org/brainex/php-cube-core/src/2d08ff3c62f6d5b9177410f4b6bda1de0ca627af/?at=v0.0.4"
             },
-            "time": "2021-02-07T17:00:42+00:00"
+            "time": "2021-02-09T13:19:39+00:00"
         },
         {
             "name": "psr/container",
@@ -913,16 +913,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v3.2.1",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "f795ca686d38530045859b0350b5352f7d63447d"
+                "reference": "1f3b7e2c06cc05d42936a8ad508ff1db7975cdc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/f795ca686d38530045859b0350b5352f7d63447d",
-                "reference": "f795ca686d38530045859b0350b5352f7d63447d",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/1f3b7e2c06cc05d42936a8ad508ff1db7975cdc5",
+                "reference": "1f3b7e2c06cc05d42936a8ad508ff1db7975cdc5",
                 "shasum": ""
             },
             "require": {
@@ -937,7 +937,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.2-dev"
+                    "dev-master": "3.3-dev"
                 }
             },
             "autoload": {
@@ -973,7 +973,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v3.2.1"
+                "source": "https://github.com/twigphp/Twig/tree/v3.3.0"
             },
             "funding": [
                 {
@@ -985,7 +985,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-05T15:40:36+00:00"
+            "time": "2021-02-08T09:54:36+00:00"
         }
     ],
     "packages-dev": [],
