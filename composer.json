@@ -13,7 +13,7 @@
         ]
     },
     "require": {
-        "brainex/php-cube-core": "^0.0.14"
+        "brainex/php-cube-core": "0.0.15"
     },
     "scripts": {
         "post-create-project-cmd": [
