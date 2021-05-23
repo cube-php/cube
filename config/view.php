@@ -14,6 +14,9 @@ return array(
     #Whether or not app caches views
     'cache' => false,
 
+    #Views cache directory
+    'cache_dir' => __DIR__ . '/../.cache/views',
+
     #Make Cube\Http\Request accessible from view via _req
     'embed_request' => false,
     

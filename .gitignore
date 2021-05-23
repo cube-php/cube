@@ -8,3 +8,4 @@ vendor
 error_log
 logs
 node_modules
+.cache
