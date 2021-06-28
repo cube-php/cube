@@ -1,16 +1,23 @@
 <?php
 
+use Cube\Tools\Auth;
+use App\Models\Users;
+
 return array(
 
-    'schema' => 'users',
+    Auth::CONFIG_SCHEMA => 'users',
 
-    'primary_key' => 'id',
+    Auth::CONFIG_PRIMARY_KEY => 'id',
 
-    'hash_method' => 'password_verify',
+    Auth::CONFIG_HASH_METHOD => 'password_verify',
 
-    'model' => 'App\\Models\\UsersModel',
+    Auth::CONFIG_MODEL => Users::class,
+
+    Auth::CONFIG_ERROR_MSG => 'Invalid account details',
+
+    Auth::CONFIG_COOKIE_EXPIRY_DAYS => 30,
     
-    'combination' => array(
+    Auth::CONFIG_COMBINATION => array(
         'secret_key' => 'password',
         'fields' => array(
             'username' => null,
