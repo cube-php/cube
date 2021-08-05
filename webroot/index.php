@@ -1,8 +1,5 @@
 <?php
 
-use Cube\App\App;
-use Cube\Misc\Components;
-
 /**
  * ----------------------------------------------------
  * Oh why not, Use composer autoloader
