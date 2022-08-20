@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "42226ae4099877390fe684d78923e644",
+    "content-hash": "e623d16a3e8ea52bda80a7367950ff67",
     "packages": [
         {
             "name": "brainex/php-cube-core",
-            "version": "0.0.19",
+            "version": "0.0.33",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/brainex/php-cube-core.git",
-                "reference": "955f5579fcc3ba8510697fa660fd1ca7030d0bcc"
+                "reference": "a5c87b3ed7ce9ddd53a027b77ace5de897a5c199"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/brainex/php-cube-core/get/955f5579fcc3ba8510697fa660fd1ca7030d0bcc.zip",
-                "reference": "955f5579fcc3ba8510697fa660fd1ca7030d0bcc",
+                "url": "https://bitbucket.org/brainex/php-cube-core/get/a5c87b3ed7ce9ddd53a027b77ace5de897a5c199.zip",
+                "reference": "a5c87b3ed7ce9ddd53a027b77ace5de897a5c199",
                 "shasum": ""
             },
             "require": {
@@ -28,12 +28,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Cube\\": "src/"
-                },
                 "files": [
                     "src/utils/bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Cube\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -48,9 +48,9 @@
             "description": "PHP Cube core utilities",
             "homepage": "https://bitbucket.org/brainex/php-cube-core",
             "support": {
-                "source": "https://bitbucket.org/brainex/php-cube-core/src/955f5579fcc3ba8510697fa660fd1ca7030d0bcc/?at=v0.0.19"
+                "source": "https://bitbucket.org/brainex/php-cube-core/src/a5c87b3ed7ce9ddd53a027b77ace5de897a5c199/?at=v0.0.33"
             },
-            "time": "2021-08-05T01:34:36+00:00"
+            "time": "2022-06-27T07:59:45+00:00"
         },
         {
             "name": "psr/cache",
@@ -1408,5 +1408,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
