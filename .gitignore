@@ -3,6 +3,8 @@ flat-db/**
 **/FlatDb
 .idea
 .env
+.env.dev
+.env.prod
 vendor
 **/.DS_Store
 error_log
