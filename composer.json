@@ -12,9 +12,6 @@
       "core/bootstrap.php"
     ]
   },
-  "require": {
-    "brainex/php-cube-core": "^0.1.0"
-  },
   "scripts": {
     "post-create-project-cmd": [
       "php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
@@ -23,5 +20,8 @@
     "post-autoload-dump": [
       "Cube\\Misc\\PackageManager::onPackageInstall"
     ]
+  },
+  "require": {
+    "cube-php/core": "^0.1.6"
   }
 }
