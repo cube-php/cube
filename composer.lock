@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38247f01bd498c36fc06396eba76aebd",
+    "content-hash": "0e361bb5adfd8f5cd8ed98b9cb882f17",
     "packages": [
         {
-            "name": "brainex/php-cube-core",
+            "name": "cube-php/core",
             "version": "0.1.6",
             "source": {
                 "type": "git",
-                "url": "https://bitbucket.org/brainex/php-cube-core.git",
-                "reference": "6d88332803f5bac3f901323311b8bd0efc883f86"
+                "url": "https://github.com/cube-php/core.git",
+                "reference": "502db2c1577bb85a7b3671715beb34c6de943b61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/brainex/php-cube-core/get/6d88332803f5bac3f901323311b8bd0efc883f86.zip",
-                "reference": "6d88332803f5bac3f901323311b8bd0efc883f86",
+                "url": "https://api.github.com/repos/cube-php/core/zipball/502db2c1577bb85a7b3671715beb34c6de943b61",
+                "reference": "502db2c1577bb85a7b3671715beb34c6de943b61",
                 "shasum": ""
             },
             "require": {
@@ -46,11 +46,11 @@
                 }
             ],
             "description": "PHP Cube core utilities",
-            "homepage": "https://bitbucket.org/brainex/php-cube-core",
             "support": {
-                "source": "https://bitbucket.org/brainex/php-cube-core/src/6d88332803f5bac3f901323311b8bd0efc883f86/?at=v0.1.6"
+                "issues": "https://github.com/cube-php/core/issues",
+                "source": "https://github.com/cube-php/core/tree/v0.1.6"
             },
-            "time": "2023-05-30T16:20:38+00:00"
+            "time": "2023-05-30T17:14:57+00:00"
         },
         {
             "name": "psr/cache",
