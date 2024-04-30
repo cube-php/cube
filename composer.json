@@ -2,7 +2,7 @@
   "name": "cube-php/cube",
   "description": "A minimal PHP Framework for building simple and scalable web applications",
   "type": "project",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "license": "MIT",
   "autoload": {
     "psr-4": {
@@ -22,6 +22,6 @@
     ]
   },
   "require": {
-    "cube-php/core": "^0.1.6"
+    "cube-php/core": "^0.1.17"
   }
 }

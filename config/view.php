@@ -15,11 +15,11 @@ return array(
     'cache' => false,
 
     #Views cache directory
-    'cache_dir' => __DIR__ . '/../.cache/views',
+    'cache_dir' => 'views',
 
     #Make Cube\Http\Request accessible from view via _req
     'embed_request' => false,
-    
+
     #Functions allowed in views
     'functions' => array(
         'var_dump'
