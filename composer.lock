@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7cb499aa107927a09891ff85f89e3c0",
+    "content-hash": "dbf2bb293bc4ad6c40965808d0902b9a",
     "packages": [
         {
             "name": "cube-php/core",
