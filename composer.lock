@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9baacb52c95a0cc36b27c301ac99131",
+    "content-hash": "711119a9a83015ab96ce86a4af192824",
     "packages": [
         {
             "name": "cube-php/core",
-            "version": "0.1.18",
+            "version": "0.1.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cube-php/core.git",
-                "reference": "9dda3d049285673af27925bd3a907ecdab4f8cb8"
+                "reference": "4fb6c88f64dc395426cdbd8b8c93aeb25cd21112"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cube-php/core/zipball/9dda3d049285673af27925bd3a907ecdab4f8cb8",
-                "reference": "9dda3d049285673af27925bd3a907ecdab4f8cb8",
+                "url": "https://api.github.com/repos/cube-php/core/zipball/4fb6c88f64dc395426cdbd8b8c93aeb25cd21112",
+                "reference": "4fb6c88f64dc395426cdbd8b8c93aeb25cd21112",
                 "shasum": ""
             },
             "require": {
@@ -48,9 +48,9 @@
             "description": "PHP Cube core utilities",
             "support": {
                 "issues": "https://github.com/cube-php/core/issues",
-                "source": "https://github.com/cube-php/core/tree/v0.1.18"
+                "source": "https://github.com/cube-php/core/tree/v0.1.21"
             },
-            "time": "2024-06-01T00:49:14+00:00"
+            "time": "2024-07-09T09:42:07+00:00"
         },
         {
             "name": "psr/cache",
