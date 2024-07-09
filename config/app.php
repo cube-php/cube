@@ -41,6 +41,21 @@ return array(
      * 
      * if app is not installed in the root directory
      */
-    'directory' => ''
+    'directory' => '',
 
+    /**
+     * Session handler
+     * 
+     * default: PHP default session handler
+     * database: CubePHP Database session handler
+     */
+    'session' => 'default',
+
+    /**
+     * Database connection to use for sessions
+     * Required when session = database
+     * Required when the database connection is not the default db connection
+     * 
+     */
+    'session_connection' => null
 );
