@@ -22,6 +22,6 @@
     ]
   },
   "require": {
-    "cube-php/core": "^0.1.21"
+    "cube-php/core": "^0.1.23"
   }
 }
