@@ -20,14 +20,14 @@ return array(
      * Switch to App::APP_MODE_PRODUCTION
      * When live, errors will be hidden
      */
-    'app_mode' => env('APP_ENV'),
+    'app_mode' => env('APP_ENV', 'proudction'),
 
     /**
      * Default timezone for your app
      * 
      * 
      */
-    'timezone' => 'Africa/Lagos',
+    'timezone' => env('APP_TIMEZONE'),
 
     /**
      * Force HTTPs connection
