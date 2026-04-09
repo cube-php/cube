@@ -5,7 +5,7 @@ namespace App\Controllers;
 use Cube\Http\Response;
 use Cube\Http\Request;
 use Cube\Http\Controller;
-use Cube\Router\Attributes\Route;
+use Cube\Router\Attributes\Get;
 
 class CubeController extends Controller
 {
@@ -16,7 +16,7 @@ class CubeController extends Controller
      * @param Response $response
      * @return Response
      */
-    #[Route(method: 'GET', path: '/')]
+    #[Get(path: '/')]
     public function home(Request $request, Response $response)
     {
         return $response->view('home');
